@@ -5218,6 +5218,7 @@ var $elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
+var $elm$core$Basics$not = _Basics_not;
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -5239,7 +5240,7 @@ var $author$project$Main$update = F2(
 							roster: A2(
 								$elm$core$List$filter,
 								function (p) {
-									return _Utils_eq(p, player);
+									return !_Utils_eq(p, player);
 								},
 								model.roster)
 						}),
@@ -5253,19 +5254,139 @@ var $author$project$Main$update = F2(
 							roster: A2(
 								$elm$core$List$map,
 								function (p) {
-									return _Utils_eq(p, player) ? p : player;
+									return _Utils_eq(p, player) ? player : p;
 								},
 								model.roster)
 						}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
+};
+var $elm$core$List$concatMap = F2(
+	function (f, list) {
+		return $elm$core$List$concat(
+			A2($elm$core$List$map, f, list));
+	});
 var $elm$html$Html$table = _VirtualDom_node('table');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$th = _VirtualDom_node('th');
+var $elm$html$Html$tr = _VirtualDom_node('tr');
+var $author$project$Roster$jerseyToString = function (jersey) {
+	if (jersey.$ === 'Just') {
+		var jrsy = jersey.a;
+		return $elm$core$String$fromInt(jrsy);
+	} else {
+		return 'N/A';
+	}
+};
+var $author$project$Roster$roleToString = function (role) {
+	switch (role.$) {
+		case 'PG':
+			return 'PG';
+		case 'SG':
+			return 'SG';
+		case 'SF':
+			return 'SF';
+		case 'PF':
+			return 'PF';
+		case 'C':
+			return 'C';
+		default:
+			return 'Coach';
+	}
+};
+var $author$project$Roster$maybeRoleToString = function (mrole) {
+	if (mrole.$ === 'Just') {
+		var role = mrole.a;
+		return $author$project$Roster$roleToString(role);
+	} else {
+		return 'N/A';
+	}
+};
+var $elm$html$Html$td = _VirtualDom_node('td');
+var $author$project$Main$viewPlayer = function (player) {
+	return _List_fromArray(
+		[
+			A2(
+			$elm$html$Html$td,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(player.name)
+				])),
+			A2(
+			$elm$html$Html$td,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					$author$project$Roster$jerseyToString(player.jerseyNumber))
+				])),
+			A2(
+			$elm$html$Html$td,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					$author$project$Roster$roleToString(player.primaryRole))
+				])),
+			A2(
+			$elm$html$Html$td,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					$author$project$Roster$maybeRoleToString(player.backupRole))
+				])),
+			A2(
+			$elm$html$Html$td,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(player.phoneNumber)
+				]))
+		]);
+};
 var $author$project$Main$view = function (model) {
+	var viewHeader = function (header) {
+		return A2(
+			$elm$html$Html$th,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(header)
+				]));
+	};
+	var headers = _List_fromArray(
+		['Name', 'Jersey', 'Role', 'Backup Role', 'Phone #']);
 	return {
 		body: _List_fromArray(
 			[
-				A2($elm$html$Html$table, _List_Nil, _List_Nil)
+				A2(
+				$elm$html$Html$table,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$tr,
+						_List_Nil,
+						A2($elm$core$List$map, viewHeader, headers)),
+						A2(
+						$elm$html$Html$tr,
+						_List_Nil,
+						A2($elm$core$List$concatMap, $author$project$Main$viewPlayer, model.roster))
+					]))
 			]),
 		title: 'Shooting Starts Roster | Spring Basketball 2023'
 	};

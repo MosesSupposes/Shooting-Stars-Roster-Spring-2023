@@ -1,4 +1,4 @@
-module Main exposing (..)
+module Main exposing (main)
 
 import Browser
 import Html exposing (..)
@@ -20,11 +20,34 @@ init _ =
     ( { roster = currentRoster }, Cmd.none )
 
 
-view : Model -> Browser.Document msg
+view : Model -> Browser.Document Msg
 view model =
+    let
+        headers =
+            [ "Name", "Jersey", "Role", "Backup Role", "Phone #" ]
+
+        viewHeader header =
+            th [] [ text header ]
+    in
     { title = "Shooting Starts Roster | Spring Basketball 2023"
-    , body = [ table [] [] ]
+    , body =
+        [ table []
+            [ tr [] (List.map viewHeader headers)
+            , tr [] (List.concatMap viewPlayer model.roster)
+            ]
+        ]
     }
+
+
+viewPlayer : Player -> List (Html Msg)
+viewPlayer player =
+    [ td [] [ text player.name ]
+    , td []
+        [ text (Roster.jerseyToString player.jerseyNumber) ]
+    , td [] [ text (player.primaryRole |> Roster.roleToString) ]
+    , td [] [ text (player.backupRole |> Roster.maybeRoleToString) ]
+    , td [] [ text player.phoneNumber ]
+    ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -34,7 +57,7 @@ update msg model =
             ( { model | roster = player :: model.roster }, Cmd.none )
 
         RemovePlayerFromRoster player ->
-            ( { model | roster = List.filter (\p -> p == player) model.roster }, Cmd.none )
+            ( { model | roster = List.filter (\p -> not (p == player)) model.roster }, Cmd.none )
 
         EditPlayerInfo player ->
             ( { model
@@ -42,10 +65,10 @@ update msg model =
                     List.map
                         (\p ->
                             if p == player then
-                                p
+                                player
 
                             else
-                                player
+                                p
                         )
                         model.roster
               }
@@ -58,5 +81,6 @@ subscriptions _ =
     Sub.none
 
 
+main : Program () Model Msg
 main =
     Browser.document { init = init, view = view, update = update, subscriptions = subscriptions }

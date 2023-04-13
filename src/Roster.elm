@@ -1,4 +1,4 @@
-module Roster exposing (Player, Role(..), currentRoster, positionToRole, roleToPosition)
+module Roster exposing (Jersey, Player, Position, Role(..), currentRoster, jerseyToString, maybeRoleToString, positionToRole, positionToString, roleToPosition, roleToString)
 
 
 type Role
@@ -10,7 +10,15 @@ type Role
     | Coach
 
 
-roleToPosition : Role -> Maybe Int
+type alias Position =
+    Maybe Int
+
+
+type alias Jersey =
+    Maybe Int
+
+
+roleToPosition : Role -> Position
 roleToPosition role =
     case role of
         PG ->
@@ -32,9 +40,9 @@ roleToPosition role =
             Nothing
 
 
-positionToRole : Maybe Int -> Role
-positionToRole role =
-    case role of
+positionToRole : Position -> Role
+positionToRole position =
+    case position of
         Just 1 ->
             PG
 
@@ -52,6 +60,58 @@ positionToRole role =
 
         _ ->
             Coach
+
+
+roleToString : Role -> String
+roleToString role =
+    case role of
+        PG ->
+            "PG"
+
+        SG ->
+            "SG"
+
+        SF ->
+            "SF"
+
+        PF ->
+            "PF"
+
+        C ->
+            "C"
+
+        Coach ->
+            "Coach"
+
+
+maybeRoleToString : Maybe Role -> String
+maybeRoleToString mrole =
+    case mrole of
+        Just role ->
+            roleToString role
+
+        Nothing ->
+            "N/A"
+
+
+positionToString : Position -> String
+positionToString position =
+    case position of
+        Just pos ->
+            String.fromInt pos
+
+        Nothing ->
+            "Coach"
+
+
+jerseyToString : Jersey -> String
+jerseyToString jersey =
+    case jersey of
+        Just jrsy ->
+            String.fromInt jrsy
+
+        Nothing ->
+            "N/A"
 
 
 type alias Player =

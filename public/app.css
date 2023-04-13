@@ -1,17 +1,28 @@
 
 body {
-
   font-family: Chivo Mono;
+  font-weight: bold;
   font-size: 13px;
 }
+
+table{ 
+  width: 80%;
+  margin: 0 auto
+}
+
 
 th, td {
   border-right: 2px solid black;
   padding: 5px;
   padding-right: 15px;
   text-align: left;
+  border-bottom: 1px solid black;
 }
 
+tr:nth-child(even) {
+  background-color: rgba(175,175,175, 0.2);
+}
+ 
 th:last-of-type, td:last-of-type {
   border-right: none;
 }

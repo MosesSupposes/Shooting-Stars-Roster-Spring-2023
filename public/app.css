@@ -1,17 +1,16 @@
 
-table {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-}
 
-td {
+th, td {
   border-right: 2px solid black;
+  padding: 5px;
+  padding-right: 15px;
+  text-align: left;
 }
 
-td:last-of-type {
-  border-right: none
+th:last-of-type, td:last-of-type {
+  border-right: none;
 }
+
 
 
 

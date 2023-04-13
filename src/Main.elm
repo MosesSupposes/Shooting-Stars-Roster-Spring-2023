@@ -22,21 +22,33 @@ init _ =
 
 view : Model -> Browser.Document Msg
 view model =
+    { title = "Shooting Starts Roster | Spring Basketball 2023"
+    , body =
+        [ table [] (renderTableRows model.roster)
+        ]
+    }
+
+
+renderTableRows : List Player -> List (Html Msg)
+renderTableRows roster =
     let
         headers =
             [ "Name", "Jersey", "Role", "Backup Role", "Phone #" ]
 
         viewHeader header =
             th [] [ text header ]
+
+        helper remainingRoster acc =
+            case remainingRoster of
+                [] ->
+                    List.map viewHeader headers
+                        :: acc
+                        |> List.concat
+
+                player :: restOfRoster ->
+                    helper restOfRoster ([ viewPlayer player ] :: acc)
     in
-    { title = "Shooting Starts Roster | Spring Basketball 2023"
-    , body =
-        [ table []
-            [ tr [] (List.map viewHeader headers)
-            , div [] (List.map viewPlayer model.roster)
-            ]
-        ]
-    }
+    helper roster []
 
 
 viewPlayer : Player -> Html Msg

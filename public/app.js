@@ -5247,12 +5247,20 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 		}
 	});
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$table = _VirtualDom_node('table');
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
+};
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$th = _VirtualDom_node('th');
-var $elm$html$Html$tr = _VirtualDom_node('tr');
 var $author$project$Roster$jerseyToString = function (jersey) {
 	if (jersey.$ === 'Just') {
 		var jrsy = jersey.a;
@@ -5286,6 +5294,7 @@ var $author$project$Roster$maybeRoleToString = function (mrole) {
 	}
 };
 var $elm$html$Html$td = _VirtualDom_node('td');
+var $elm$html$Html$tr = _VirtualDom_node('tr');
 var $author$project$Main$viewPlayer = function (player) {
 	return A2(
 		$elm$html$Html$tr,
@@ -5332,7 +5341,7 @@ var $author$project$Main$viewPlayer = function (player) {
 					]))
 			]));
 };
-var $author$project$Main$view = function (model) {
+var $author$project$Main$renderTableRows = function (roster) {
 	var viewHeader = function (header) {
 		return A2(
 			$elm$html$Html$th,
@@ -5344,23 +5353,44 @@ var $author$project$Main$view = function (model) {
 	};
 	var headers = _List_fromArray(
 		['Name', 'Jersey', 'Role', 'Backup Role', 'Phone #']);
+	var helper = F2(
+		function (remainingRoster, acc) {
+			helper:
+			while (true) {
+				if (!remainingRoster.b) {
+					return $elm$core$List$concat(
+						A2(
+							$elm$core$List$cons,
+							A2($elm$core$List$map, viewHeader, headers),
+							acc));
+				} else {
+					var player = remainingRoster.a;
+					var restOfRoster = remainingRoster.b;
+					var $temp$remainingRoster = restOfRoster,
+						$temp$acc = A2(
+						$elm$core$List$cons,
+						_List_fromArray(
+							[
+								$author$project$Main$viewPlayer(player)
+							]),
+						acc);
+					remainingRoster = $temp$remainingRoster;
+					acc = $temp$acc;
+					continue helper;
+				}
+			}
+		});
+	return A2(helper, roster, _List_Nil);
+};
+var $elm$html$Html$table = _VirtualDom_node('table');
+var $author$project$Main$view = function (model) {
 	return {
 		body: _List_fromArray(
 			[
 				A2(
 				$elm$html$Html$table,
 				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$tr,
-						_List_Nil,
-						A2($elm$core$List$map, viewHeader, headers)),
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						A2($elm$core$List$map, $author$project$Main$viewPlayer, model.roster))
-					]))
+				$author$project$Main$renderTableRows(model.roster))
 			]),
 		title: 'Shooting Starts Roster | Spring Basketball 2023'
 	};

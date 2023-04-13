@@ -1,17 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Main</title>
-  <style>body { padding: 0; margin: 0; }</style>
-</head>
-
-<body>
-
-<pre id="elm"></pre>
-
-<script>
-try {
 (function(scope){
 'use strict';
 
@@ -5261,22 +5247,7 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 		}
 	});
-var $elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
-		}
-	});
-var $elm$core$List$concat = function (lists) {
-	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
-};
-var $elm$core$List$concatMap = F2(
-	function (f, list) {
-		return $elm$core$List$concat(
-			A2($elm$core$List$map, f, list));
-	});
+var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$table = _VirtualDom_node('table');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
@@ -5316,47 +5287,50 @@ var $author$project$Roster$maybeRoleToString = function (mrole) {
 };
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $author$project$Main$viewPlayer = function (player) {
-	return _List_fromArray(
-		[
-			A2(
-			$elm$html$Html$td,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text(player.name)
-				])),
-			A2(
-			$elm$html$Html$td,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text(
-					$author$project$Roster$jerseyToString(player.jerseyNumber))
-				])),
-			A2(
-			$elm$html$Html$td,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text(
-					$author$project$Roster$roleToString(player.primaryRole))
-				])),
-			A2(
-			$elm$html$Html$td,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text(
-					$author$project$Roster$maybeRoleToString(player.backupRole))
-				])),
-			A2(
-			$elm$html$Html$td,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text(player.phoneNumber)
-				]))
-		]);
+	return A2(
+		$elm$html$Html$tr,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(player.name)
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Roster$jerseyToString(player.jerseyNumber))
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Roster$roleToString(player.primaryRole))
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Roster$maybeRoleToString(player.backupRole))
+					])),
+				A2(
+				$elm$html$Html$td,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(player.phoneNumber)
+					]))
+			]));
 };
 var $author$project$Main$view = function (model) {
 	var viewHeader = function (header) {
@@ -5383,9 +5357,9 @@ var $author$project$Main$view = function (model) {
 						_List_Nil,
 						A2($elm$core$List$map, viewHeader, headers)),
 						A2(
-						$elm$html$Html$tr,
+						$elm$html$Html$div,
 						_List_Nil,
-						A2($elm$core$List$concatMap, $author$project$Main$viewPlayer, model.roster))
+						A2($elm$core$List$map, $author$project$Main$viewPlayer, model.roster))
 					]))
 			]),
 		title: 'Shooting Starts Roster | Spring Basketball 2023'
@@ -5395,21 +5369,3 @@ var $author$project$Main$main = $elm$browser$Browser$document(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
-
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
-}
-catch (e)
-{
-  // display initialization errors (e.g. bad flags, infinite recursion)
-  var header = document.createElement("h1");
-  header.style.fontFamily = "monospace";
-  header.innerText = "Initialization Error";
-  var pre = document.getElementById("elm");
-  document.body.insertBefore(header, pre);
-  pre.innerText = e;
-  throw e;
-}
-</script>
-
-</body>
-</html>

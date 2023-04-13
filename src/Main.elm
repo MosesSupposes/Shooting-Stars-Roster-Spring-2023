@@ -33,21 +33,21 @@ view model =
     , body =
         [ table []
             [ tr [] (List.map viewHeader headers)
-            , tr [] (List.concatMap viewPlayer model.roster)
+            , div [] (List.map viewPlayer model.roster)
             ]
         ]
     }
 
 
-viewPlayer : Player -> List (Html Msg)
+viewPlayer : Player -> Html Msg
 viewPlayer player =
-    [ td [] [ text player.name ]
-    , td []
-        [ text (Roster.jerseyToString player.jerseyNumber) ]
-    , td [] [ text (player.primaryRole |> Roster.roleToString) ]
-    , td [] [ text (player.backupRole |> Roster.maybeRoleToString) ]
-    , td [] [ text player.phoneNumber ]
-    ]
+    tr []
+        [ td [] [ text player.name ]
+        , td [] [ text (Roster.jerseyToString player.jerseyNumber) ]
+        , td [] [ text (player.primaryRole |> Roster.roleToString) ]
+        , td [] [ text (player.backupRole |> Roster.maybeRoleToString) ]
+        , td [] [ text player.phoneNumber ]
+        ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

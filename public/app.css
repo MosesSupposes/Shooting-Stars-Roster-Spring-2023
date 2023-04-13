@@ -1,0 +1,17 @@
+
+table {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+td {
+  border-right: 2px solid black;
+}
+
+td:last-of-type {
+  border-right: none
+}
+
+
+

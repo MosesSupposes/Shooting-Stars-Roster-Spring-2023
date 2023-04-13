@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Html exposing (..)
+import Html.Attributes exposing (..)
 import Roster exposing (Player, currentRoster)
 
 
@@ -24,7 +25,11 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Shooting Starts Roster | Spring Basketball 2023"
     , body =
-        [ table [] (renderTableRows model.roster)
+        [ main_ [ id "app-container" ]
+            [ appTitle
+            , div [ class "crud-controls" ] [ addPlayerBtn, deletePlayerBtn ]
+            , table [] (renderTableRows model.roster)
+            ]
         ]
     }
 
@@ -60,6 +65,21 @@ viewPlayer player =
         , td [] [ text (player.backupRole |> Roster.maybeRoleToString) ]
         , td [] [ text player.phoneNumber ]
         ]
+
+
+appTitle : Html Msg
+appTitle =
+    h1 [ class "title" ] [ text "Shooting Stars Roster | Spring 2🏀23" ]
+
+
+addPlayerBtn : Html Msg
+addPlayerBtn =
+    button [ class "add-player-btn" ] [ text "+" ]
+
+
+deletePlayerBtn : Html Msg
+deletePlayerBtn =
+    button [ class "delete-player-btn" ] [ text "-" ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

@@ -15,7 +15,6 @@ th, td {
   border-right: 2px solid black;
   padding: 5px;
   padding-right: 15px;
-  text-align: left;
   border-bottom: 1px solid black;
 }
 
@@ -27,6 +26,42 @@ th:last-of-type, td:last-of-type {
   border-right: none;
 }
 
+.title {
+  margin-left: 10%;
+}
 
+.add-player-btn {
+  border-radius: 100%;
+  background-color: #34d31a;
+}
 
+.delete-player-btn {
+  border-radius: 100%;
+  background-color: #e51313;
+}
 
+.crud-controls {
+  display: flex;
+  justify-content:flex-end;
+  margin-right: 10%;
+}
+
+.crud-controls button {
+  font-size: 16px;
+  padding: 10px;
+  border: 0.3px solid black;
+}
+
+.crud-controls button:nth-child(1) {
+  margin-right: 12px;
+}
+
+#app-container {
+  margin: 0 auto;
+  width: 3000px;
+  height: 3000px;
+  max-width: 80%;
+  max-height: 100%;
+  padding: 15px;
+  background-color: #c1dff0;
+}

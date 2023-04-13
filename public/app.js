@@ -5247,6 +5247,52 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 		}
 	});
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$addPlayerBtn = A2(
+	$elm$html$Html$button,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('add-player-btn')
+		]),
+	_List_fromArray(
+		[
+			$elm$html$Html$text('+')
+		]));
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $author$project$Main$appTitle = A2(
+	$elm$html$Html$h1,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('title')
+		]),
+	_List_fromArray(
+		[
+			$elm$html$Html$text('Shooting Stars Roster | Spring 2🏀23')
+		]));
+var $author$project$Main$deletePlayerBtn = A2(
+	$elm$html$Html$button,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('delete-player-btn')
+		]),
+	_List_fromArray(
+		[
+			$elm$html$Html$text('-')
+		]));
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $elm$html$Html$main_ = _VirtualDom_node('main');
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -5258,8 +5304,6 @@ var $elm$core$List$append = F2(
 var $elm$core$List$concat = function (lists) {
 	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
 };
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$th = _VirtualDom_node('th');
 var $author$project$Roster$jerseyToString = function (jersey) {
 	if (jersey.$ === 'Just') {
@@ -5388,9 +5432,27 @@ var $author$project$Main$view = function (model) {
 		body: _List_fromArray(
 			[
 				A2(
-				$elm$html$Html$table,
-				_List_Nil,
-				$author$project$Main$renderTableRows(model.roster))
+				$elm$html$Html$main_,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$id('app-container')
+					]),
+				_List_fromArray(
+					[
+						$author$project$Main$appTitle,
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('crud-controls')
+							]),
+						_List_fromArray(
+							[$author$project$Main$addPlayerBtn, $author$project$Main$deletePlayerBtn])),
+						A2(
+						$elm$html$Html$table,
+						_List_Nil,
+						$author$project$Main$renderTableRows(model.roster))
+					]))
 			]),
 		title: 'Shooting Starts Roster | Spring Basketball 2023'
 	};

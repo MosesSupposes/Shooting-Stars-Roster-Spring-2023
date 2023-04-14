@@ -7,4 +7,4 @@ if (proces.ENV == "prod") {
   config = require('../knexfile').development;
 }
 
-export default knex(config);
+module.exports = knex(config);

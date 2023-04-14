@@ -1,2 +1,2 @@
-const db = require('../knex-config')
+const db = require('../dbConfig')
 

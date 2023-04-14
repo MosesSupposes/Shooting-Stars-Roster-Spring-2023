@@ -1,9 +1,13 @@
 const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
 const db = require('./persistence/dbConfig');
 
 const server = express();
 
 server.use(express.json());
+server.use(helmet);
+server.use(cors);
 
 server.get('/api/roster', function(req, res, next) {
 

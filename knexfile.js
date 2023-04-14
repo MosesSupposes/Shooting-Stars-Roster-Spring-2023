@@ -1,28 +1,13 @@
 module.exports = {
-  development: {
-    client: 'sqlite3',
-    connection: {
-      filename: "./persistence/roster.sqlite"
-    },
-    migrations: {
-      tableName: "./persistence/migrations/dev"
-    },
-    seeds: {
-      directory: "./persistence/seeds/dev"
-    }
-
+  client: 'sqlite3',
+  useDefaultAsNull: true,
+  connection: {
+    filename: "./persistence/roster.db3"
   },
-  prod: {
-    client: 'sqlite3',
-    connection: {
-      filename: "./persistence/roster.prod.sqlite"
-    },
-    migrations: {
-      tableName: "./persistence/migrations/prod"
-    },
-    seeds: {
-      directory: "./persistence/seeds/prod"
-    }
-
+  migrations: {
+    tableName: "./persistence/migrations"
+  },
+  seeds: {
+    directory: "./persistence/seeds"
   }
 }

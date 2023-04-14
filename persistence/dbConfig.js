@@ -1,10 +1,4 @@
 const knex = require('knex');
+const knexConfig = require('../knexfile');
 
-let config;
-if (proces.ENV == "prod") {
-  config = require('../knexfile').prod;
-} else {
-  config = require('../knexfile').development;
-}
-
-module.exports = knex(config);
+module.exports = knex(knexConfig);

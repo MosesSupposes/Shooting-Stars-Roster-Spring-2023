@@ -120,7 +120,7 @@ type alias Player =
 
 currentRoster : List Player
 currentRoster =
-    [ { name = "Coach Wavy", jerseyNumber = Nothing, phoneNumber = "(651) 353-7163", primaryRole = Coach, backupRole = Nothing }
+    [
     , { name = "Michael", jerseyNumber = Just 6, phoneNumber = "(612) 986-5405", primaryRole = SF, backupRole = Just SG }
     , { name = "Moses", jerseyNumber = Just 8, phoneNumber = "(929) 389-7608", primaryRole = SF, backupRole = Just PF }
     ]

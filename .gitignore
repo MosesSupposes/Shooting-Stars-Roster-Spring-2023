@@ -1,2 +1,2 @@
-/elm-stuff/*
-/node_modules/*
+/frontend/elm-stuff/*
+/backend/node_modules/*

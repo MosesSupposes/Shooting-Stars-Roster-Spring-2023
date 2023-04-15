@@ -9,16 +9,8 @@ const model = {
     return db('roster').where({ id });
   },
 
-  findByJersey(jerseyNumber) {
-    return db('roster').where({ jersey: jerseyNumber });
-  },
-
-  findByName(name) {
-    return db('roster').where({ name });
-  },
-
-  async addNewTeammate(teammateInfo) {
-    const [id] = await db('roster').insert(teammateInfo, 'id');
+  async addNewTeammate(teammate) {
+    const [id] = await db('roster').insert(teammate, 'id');
     return db('roster').where({ id });
   },
 

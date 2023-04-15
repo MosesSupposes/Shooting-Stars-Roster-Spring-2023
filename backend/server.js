@@ -13,19 +13,23 @@ server.get('/api/roster', function(req, res, next) {
 
 });
 
-server.post('/api/roster/:name', function(req, res, next) {
+server.get('/api/roster/:id', function(req, res, next) {
+
+});
+
+server.post('/api/roster', function(req, res, next) {
   const { name } = request.params;
 
   return res.status(201).send();
 });
 
-server.put('/api/roster/:name', function(req, res, next) {
+server.put('/api/roster/:id', function(req, res, next) {
   const { name } = request.params;
 
   return res.status(200).send();
 });
 
-server.delete('/api/roster/:name', function(req, res, next) {
+server.delete('/api/roster/:id', function(req, res, next) {
   const { name } = request.params;
 
   return res.status(200).send();

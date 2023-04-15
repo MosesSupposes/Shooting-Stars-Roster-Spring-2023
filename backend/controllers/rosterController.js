@@ -3,8 +3,8 @@ const RosterModel = require('../models/roster');
 const Controller = {
   getFullRoster(req, res) {
     RosterModel.getFullRoster()
-      .then(teammates => res.status(200).json(teammates)
-      ).catch(err => res.status(404).json(
+      .then(teammates => res.status(200).json(teammates))
+      .catch(err => res.status(404).json(
         { error: { message: 'The roster is currently empty. Add some teammates.' } }
       ));
   },

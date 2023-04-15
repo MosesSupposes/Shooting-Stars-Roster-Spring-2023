@@ -1,14 +1,14 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
-const db = require('./persistence/dbConfig');
+const db = require('./data/dbConfig');
 const RosterController = require('./controllers/rosterController');
 
 const server = express();
 
 server.use(express.json());
-server.use(helmet);
-server.use(cors);
+server.use(helmet());
+server.use(cors());
 
 server.get('/api/roster', RosterController.getFullRoster);
 
@@ -31,7 +31,7 @@ server.use(function errorHandler(error, req, res, next) {
   error.message = error.message || 'Internal server error.';
 
   return res
-    .status(err.status)
+    .status(error.status)
     .json({ error: { message: error.message } });
 })
 

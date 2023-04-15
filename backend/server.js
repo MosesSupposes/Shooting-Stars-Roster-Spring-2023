@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const db = require('./persistence/dbConfig');
+const RosterController = require('./controllers/rosterController');
 
 const server = express();
 
@@ -9,31 +10,15 @@ server.use(express.json());
 server.use(helmet);
 server.use(cors);
 
-server.get('/api/roster', function(req, res, next) {
+server.get('/api/roster', RosterController.getFullRoster);
 
-});
+server.get('/api/roster/:id', RosterController.getTeammateInfo);
 
-server.get('/api/roster/:id', function(req, res, next) {
+server.post('/api/roster', RosterController.addNewTeammate);
 
-});
+server.put('/api/roster/:id', RosterController.updateTeammateInfo);
 
-server.post('/api/roster', function(req, res, next) {
-  const { name } = request.params;
-
-  return res.status(201).send();
-});
-
-server.put('/api/roster/:id', function(req, res, next) {
-  const { name } = request.params;
-
-  return res.status(200).send();
-});
-
-server.delete('/api/roster/:id', function(req, res, next) {
-  const { name } = request.params;
-
-  return res.status(200).send();
-});
+server.delete('/api/roster/:id', RosterController.removeTeammate);
 
 server.use(function notFound(req, res, next) {
   const error = new Error('Resource not found.');

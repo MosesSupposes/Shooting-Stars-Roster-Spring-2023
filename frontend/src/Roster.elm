@@ -1,4 +1,4 @@
-module Roster exposing (Jersey, Player, Position, Role(..), jerseyToString, maybeRoleToString, positionToRole, positionToString, roleToPosition, roleToString)
+module Roster exposing (Jersey, Player, Position, Role(..), jerseyToString, maybeRoleToString, playerDecoder, positionToRole, positionToString, roleToPosition, roleToString)
 
 import Json.Decode as Decode
 

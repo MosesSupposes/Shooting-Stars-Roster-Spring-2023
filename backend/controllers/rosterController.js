@@ -20,9 +20,10 @@ const controller = {
   addNewTeammate(req, res) {
     return RosterModel.addNewTeammate(req.body)
       .then(newlyAddedTeammate => res.status(201).json(newlyAddedTeammate))
-      .catch(err => res.status(400).json(
-        { error: { message: 'The provided request was invalid. Ensure the JSON body reflects the schema and try again.' } }
-      ));
+      .catch(err => {
+        console.log('hapo', err);
+        return res.status(400).json({ error: { message: 'The provided request was invalid. Ensure the JSON body reflects the schema and try again.' } })
+      });
   },
 
   updateTeammateInfo(req, res) {
@@ -37,7 +38,7 @@ const controller = {
     return RosterModel.removeTeammate(req.params.id)
       .then(() => res.status(200).json({ message: "Successfully removed the member from the roster." }))
       .catch(err => res.status(400).json(
-        { error: { message: `Unable to remove the member from the roster. The identifier ${req.param.id} is invalid` } }
+        { error: { message: `Unable to remove the member from the roster. The identifier ${req.params.id} is invalid` } }
       ));
   }
 

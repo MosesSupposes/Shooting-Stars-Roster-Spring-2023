@@ -20,7 +20,7 @@ const model = {
   },
 
   removeTeammate(id) {
-    return db('resource').where({ id }).delete()
+    return db('roster').where({ id }).delete()
   }
 
 }

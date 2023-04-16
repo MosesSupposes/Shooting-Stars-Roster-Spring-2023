@@ -1,4 +1,6 @@
-module Roster exposing (Jersey, Player, Position, Role(..), currentRoster, jerseyToString, maybeRoleToString, positionToRole, positionToString, roleToPosition, roleToString)
+module Roster exposing (Jersey, Player, Position, Role(..), jerseyToString, maybeRoleToString, positionToRole, positionToString, roleToPosition, roleToString)
+
+import Json.Decode as Decode
 
 
 type Role
@@ -115,12 +117,43 @@ jerseyToString jersey =
 
 
 type alias Player =
-    { name : String, jerseyNumber : Maybe Int, phoneNumber : String, primaryRole : Role, backupRole : Maybe Role }
+    { name : String, jerseyNumber : Maybe String, phoneNumber : String, primaryRole : Role, backupRole : Maybe Role }
 
 
-currentRoster : List Player
-currentRoster =
-    [
-    , { name = "Michael", jerseyNumber = Just 6, phoneNumber = "(612) 986-5405", primaryRole = SF, backupRole = Just SG }
-    , { name = "Moses", jerseyNumber = Just 8, phoneNumber = "(929) 389-7608", primaryRole = SF, backupRole = Just PF }
-    ]
+roleDecoder : Decode.Decoder Role
+roleDecoder =
+    Decode.field "primaryRole" Decode.string
+        |> Decode.map
+            (\str ->
+                case str of
+                    "PG" ->
+                        PG
+
+                    "SG" ->
+                        SG
+
+                    "SF" ->
+                        SF
+
+                    "PF" ->
+                        PF
+
+                    "C" ->
+                        C
+
+                    "Coach" ->
+                        Coach
+
+                    _ ->
+                        Coach
+            )
+
+
+playerDecoder : Decode.Decoder Player
+playerDecoder =
+    Decode.map5 Player
+        (Decode.field "name" Decode.string)
+        (Decode.field "jerseyNumber" (Decode.maybe Decode.string))
+        (Decode.field "phoneNumber" Decode.string)
+        (Decode.field "primaryRole" roleDecoder)
+        (Decode.field "backupRole" (Decode.maybe roleDecoder))

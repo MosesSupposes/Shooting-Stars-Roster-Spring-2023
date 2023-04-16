@@ -1,8 +1,8 @@
-const db = require('../data/dbConfig')
+const db = require('../data/dbConfig');
 
 const model = {
   getFullRoster() {
-    return db('roster');
+    return db.select('*').from('roster')
   },
 
   findById(id) {

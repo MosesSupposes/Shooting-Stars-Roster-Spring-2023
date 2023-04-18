@@ -6324,6 +6324,26 @@ var $elm$core$List$concat = function (lists) {
 	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
 };
 var $elm$html$Html$th = _VirtualDom_node('th');
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$String$right = F2(
+	function (n, string) {
+		return (n < 1) ? '' : A3(
+			$elm$core$String$slice,
+			-n,
+			$elm$core$String$length(string),
+			string);
+	});
+var $author$project$Main$formatPhoneNumber = function (pnumber) {
+	var middleThree = A2(
+		$elm$core$Basics$composeR,
+		$elm$core$String$left(6),
+		$elm$core$String$right(3));
+	var lastFour = $elm$core$String$right(4);
+	var firstThree = $elm$core$String$left(3);
+	return '(' + (firstThree(pnumber) + (') ' + (middleThree(pnumber) + ('-' + lastFour(pnumber)))));
+};
 var $author$project$Roster$jerseyToString = function (jersey) {
 	if (jersey.$ === 'Just') {
 		var jrsy = jersey.a;
@@ -6400,7 +6420,8 @@ var $author$project$Main$viewPlayer = function (player) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(player.phoneNumber)
+						$elm$html$Html$text(
+						$author$project$Main$formatPhoneNumber(player.phoneNumber))
 					]))
 			]));
 };

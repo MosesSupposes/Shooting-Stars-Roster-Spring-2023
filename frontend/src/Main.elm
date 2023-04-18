@@ -111,7 +111,7 @@ viewPlayer player =
         , td [] [ text (jerseyToString player.jerseyNumber) ]
         , td [] [ text (player.primaryRole |> Roster.roleToString) ]
         , td [] [ text (player.backupRole |> Roster.maybeRoleToString) ]
-        , td [] [ text player.phoneNumber ]
+        , td [] [ text (formatPhoneNumber player.phoneNumber) ]
         ]
 
 
@@ -128,6 +128,21 @@ addPlayerBtn =
 deletePlayerBtn : Html Msg
 deletePlayerBtn =
     button [ class "delete-player-btn" ] [ text "-" ]
+
+
+formatPhoneNumber : String -> String
+formatPhoneNumber pnumber =
+    let
+        firstThree =
+            String.left 3
+
+        middleThree =
+            String.left 6 >> String.right 3
+
+        lastFour =
+            String.right 4
+    in
+    "(" ++ firstThree pnumber ++ ") " ++ middleThree pnumber ++ "-" ++ lastFour pnumber
 
 
 subscriptions : Model -> Sub msg

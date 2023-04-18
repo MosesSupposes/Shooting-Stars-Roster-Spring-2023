@@ -8,7 +8,7 @@ import Roster exposing (Player, jerseyToString, rosterDecoder)
 
 
 type alias Model =
-    { roster : List Player, error : String }
+    { roster : List Player }
 
 
 
@@ -30,22 +30,8 @@ update msg model =
                 Ok fullRoster ->
                     ( { model | roster = fullRoster }, Cmd.none )
 
-                Err httpError ->
-                    case httpError of
-                        Http.BadBody badBodyMsg ->
-                            ( { model | error = badBodyMsg }, Cmd.none )
-
-                        Http.BadUrl url ->
-                            ( { model | error = "Bad url (" ++ url ++ ")" }, Cmd.none )
-
-                        Http.Timeout ->
-                            ( { model | error = "There was a timeout." }, Cmd.none )
-
-                        Http.BadStatus status ->
-                            ( { model | error = "The request failed with a status code of " ++ String.fromInt status }, Cmd.none )
-
-                        Http.NetworkError ->
-                            ( { model | error = "There was a network error" }, Cmd.none )
+                Err _ ->
+                    ( model, Cmd.none )
 
         AddPlayerToRoster player ->
             ( { model | roster = player :: model.roster }, Cmd.none )
@@ -80,7 +66,7 @@ apiUrlProd =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { roster = [], error = "" }, Http.get { url = apiUrlDev, expect = Http.expectJson ViewRoster rosterDecoder } )
+    ( { roster = [] }, Http.get { url = apiUrlDev, expect = Http.expectJson ViewRoster rosterDecoder } )
 
 
 view : Model -> Browser.Document Msg
@@ -89,7 +75,6 @@ view model =
     , body =
         [ main_ [ id "app-container" ]
             [ appTitle
-            , div [ class "error" ] [ text model.error ]
             , div [ class "crud-controls" ] [ addPlayerBtn, deletePlayerBtn ]
             , table [] (renderTableRows model.roster)
             ]

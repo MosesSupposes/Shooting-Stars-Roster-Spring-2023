@@ -6186,7 +6186,7 @@ var $author$project$Roster$playerDecoder = A6(
 var $author$project$Roster$rosterDecoder = $elm$json$Json$Decode$list($author$project$Roster$playerDecoder);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{error: '', roster: _List_Nil},
+		{roster: _List_Nil},
 		$elm$http$Http$get(
 			{
 				expect: A2($elm$http$Http$expectJson, $author$project$Main$ViewRoster, $author$project$Roster$rosterDecoder),
@@ -6225,44 +6225,7 @@ var $author$project$Main$update = F2(
 							{roster: fullRoster}),
 						$elm$core$Platform$Cmd$none);
 				} else {
-					var httpError = response.a;
-					switch (httpError.$) {
-						case 'BadBody':
-							var badBodyMsg = httpError.a;
-							return _Utils_Tuple2(
-								_Utils_update(
-									model,
-									{error: badBodyMsg}),
-								$elm$core$Platform$Cmd$none);
-						case 'BadUrl':
-							var url = httpError.a;
-							return _Utils_Tuple2(
-								_Utils_update(
-									model,
-									{error: 'Bad url (' + (url + ')')}),
-								$elm$core$Platform$Cmd$none);
-						case 'Timeout':
-							return _Utils_Tuple2(
-								_Utils_update(
-									model,
-									{error: 'There was a timeout.'}),
-								$elm$core$Platform$Cmd$none);
-						case 'BadStatus':
-							var status = httpError.a;
-							return _Utils_Tuple2(
-								_Utils_update(
-									model,
-									{
-										error: 'The request failed with a status code of ' + $elm$core$String$fromInt(status)
-									}),
-								$elm$core$Platform$Cmd$none);
-						default:
-							return _Utils_Tuple2(
-								_Utils_update(
-									model,
-									{error: 'There was a network error'}),
-								$elm$core$Platform$Cmd$none);
-					}
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			case 'AddPlayerToRoster':
 				var player = msg.a;
@@ -6496,16 +6459,6 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$author$project$Main$appTitle,
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('error')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(model.error)
-							])),
 						A2(
 						$elm$html$Html$div,
 						_List_fromArray(

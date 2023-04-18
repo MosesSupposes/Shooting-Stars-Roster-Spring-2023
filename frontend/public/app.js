@@ -6168,7 +6168,7 @@ var $author$project$Roster$roleDecoder = A2(
 				return $author$project$Roster$Coach;
 		}
 	},
-	A2($elm$json$Json$Decode$field, 'primaryRole', $elm$json$Json$Decode$string));
+	$elm$json$Json$Decode$string);
 var $author$project$Roster$playerDecoder = A6(
 	$elm$json$Json$Decode$map5,
 	$author$project$Roster$Player,

@@ -122,7 +122,7 @@ type alias Player =
 
 roleDecoder : Decode.Decoder Role
 roleDecoder =
-    Decode.field "primaryRole" Decode.string
+    Decode.string
         |> Decode.map
             (\str ->
                 case str of

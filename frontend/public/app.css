@@ -40,10 +40,16 @@ th:last-of-type, td:last-of-type {
   background-color: #e51313;
 }
 
+.error {
+  color: red;
+  border: 1px solid black;
+}
+
 .crud-controls {
   display: flex;
   justify-content:flex-end;
   margin-right: 10%;
+  border: 0px solid black;
 }
 
 .crud-controls button {
@@ -54,6 +60,7 @@ th:last-of-type, td:last-of-type {
 .crud-controls button:nth-child(1) {
   margin-right: 12px;
 }
+
 
 #app-container {
   margin: 0 auto;

@@ -1,4 +1,4 @@
-module Roster exposing (Jersey, Player, Position, Role(..), jerseyToString, maybeRoleToString, playerDecoder, positionToRole, positionToString, roleToPosition, roleToString)
+module Roster exposing (Jersey, Player, Position, Role(..), jerseyToString, maybeRoleToString, positionToRole, positionToString, roleToPosition, roleToString, rosterDecoder)
 
 import Json.Decode as Decode
 
@@ -17,7 +17,7 @@ type alias Position =
 
 
 type alias Jersey =
-    Maybe Int
+    Maybe String
 
 
 roleToPosition : Role -> Position
@@ -110,7 +110,7 @@ jerseyToString : Jersey -> String
 jerseyToString jersey =
     case jersey of
         Just jrsy ->
-            String.fromInt jrsy
+            jrsy
 
         Nothing ->
             "N/A"
@@ -157,3 +157,8 @@ playerDecoder =
         (Decode.field "phoneNumber" Decode.string)
         (Decode.field "primaryRole" roleDecoder)
         (Decode.field "backupRole" (Decode.maybe roleDecoder))
+
+
+rosterDecoder : Decode.Decoder (List Player)
+rosterDecoder =
+    Decode.list playerDecoder

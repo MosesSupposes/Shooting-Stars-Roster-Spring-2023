@@ -199,6 +199,7 @@ view model =
             AddingNewTeammate _ newTeammateInfo ->
                 [ main_ [ id "app-container" ]
                     [ appTitle
+                    , backToHome model
                     , addTeammateForm newTeammateInfo
                     ]
                 ]
@@ -251,6 +252,20 @@ addPlayerBtn =
 deletePlayerBtn : Html Msg
 deletePlayerBtn =
     button [ class "delete-player-btn" ] [ text "-" ]
+
+
+backToHome : Model -> Html Msg
+backToHome model =
+    case model of
+        AddingNewTeammate existingRoster _ ->
+            button
+                [ class "back-to-home-btn"
+                , onClick (ViewRoster (Ok existingRoster))
+                ]
+                [ text "⬅️  Return to roster" ]
+
+        _ ->
+            div [] []
 
 
 

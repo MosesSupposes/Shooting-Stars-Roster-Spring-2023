@@ -6901,6 +6901,27 @@ var $author$project$Main$appTitle = A2(
 		[
 			$elm$html$Html$text('Shooting Stars Roster | Spring 2🏀23')
 		]));
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $author$project$Main$backToHome = function (model) {
+	if (model.$ === 'AddingNewTeammate') {
+		var existingRoster = model.a;
+		return A2(
+			$elm$html$Html$button,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('back-to-home-btn'),
+					$elm$html$Html$Events$onClick(
+					$author$project$Main$ViewRoster(
+						$elm$core$Result$Ok(existingRoster)))
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('⬅️  Return to roster')
+				]));
+	} else {
+		return A2($elm$html$Html$div, _List_Nil, _List_Nil);
+	}
+};
 var $author$project$Main$deletePlayerBtn = A2(
 	$elm$html$Html$button,
 	_List_fromArray(
@@ -6911,7 +6932,6 @@ var $author$project$Main$deletePlayerBtn = A2(
 		[
 			$elm$html$Html$text('-')
 		]));
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
 var $elm$core$List$append = F2(
@@ -7080,6 +7100,7 @@ var $author$project$Main$view = function (model) {
 						_List_fromArray(
 							[
 								$author$project$Main$appTitle,
+								$author$project$Main$backToHome(model),
 								$author$project$Main$addTeammateForm(newTeammateInfo)
 							]))
 					]);

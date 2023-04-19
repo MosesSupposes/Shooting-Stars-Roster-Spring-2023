@@ -61,12 +61,18 @@ th:last-of-type, td:last-of-type {
   width: 45px;
 }
 
-
 .join-team-btn {
+  width: 175px;
+  background-color: slateblue;
+  color: white;
+  margin-top: 6px;
+}
+
+.back-to-home-btn {
   width: 175px;
   background-color: navy;
   color: white;
-  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 

@@ -304,7 +304,7 @@ addTeammateForm newTeammate =
                         ]
                         []
                     ]
-                , button [] [ text "Join 💫" ]
+                , button [ class "join-team-btn" ] [ text "Join 💫" ]
                 ]
     in
     case newTeammate of

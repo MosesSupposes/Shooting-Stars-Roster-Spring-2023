@@ -6866,7 +6866,10 @@ var $author$project$Main$addTeammateForm = function (newTeammate) {
 						])),
 					A2(
 					$elm$html$Html$button,
-					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('join-team-btn')
+						]),
 					_List_fromArray(
 						[
 							$elm$html$Html$text('Join 💫')

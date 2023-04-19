@@ -48,7 +48,27 @@ th:last-of-type, td:last-of-type {
 .add-new-player-form {
   display: flex;
   flex-flow: nowrap column;
+  align-items: center;
 }
+
+.add-new-player-form input {
+  margin: 2px 5px;
+  width: 125px;
+}
+
+.add-new-player-form select {
+  margin: 2px 5px;
+  width: 45px;
+}
+
+
+.join-team-btn {
+  width: 175px;
+  background-color: navy;
+  color: white;
+  margin-top: 6px;
+}
+
 
 .crud-controls {
   display: flex;

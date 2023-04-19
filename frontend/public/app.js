@@ -5337,7 +5337,10 @@ var $elm$browser$Browser$document = _Browser_document;
 var $author$project$Main$ViewRoster = function (a) {
 	return {$: 'ViewRoster', a: a};
 };
-var $author$project$Main$apiUrlDev = 'http://localhost:4000/api/roster';
+var $author$project$Main$ViewingRoster = function (a) {
+	return {$: 'ViewingRoster', a: a};
+};
+var $author$project$Main$baseUrlDev = 'http://localhost:4000/api/roster';
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
@@ -6186,11 +6189,11 @@ var $author$project$Roster$playerDecoder = A6(
 var $author$project$Roster$rosterDecoder = $elm$json$Json$Decode$list($author$project$Roster$playerDecoder);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{roster: _List_Nil},
+		$author$project$Main$ViewingRoster(_List_Nil),
 		$elm$http$Http$get(
 			{
 				expect: A2($elm$http$Http$expectJson, $author$project$Main$ViewRoster, $author$project$Roster$rosterDecoder),
-				url: $author$project$Main$apiUrlDev
+				url: $author$project$Main$baseUrlDev
 			}));
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6198,6 +6201,13 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
+var $author$project$Main$AddedPlayerToRoster = function (a) {
+	return {$: 'AddedPlayerToRoster', a: a};
+};
+var $author$project$Main$AddingNewTeammate = F2(
+	function (a, b) {
+		return {$: 'AddingNewTeammate', a: a, b: b};
+	});
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -6209,9 +6219,123 @@ var $elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
+var $elm$http$Http$jsonBody = function (value) {
+	return A2(
+		_Http_pair,
+		'application/json',
+		A2($elm$json$Json$Encode$encode, 0, value));
+};
+var $author$project$Roster$maybeRoleToRole = function (role) {
+	if (role.$ === 'Just') {
+		var r = role.a;
+		return r;
+	} else {
+		return $author$project$Roster$Coach;
+	}
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Basics$not = _Basics_not;
+var $author$project$Roster$jerseyToString = function (jersey) {
+	if (jersey.$ === 'Just') {
+		var jrsy = jersey.a;
+		return jrsy;
+	} else {
+		return 'N/A';
+	}
+};
+var $author$project$Roster$roleToString = function (role) {
+	switch (role.$) {
+		case 'PG':
+			return 'PG';
+		case 'SG':
+			return 'SG';
+		case 'SF':
+			return 'SF';
+		case 'PF':
+			return 'PF';
+		case 'C':
+			return 'C';
+		default:
+			return 'Coach';
+	}
+};
+var $author$project$Roster$maybeRoleToString = function (mrole) {
+	if (mrole.$ === 'Just') {
+		var role = mrole.a;
+		return $author$project$Roster$roleToString(role);
+	} else {
+		return 'N/A';
+	}
+};
+var $elm$json$Json$Encode$null = _Json_encodeNull;
+var $elm$json$Json$Encode$object = function (pairs) {
+	return _Json_wrap(
+		A3(
+			$elm$core$List$foldl,
+			F2(
+				function (_v0, obj) {
+					var k = _v0.a;
+					var v = _v0.b;
+					return A3(_Json_addField, k, v, obj);
+				}),
+			_Json_emptyObject(_Utils_Tuple0),
+			pairs));
+};
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $author$project$Roster$playerEncoder = function (player) {
+	if (player.$ === 'Just') {
+		var p = player.a;
+		return $elm$json$Json$Encode$object(
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					'name',
+					$elm$json$Json$Encode$string(p.name)),
+					_Utils_Tuple2(
+					'jerseyNumber',
+					$elm$json$Json$Encode$string(
+						$author$project$Roster$jerseyToString(p.jerseyNumber))),
+					_Utils_Tuple2(
+					'primaryRole',
+					$elm$json$Json$Encode$string(
+						$author$project$Roster$roleToString(p.primaryRole))),
+					_Utils_Tuple2(
+					'backupRole',
+					$elm$json$Json$Encode$string(
+						$author$project$Roster$maybeRoleToString(p.backupRole))),
+					_Utils_Tuple2(
+					'phoneNumber',
+					$elm$json$Json$Encode$string(p.phoneNumber))
+				]));
+	} else {
+		return $elm$json$Json$Encode$null;
+	}
+};
+var $elm$http$Http$post = function (r) {
+	return $elm$http$Http$request(
+		{body: r.body, expect: r.expect, headers: _List_Nil, method: 'POST', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
+};
+var $elm$core$String$toUpper = _String_toUpper;
+var $author$project$Roster$stringToMaybeRole = function (role) {
+	var _v0 = $elm$core$String$toUpper(role);
+	switch (_v0) {
+		case 'PG':
+			return $elm$core$Maybe$Just($author$project$Roster$PG);
+		case 'SG':
+			return $elm$core$Maybe$Just($author$project$Roster$SG);
+		case 'SF':
+			return $elm$core$Maybe$Just($author$project$Roster$SF);
+		case 'PF':
+			return $elm$core$Maybe$Just($author$project$Roster$PF);
+		case 'C':
+			return $elm$core$Maybe$Just($author$project$Roster$C);
+		case 'COACH':
+			return $elm$core$Maybe$Just($author$project$Roster$Coach);
+		default:
+			return $elm$core$Maybe$Nothing;
+	}
+};
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -6220,54 +6344,268 @@ var $author$project$Main$update = F2(
 				if (response.$ === 'Ok') {
 					var fullRoster = response.a;
 					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{roster: fullRoster}),
+						$author$project$Main$ViewingRoster(fullRoster),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 'AddPlayerToRoster':
-				var player = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							roster: A2($elm$core$List$cons, player, model.roster)
-						}),
-					$elm$core$Platform$Cmd$none);
+			case 'ViewNewTeammateForm':
+				if (model.$ === 'ViewingRoster') {
+					var currentRoster = model.a;
+					return _Utils_Tuple2(
+						A2($author$project$Main$AddingNewTeammate, currentRoster, $elm$core$Maybe$Nothing),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 			case 'RemovePlayerFromRoster':
 				var player = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							roster: A2(
+				if (model.$ === 'ViewingRoster') {
+					var currentRoster = model.a;
+					return _Utils_Tuple2(
+						$author$project$Main$ViewingRoster(
+							A2(
 								$elm$core$List$filter,
 								function (p) {
 									return !_Utils_eq(p, player);
 								},
-								model.roster)
-						}),
-					$elm$core$Platform$Cmd$none);
-			default:
+								currentRoster)),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			case 'EditPlayerInfo':
 				var player = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							roster: A2(
+				if (model.$ === 'ViewingRoster') {
+					var currentRoster = model.a;
+					return _Utils_Tuple2(
+						$author$project$Main$ViewingRoster(
+							A2(
 								$elm$core$List$map,
 								function (p) {
 									return _Utils_eq(p, player) ? player : p;
 								},
-								model.roster)
-						}),
-					$elm$core$Platform$Cmd$none);
+								currentRoster)),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			case 'AttemptToAddPlayerToRoster':
+				var player = msg.a;
+				if (model.$ === 'ViewingRoster') {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				} else {
+					var existingRoster = model.a;
+					var newTeammate = model.b;
+					return _Utils_Tuple2(
+						model,
+						$elm$http$Http$post(
+							{
+								body: $elm$http$Http$jsonBody(
+									$author$project$Roster$playerEncoder(newTeammate)),
+								expect: A2($elm$http$Http$expectJson, $author$project$Main$AddedPlayerToRoster, $author$project$Roster$playerDecoder),
+								url: $author$project$Main$baseUrlDev
+							}));
+				}
+			case 'AddNewPlayerInfo':
+				var maybeNewPlayerInfo = msg.a;
+				var defaultPlayer = {
+					backupRole: $elm$core$Maybe$Nothing,
+					jerseyNumber: $elm$core$Maybe$Just(''),
+					name: '',
+					phoneNumber: '',
+					primaryRole: $author$project$Roster$PG
+				};
+				var _v6 = _Utils_Tuple2(model, maybeNewPlayerInfo);
+				if (_v6.a.$ === 'AddingNewTeammate') {
+					if (_v6.a.b.$ === 'Just') {
+						switch (_v6.b.$) {
+							case 'Name':
+								var _v7 = _v6.a;
+								var existingRoster = _v7.a;
+								var restOfNewPlayerInfo = _v7.b.a;
+								var n = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												restOfNewPlayerInfo,
+												{name: n}))),
+									$elm$core$Platform$Cmd$none);
+							case 'JerseyNumber':
+								var _v10 = _v6.a;
+								var existingRoster = _v10.a;
+								var restOfNewPlayerInfo = _v10.b.a;
+								var jn = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												restOfNewPlayerInfo,
+												{
+													jerseyNumber: $elm$core$Maybe$Just(jn)
+												}))),
+									$elm$core$Platform$Cmd$none);
+							case 'PrimaryRole':
+								var _v13 = _v6.a;
+								var existingRoster = _v13.a;
+								var restOfNewPlayerInfo = _v13.b.a;
+								var pr = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												restOfNewPlayerInfo,
+												{
+													primaryRole: A3($elm$core$Basics$composeR, $author$project$Roster$stringToMaybeRole, $author$project$Roster$maybeRoleToRole, pr)
+												}))),
+									$elm$core$Platform$Cmd$none);
+							case 'BackupRole':
+								var _v16 = _v6.a;
+								var existingRoster = _v16.a;
+								var restOfNewPlayerInfo = _v16.b.a;
+								var br = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												restOfNewPlayerInfo,
+												{
+													backupRole: $author$project$Roster$stringToMaybeRole(br)
+												}))),
+									$elm$core$Platform$Cmd$none);
+							default:
+								var _v19 = _v6.a;
+								var existingRoster = _v19.a;
+								var restOfNewPlayerInfo = _v19.b.a;
+								var pn = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												restOfNewPlayerInfo,
+												{phoneNumber: pn}))),
+									$elm$core$Platform$Cmd$none);
+						}
+					} else {
+						switch (_v6.b.$) {
+							case 'Name':
+								var _v8 = _v6.a;
+								var existingRoster = _v8.a;
+								var _v9 = _v8.b;
+								var n = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												defaultPlayer,
+												{name: n}))),
+									$elm$core$Platform$Cmd$none);
+							case 'JerseyNumber':
+								var _v11 = _v6.a;
+								var existingRoster = _v11.a;
+								var _v12 = _v11.b;
+								var jn = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												defaultPlayer,
+												{
+													jerseyNumber: $elm$core$Maybe$Just(jn)
+												}))),
+									$elm$core$Platform$Cmd$none);
+							case 'PrimaryRole':
+								var _v14 = _v6.a;
+								var existingRoster = _v14.a;
+								var _v15 = _v14.b;
+								var pr = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												defaultPlayer,
+												{
+													primaryRole: A3($elm$core$Basics$composeR, $author$project$Roster$stringToMaybeRole, $author$project$Roster$maybeRoleToRole, pr)
+												}))),
+									$elm$core$Platform$Cmd$none);
+							case 'BackupRole':
+								var _v17 = _v6.a;
+								var existingRoster = _v17.a;
+								var _v18 = _v17.b;
+								var br = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												defaultPlayer,
+												{
+													backupRole: $author$project$Roster$stringToMaybeRole(br)
+												}))),
+									$elm$core$Platform$Cmd$none);
+							default:
+								var _v20 = _v6.a;
+								var existingRoster = _v20.a;
+								var _v21 = _v20.b;
+								var pn = _v6.b.a;
+								return _Utils_Tuple2(
+									A2(
+										$author$project$Main$AddingNewTeammate,
+										existingRoster,
+										$elm$core$Maybe$Just(
+											_Utils_update(
+												defaultPlayer,
+												{phoneNumber: pn}))),
+									$elm$core$Platform$Cmd$none);
+						}
+					}
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			default:
+				var response = msg.a;
+				var _v22 = _Utils_Tuple2(model, response);
+				if (_v22.a.$ === 'AddingNewTeammate') {
+					if (_v22.b.$ === 'Ok') {
+						var _v23 = _v22.a;
+						var existingRoster = _v23.a;
+						var newTeammate = _v22.b.a;
+						return _Utils_Tuple2(
+							$author$project$Main$ViewingRoster(
+								A2($elm$core$List$cons, newTeammate, existingRoster)),
+							$elm$core$Platform$Cmd$none);
+					} else {
+						var _v24 = _v22.a;
+						var existingRoster = _v24.a;
+						return _Utils_Tuple2(
+							$author$project$Main$ViewingRoster(existingRoster),
+							$elm$core$Platform$Cmd$none);
+					}
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 		}
 	});
+var $author$project$Main$ViewNewTeammateForm = {$: 'ViewNewTeammateForm'};
 var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -6276,18 +6614,279 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$addPlayerBtn = A2(
 	$elm$html$Html$button,
 	_List_fromArray(
 		[
-			$elm$html$Html$Attributes$class('add-player-btn')
+			$elm$html$Html$Attributes$class('add-player-btn'),
+			$elm$html$Html$Events$onClick($author$project$Main$ViewNewTeammateForm)
 		]),
 	_List_fromArray(
 		[
 			$elm$html$Html$text('+')
 		]));
+var $author$project$Main$AddNewPlayerInfo = function (a) {
+	return {$: 'AddNewPlayerInfo', a: a};
+};
+var $author$project$Main$AttemptToAddPlayerToRoster = function (a) {
+	return {$: 'AttemptToAddPlayerToRoster', a: a};
+};
+var $author$project$Main$BackupRole = function (a) {
+	return {$: 'BackupRole', a: a};
+};
+var $author$project$Main$JerseyNumber = function (a) {
+	return {$: 'JerseyNumber', a: a};
+};
+var $author$project$Main$Name = function (a) {
+	return {$: 'Name', a: a};
+};
+var $author$project$Main$PhoneNumber = function (a) {
+	return {$: 'PhoneNumber', a: a};
+};
+var $author$project$Main$PrimaryRole = function (a) {
+	return {$: 'PrimaryRole', a: a};
+};
+var $elm$html$Html$form = _VirtualDom_node('form');
+var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$label = _VirtualDom_node('label');
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
+var $elm$html$Html$Events$alwaysPreventDefault = function (msg) {
+	return _Utils_Tuple2(msg, true);
+};
+var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
+	return {$: 'MayPreventDefault', a: a};
+};
+var $elm$html$Html$Events$preventDefaultOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayPreventDefault(decoder));
+	});
+var $elm$html$Html$Events$onSubmit = function (msg) {
+	return A2(
+		$elm$html$Html$Events$preventDefaultOn,
+		'submit',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysPreventDefault,
+			$elm$json$Json$Decode$succeed(msg)));
+};
+var $elm$html$Html$option = _VirtualDom_node('option');
+var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$html$Html$select = _VirtualDom_node('select');
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $author$project$Main$addTeammateForm = function (newTeammate) {
+	var viewForm = function (teammateInfo) {
+		var roles = _List_fromArray(
+			['PG', 'SG', 'SF', 'PF', 'C']);
+		return A2(
+			$elm$html$Html$form,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('add-new-player-form'),
+					$elm$html$Html$Events$onSubmit(
+					$author$project$Main$AttemptToAddPlayerToRoster(teammateInfo))
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$label,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Name'),
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$placeholder('Name'),
+									$elm$html$Html$Attributes$value(teammateInfo.name),
+									$elm$html$Html$Events$onInput(
+									function (name) {
+										return $author$project$Main$AddNewPlayerInfo(
+											$author$project$Main$Name(name));
+									})
+								]),
+							_List_Nil)
+						])),
+					A2(
+					$elm$html$Html$label,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Jersey Number'),
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$placeholder('Jersey Number'),
+									$elm$html$Html$Attributes$value(
+									$author$project$Roster$jerseyToString(teammateInfo.jerseyNumber)),
+									$elm$html$Html$Events$onInput(
+									function (jn) {
+										return $author$project$Main$AddNewPlayerInfo(
+											$author$project$Main$JerseyNumber(jn));
+									})
+								]),
+							_List_Nil)
+						])),
+					A2(
+					$elm$html$Html$label,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Primary Role'),
+							A2(
+							$elm$html$Html$select,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onInput(
+									function (pr) {
+										return $author$project$Main$AddNewPlayerInfo(
+											$author$project$Main$PrimaryRole(pr));
+									})
+								]),
+							A2(
+								$elm$core$List$map,
+								function (role) {
+									return A2(
+										$elm$html$Html$option,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$value(role)
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(role)
+											]));
+								},
+								roles))
+						])),
+					A2(
+					$elm$html$Html$label,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Backup Role'),
+							A2(
+							$elm$html$Html$select,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onInput(
+									function (br) {
+										return $author$project$Main$AddNewPlayerInfo(
+											$author$project$Main$BackupRole(br));
+									})
+								]),
+							A2(
+								$elm$core$List$map,
+								function (role) {
+									return A2(
+										$elm$html$Html$option,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$value(role)
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(role)
+											]));
+								},
+								roles))
+						])),
+					A2(
+					$elm$html$Html$label,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Phone Number'),
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$placeholder('Phone Number'),
+									$elm$html$Html$Attributes$value(teammateInfo.phoneNumber),
+									$elm$html$Html$Events$onInput(
+									function (pn) {
+										return $author$project$Main$AddNewPlayerInfo(
+											$author$project$Main$PhoneNumber(pn));
+									})
+								]),
+							_List_Nil)
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Join 💫')
+						]))
+				]));
+	};
+	if (newTeammate.$ === 'Just') {
+		var teammateInfo = newTeammate.a;
+		return viewForm(teammateInfo);
+	} else {
+		var defaultPlayer = {
+			backupRole: $elm$core$Maybe$Nothing,
+			jerseyNumber: $elm$core$Maybe$Just('N/A'),
+			name: '',
+			phoneNumber: '',
+			primaryRole: $author$project$Roster$PG
+		};
+		return viewForm(defaultPlayer);
+	}
+};
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $author$project$Main$appTitle = A2(
 	$elm$html$Html$h1,
@@ -6343,38 +6942,6 @@ var $author$project$Main$formatPhoneNumber = function (pnumber) {
 	var lastFour = $elm$core$String$right(4);
 	var firstThree = $elm$core$String$left(3);
 	return '(' + (firstThree(pnumber) + (') ' + (middleThree(pnumber) + ('-' + lastFour(pnumber)))));
-};
-var $author$project$Roster$jerseyToString = function (jersey) {
-	if (jersey.$ === 'Just') {
-		var jrsy = jersey.a;
-		return jrsy;
-	} else {
-		return 'N/A';
-	}
-};
-var $author$project$Roster$roleToString = function (role) {
-	switch (role.$) {
-		case 'PG':
-			return 'PG';
-		case 'SG':
-			return 'SG';
-		case 'SF':
-			return 'SF';
-		case 'PF':
-			return 'PF';
-		case 'C':
-			return 'C';
-		default:
-			return 'Coach';
-	}
-};
-var $author$project$Roster$maybeRoleToString = function (mrole) {
-	if (mrole.$ === 'Just') {
-		var role = mrole.a;
-		return $author$project$Roster$roleToString(role);
-	} else {
-		return 'N/A';
-	}
 };
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$tr = _VirtualDom_node('tr');
@@ -6469,31 +7036,52 @@ var $author$project$Main$renderTableRows = function (roster) {
 var $elm$html$Html$table = _VirtualDom_node('table');
 var $author$project$Main$view = function (model) {
 	return {
-		body: _List_fromArray(
-			[
-				A2(
-				$elm$html$Html$main_,
-				_List_fromArray(
+		body: function () {
+			if (model.$ === 'ViewingRoster') {
+				var fullRoster = model.a;
+				return _List_fromArray(
 					[
-						$elm$html$Html$Attributes$id('app-container')
-					]),
-				_List_fromArray(
-					[
-						$author$project$Main$appTitle,
 						A2(
-						$elm$html$Html$div,
+						$elm$html$Html$main_,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('crud-controls')
+								$elm$html$Html$Attributes$id('app-container')
 							]),
 						_List_fromArray(
-							[$author$project$Main$addPlayerBtn, $author$project$Main$deletePlayerBtn])),
+							[
+								$author$project$Main$appTitle,
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('crud-controls')
+									]),
+								_List_fromArray(
+									[$author$project$Main$addPlayerBtn, $author$project$Main$deletePlayerBtn])),
+								A2(
+								$elm$html$Html$table,
+								_List_Nil,
+								$author$project$Main$renderTableRows(fullRoster))
+							]))
+					]);
+			} else {
+				var newTeammateInfo = model.b;
+				return _List_fromArray(
+					[
 						A2(
-						$elm$html$Html$table,
-						_List_Nil,
-						$author$project$Main$renderTableRows(model.roster))
-					]))
-			]),
+						$elm$html$Html$main_,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$id('app-container')
+							]),
+						_List_fromArray(
+							[
+								$author$project$Main$appTitle,
+								$author$project$Main$addTeammateForm(newTeammateInfo)
+							]))
+					]);
+			}
+		}(),
 		title: 'Shooting Starts Roster | Spring Basketball 2023'
 	};
 };

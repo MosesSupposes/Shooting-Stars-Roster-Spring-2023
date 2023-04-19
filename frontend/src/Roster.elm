@@ -1,6 +1,7 @@
-module Roster exposing (Jersey, Player, Position, Role(..), jerseyToString, maybeRoleToString, positionToRole, positionToString, roleToPosition, roleToString, rosterDecoder)
+module Roster exposing (Jersey, Player, Position, Role(..), jerseyToString, maybeRoleToRole, maybeRoleToString, playerDecoder, playerEncoder, positionToRole, positionToString, roleToPosition, roleToString, rosterDecoder, stringToMaybeRole)
 
 import Json.Decode as Decode
+import Json.Encode as Encode
 
 
 type Role
@@ -96,6 +97,41 @@ maybeRoleToString mrole =
             "N/A"
 
 
+stringToMaybeRole : String -> Maybe Role
+stringToMaybeRole role =
+    case String.toUpper role of
+        "PG" ->
+            Just PG
+
+        "SG" ->
+            Just SG
+
+        "SF" ->
+            Just SF
+
+        "PF" ->
+            Just PF
+
+        "C" ->
+            Just C
+
+        "COACH" ->
+            Just Coach
+
+        _ ->
+            Nothing
+
+
+maybeRoleToRole : Maybe Role -> Role
+maybeRoleToRole role =
+    case role of
+        Just r ->
+            r
+
+        Nothing ->
+            Coach
+
+
 positionToString : Position -> String
 positionToString position =
     case position of
@@ -118,6 +154,10 @@ jerseyToString jersey =
 
 type alias Player =
     { name : String, jerseyNumber : Maybe String, phoneNumber : String, primaryRole : Role, backupRole : Maybe Role }
+
+
+
+-- DECODE
 
 
 roleDecoder : Decode.Decoder Role
@@ -162,3 +202,23 @@ playerDecoder =
 rosterDecoder : Decode.Decoder (List Player)
 rosterDecoder =
     Decode.list playerDecoder
+
+
+
+-- ENCODE
+
+
+playerEncoder : Maybe Player -> Encode.Value
+playerEncoder player =
+    case player of
+        Just p ->
+            Encode.object
+                [ ( "name", Encode.string p.name )
+                , ( "jerseyNumber", Encode.string (jerseyToString p.jerseyNumber) )
+                , ( "primaryRole", Encode.string (roleToString p.primaryRole) )
+                , ( "backupRole", Encode.string (maybeRoleToString p.backupRole) )
+                , ( "phoneNumber", Encode.string p.phoneNumber )
+                ]
+
+        Nothing ->
+            Encode.null

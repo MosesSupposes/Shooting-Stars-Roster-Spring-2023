@@ -45,6 +45,11 @@ th:last-of-type, td:last-of-type {
   border: 1px solid black;
 }
 
+.add-new-player-form {
+  display: flex;
+  flex-flow: nowrap column;
+}
+
 .crud-controls {
   display: flex;
   justify-content:flex-end;

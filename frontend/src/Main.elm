@@ -88,14 +88,17 @@ update msg model =
                     -- The roster should only be updated when in the `AddingNewTeammate` state
                     ( model, Cmd.none )
 
-                AddingNewTeammate existingRoster newTeammate ->
-                    ( model
+                AddingNewTeammate existingRoster (Just newTeammate) ->
+                    ( ViewingRoster (newTeammate :: existingRoster)
                     , Http.post
                         { url = baseUrlDev
-                        , body = Http.jsonBody (playerEncoder newTeammate)
+                        , body = Http.jsonBody (playerEncoder (Just newTeammate))
                         , expect = Http.expectJson AddedPlayerToRoster playerDecoder
                         }
                     )
+
+                AddingNewTeammate _ Nothing ->
+                    ( model, Cmd.none )
 
         AddNewPlayerInfo maybeNewPlayerInfo ->
             let
@@ -191,7 +194,7 @@ view model =
             ViewingRoster fullRoster ->
                 [ main_ [ id "app-container" ]
                     [ appTitle
-                    , div [ class "crud-controls" ] [ addPlayerBtn, deletePlayerBtn ]
+                    , div [ class "crud-controls" ] [ addPlayerBtn ]
                     , table [] (renderTableRows fullRoster)
                     ]
                 ]

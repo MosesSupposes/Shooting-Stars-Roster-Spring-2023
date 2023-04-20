@@ -6395,17 +6395,24 @@ var $author$project$Main$update = F2(
 				if (model.$ === 'ViewingRoster') {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				} else {
-					var existingRoster = model.a;
-					var newTeammate = model.b;
-					return _Utils_Tuple2(
-						model,
-						$elm$http$Http$post(
-							{
-								body: $elm$http$Http$jsonBody(
-									$author$project$Roster$playerEncoder(newTeammate)),
-								expect: A2($elm$http$Http$expectJson, $author$project$Main$AddedPlayerToRoster, $author$project$Roster$playerDecoder),
-								url: $author$project$Main$baseUrlDev
-							}));
+					if (model.b.$ === 'Just') {
+						var existingRoster = model.a;
+						var newTeammate = model.b.a;
+						return _Utils_Tuple2(
+							$author$project$Main$ViewingRoster(
+								A2($elm$core$List$cons, newTeammate, existingRoster)),
+							$elm$http$Http$post(
+								{
+									body: $elm$http$Http$jsonBody(
+										$author$project$Roster$playerEncoder(
+											$elm$core$Maybe$Just(newTeammate))),
+									expect: A2($elm$http$Http$expectJson, $author$project$Main$AddedPlayerToRoster, $author$project$Roster$playerDecoder),
+									url: $author$project$Main$baseUrlDev
+								}));
+					} else {
+						var _v6 = model.b;
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+					}
 				}
 			case 'AddNewPlayerInfo':
 				var maybeNewPlayerInfo = msg.a;
@@ -6416,15 +6423,15 @@ var $author$project$Main$update = F2(
 					phoneNumber: '',
 					primaryRole: $author$project$Roster$PG
 				};
-				var _v6 = _Utils_Tuple2(model, maybeNewPlayerInfo);
-				if (_v6.a.$ === 'AddingNewTeammate') {
-					if (_v6.a.b.$ === 'Just') {
-						switch (_v6.b.$) {
+				var _v7 = _Utils_Tuple2(model, maybeNewPlayerInfo);
+				if (_v7.a.$ === 'AddingNewTeammate') {
+					if (_v7.a.b.$ === 'Just') {
+						switch (_v7.b.$) {
 							case 'Name':
-								var _v7 = _v6.a;
-								var existingRoster = _v7.a;
-								var restOfNewPlayerInfo = _v7.b.a;
-								var n = _v6.b.a;
+								var _v8 = _v7.a;
+								var existingRoster = _v8.a;
+								var restOfNewPlayerInfo = _v8.b.a;
+								var n = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6435,10 +6442,10 @@ var $author$project$Main$update = F2(
 												{name: n}))),
 									$elm$core$Platform$Cmd$none);
 							case 'JerseyNumber':
-								var _v10 = _v6.a;
-								var existingRoster = _v10.a;
-								var restOfNewPlayerInfo = _v10.b.a;
-								var jn = _v6.b.a;
+								var _v11 = _v7.a;
+								var existingRoster = _v11.a;
+								var restOfNewPlayerInfo = _v11.b.a;
+								var jn = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6451,10 +6458,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							case 'PrimaryRole':
-								var _v13 = _v6.a;
-								var existingRoster = _v13.a;
-								var restOfNewPlayerInfo = _v13.b.a;
-								var pr = _v6.b.a;
+								var _v14 = _v7.a;
+								var existingRoster = _v14.a;
+								var restOfNewPlayerInfo = _v14.b.a;
+								var pr = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6467,10 +6474,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							case 'BackupRole':
-								var _v16 = _v6.a;
-								var existingRoster = _v16.a;
-								var restOfNewPlayerInfo = _v16.b.a;
-								var br = _v6.b.a;
+								var _v17 = _v7.a;
+								var existingRoster = _v17.a;
+								var restOfNewPlayerInfo = _v17.b.a;
+								var br = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6483,10 +6490,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							default:
-								var _v19 = _v6.a;
-								var existingRoster = _v19.a;
-								var restOfNewPlayerInfo = _v19.b.a;
-								var pn = _v6.b.a;
+								var _v20 = _v7.a;
+								var existingRoster = _v20.a;
+								var restOfNewPlayerInfo = _v20.b.a;
+								var pn = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6498,12 +6505,12 @@ var $author$project$Main$update = F2(
 									$elm$core$Platform$Cmd$none);
 						}
 					} else {
-						switch (_v6.b.$) {
+						switch (_v7.b.$) {
 							case 'Name':
-								var _v8 = _v6.a;
-								var existingRoster = _v8.a;
-								var _v9 = _v8.b;
-								var n = _v6.b.a;
+								var _v9 = _v7.a;
+								var existingRoster = _v9.a;
+								var _v10 = _v9.b;
+								var n = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6514,10 +6521,10 @@ var $author$project$Main$update = F2(
 												{name: n}))),
 									$elm$core$Platform$Cmd$none);
 							case 'JerseyNumber':
-								var _v11 = _v6.a;
-								var existingRoster = _v11.a;
-								var _v12 = _v11.b;
-								var jn = _v6.b.a;
+								var _v12 = _v7.a;
+								var existingRoster = _v12.a;
+								var _v13 = _v12.b;
+								var jn = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6530,10 +6537,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							case 'PrimaryRole':
-								var _v14 = _v6.a;
-								var existingRoster = _v14.a;
-								var _v15 = _v14.b;
-								var pr = _v6.b.a;
+								var _v15 = _v7.a;
+								var existingRoster = _v15.a;
+								var _v16 = _v15.b;
+								var pr = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6546,10 +6553,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							case 'BackupRole':
-								var _v17 = _v6.a;
-								var existingRoster = _v17.a;
-								var _v18 = _v17.b;
-								var br = _v6.b.a;
+								var _v18 = _v7.a;
+								var existingRoster = _v18.a;
+								var _v19 = _v18.b;
+								var br = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6562,10 +6569,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							default:
-								var _v20 = _v6.a;
-								var existingRoster = _v20.a;
-								var _v21 = _v20.b;
-								var pn = _v6.b.a;
+								var _v21 = _v7.a;
+								var existingRoster = _v21.a;
+								var _v22 = _v21.b;
+								var pn = _v7.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6582,19 +6589,19 @@ var $author$project$Main$update = F2(
 				}
 			default:
 				var response = msg.a;
-				var _v22 = _Utils_Tuple2(model, response);
-				if (_v22.a.$ === 'AddingNewTeammate') {
-					if (_v22.b.$ === 'Ok') {
-						var _v23 = _v22.a;
-						var existingRoster = _v23.a;
-						var newTeammate = _v22.b.a;
+				var _v23 = _Utils_Tuple2(model, response);
+				if (_v23.a.$ === 'AddingNewTeammate') {
+					if (_v23.b.$ === 'Ok') {
+						var _v24 = _v23.a;
+						var existingRoster = _v24.a;
+						var newTeammate = _v23.b.a;
 						return _Utils_Tuple2(
 							$author$project$Main$ViewingRoster(
 								A2($elm$core$List$cons, newTeammate, existingRoster)),
 							$elm$core$Platform$Cmd$none);
 					} else {
-						var _v24 = _v22.a;
-						var existingRoster = _v24.a;
+						var _v25 = _v23.a;
+						var existingRoster = _v25.a;
 						return _Utils_Tuple2(
 							$author$project$Main$ViewingRoster(existingRoster),
 							$elm$core$Platform$Cmd$none);
@@ -6922,16 +6929,6 @@ var $author$project$Main$backToHome = function (model) {
 		return A2($elm$html$Html$div, _List_Nil, _List_Nil);
 	}
 };
-var $author$project$Main$deletePlayerBtn = A2(
-	$elm$html$Html$button,
-	_List_fromArray(
-		[
-			$elm$html$Html$Attributes$class('delete-player-btn')
-		]),
-	_List_fromArray(
-		[
-			$elm$html$Html$text('-')
-		]));
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
 var $elm$core$List$append = F2(
@@ -7080,7 +7077,7 @@ var $author$project$Main$view = function (model) {
 										$elm$html$Html$Attributes$class('crud-controls')
 									]),
 								_List_fromArray(
-									[$author$project$Main$addPlayerBtn, $author$project$Main$deletePlayerBtn])),
+									[$author$project$Main$addPlayerBtn])),
 								A2(
 								$elm$html$Html$table,
 								_List_Nil,

@@ -8,7 +8,7 @@ const server = express();
 
 server.use(express.json());
 server.use(helmet());
-server.use(cors({ origin: true }));
+server.use(cors());
 
 server.get('/api/roster', RosterController.getFullRoster);
 

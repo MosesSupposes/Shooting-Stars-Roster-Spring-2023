@@ -178,7 +178,7 @@ baseUrlDev =
 
 baseUrlProd : String
 baseUrlProd =
-    "https://shooting-stars-spring-2023-backend.netlify.app/api/roster"
+    "https://shooting-stars-spring-2023-be.herokuapp.com"
 
 
 init : () -> ( Model, Cmd Msg )

@@ -8,7 +8,7 @@ const server = express();
 
 server.use(express.json());
 server.use(helmet());
-server.use(cors());
+server.use(cors({ origin: ['https://shooting-stars-spring-2023.netlify.app'] }));
 
 server.get('/api/roster', RosterController.getFullRoster);
 

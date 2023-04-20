@@ -91,7 +91,7 @@ update msg model =
                 AddingNewTeammate existingRoster (Just newTeammate) ->
                     ( ViewingRoster (newTeammate :: existingRoster)
                     , Http.post
-                        { url = baseUrlDev
+                        { url = baseUrlProd
                         , body = Http.jsonBody (playerEncoder (Just newTeammate))
                         , expect = Http.expectJson AddedPlayerToRoster playerDecoder
                         }
@@ -178,12 +178,12 @@ baseUrlDev =
 
 baseUrlProd : String
 baseUrlProd =
-    ""
+    "https://shooting-stars-spring-2023-backend.netlify.app/api/roster"
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( ViewingRoster [], Http.get { url = baseUrlDev, expect = Http.expectJson ViewRoster rosterDecoder } )
+    ( ViewingRoster [], Http.get { url = baseUrlProd, expect = Http.expectJson ViewRoster rosterDecoder } )
 
 
 view : Model -> Browser.Document Msg

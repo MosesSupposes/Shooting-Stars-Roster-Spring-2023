@@ -178,7 +178,7 @@ baseUrlDev =
 
 baseUrlProd : String
 baseUrlProd =
-    "https://shooting-stars-spring-2023-be.herokuapp.com"
+    "https://shooting-stars-spring-2023-be.herokuapp.com/api/roster"
 
 
 init : () -> ( Model, Cmd Msg )

@@ -5334,7 +5334,7 @@ var $author$project$Main$ViewRoster = function (a) {
 var $author$project$Main$ViewingRoster = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Main$baseUrlProd = 'https://shooting-stars-spring-2023-backend.netlify.app/api/roster';
+var $author$project$Main$baseUrlProd = 'https://shooting-stars-spring-2023-be.herokuapp.com/api/roster';
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {

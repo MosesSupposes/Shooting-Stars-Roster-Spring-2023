@@ -1,6 +1,6 @@
 module.exports = {
   client: 'sqlite3',
-  useDefaultAsNull: true,
+  useNullAsDefault: true,
   connection: {
     filename: "./roster.db3"
   },

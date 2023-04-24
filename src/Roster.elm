@@ -1,4 +1,4 @@
-module Roster exposing (Jersey, Player, Position, Role(..), jerseyToString, maybeRoleToRole, maybeRoleToString, playerDecoder, playerEncoder, positionToRole, positionToString, roleToPosition, roleToString, rosterDecoder, stringToMaybeRole)
+module Roster exposing (Jersey, Player, Position, Role(..), deletePlayerDecoder, jerseyToString, maybeRoleToRole, maybeRoleToString, playerDecoder, playerEncoder, positionToRole, positionToString, roleToPosition, roleToString, rosterDecoder, stringToMaybeRole)
 
 import Json.Decode as Decode
 import Json.Encode as Encode
@@ -199,9 +199,18 @@ playerDecoder =
         (Decode.field "backupRole" (Decode.maybe roleDecoder))
 
 
+
+-- Decodes the endpoint: GET /api/roster
+
+
 rosterDecoder : Decode.Decoder (List Player)
 rosterDecoder =
     Decode.list playerDecoder
+
+
+deletePlayerDecoder : Decode.Decoder Bool
+deletePlayerDecoder =
+    Decode.bool
 
 
 

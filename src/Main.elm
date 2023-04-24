@@ -5,12 +5,17 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
-import Roster exposing (Player, Role(..), jerseyToString, maybeRoleToRole, maybeRoleToString, playerDecoder, playerEncoder, roleToString, rosterDecoder, stringToMaybeRole)
+import Roster exposing (Player, Role(..), deletePlayerDecoder, jerseyToString, maybeRoleToRole, maybeRoleToString, playerDecoder, playerEncoder, roleToString, rosterDecoder, stringToMaybeRole)
+
+
+type alias ErrorMessage =
+    String
 
 
 type Model
     = ViewingRoster (List Player)
     | AddingNewTeammate (List Player) (Maybe Player)
+    | ErrorScreen (List Player) ErrorMessage
 
 
 
@@ -28,7 +33,8 @@ type PlayerField
 type Msg
     = ViewRoster (Result Http.Error (List Player))
     | ViewNewTeammateForm
-    | RemovePlayerFromRoster Player
+    | AttemptToRemovePlayerFromRoster Player
+    | RemovedPlayerFromRoster (Result Http.Error String)
     | EditPlayerInfo Player
     | AttemptToAddPlayerToRoster Player
     | AddedPlayerToRoster (Result Http.Error Player)
@@ -54,12 +60,92 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        RemovePlayerFromRoster player ->
+        -- TODO: Make the player's jersey be their UUID
+        AttemptToRemovePlayerFromRoster player ->
             case model of
                 ViewingRoster currentRoster ->
-                    ( ViewingRoster <| List.filter (\p -> not (p == player)) currentRoster, Cmd.none )
+                    let
+                        url =
+                            case player.jerseyNumber of
+                                Just num ->
+                                    baseUrlDev ++ "/" ++ num
+
+                                Nothing ->
+                                    baseUrlDev ++ "/" ++ "000"
+
+                        -- This query param will fail the operation; no player record will contain this jersey number
+                    in
+                    -- TODO: Swap out the dev url with prod
+                    ( ViewingRoster <| List.filter (\p -> not (p == player)) currentRoster
+                    , Http.request
+                        { method = "DELETE"
+                        , headers = []
+                        , url = url
+                        , expect = Http.expectString RemovedPlayerFromRoster
+                        , body = Http.emptyBody
+                        , timeout = Nothing
+                        , tracker = Nothing
+                        }
+                    )
 
                 _ ->
+                    ( model, Cmd.none )
+
+        RemovedPlayerFromRoster response ->
+            case ( response, model ) of
+                ( Ok xRowsDeleted, ViewingRoster currentRoster ) ->
+                    let
+                        failureMessage =
+                            "There was an issue removing this player from the roster. Refresh the page and ry again."
+                    in
+                    case String.toInt xRowsDeleted of
+                        Just rowsDeletedAsInt ->
+                            if rowsDeletedAsInt > 0 then
+                                -- The player should already be removed from the roster in this view. See the return value of the AttemptToRemovePlayerFromRoster case.
+                                ( ViewingRoster currentRoster, Cmd.none )
+
+                            else
+                                ( ErrorScreen currentRoster failureMessage, Cmd.none )
+
+                        Nothing ->
+                            ( ErrorScreen currentRoster failureMessage, Cmd.none )
+
+                ( Ok Nothing, ViewingRoster currentRoster ) ->
+                    ( ErrorScreen currentRoster "The server is hallucinating. If the operation did not resolve as expected, refresh the page and try again.", Cmd.none )
+
+                -- This handles the case where we are on a different view from `ViewingRoster`, but the delete request was successful (this shouldn't happen, but we handle it anyways.)
+                ( Ok _, _ ) ->
+                    ( model, Cmd.none )
+
+                ( Err error, ViewingRoster currentRoster ) ->
+                    case error of
+                        Http.BadUrl errMsg ->
+                            ( ErrorScreen currentRoster ("Bad URL: " ++ errMsg ++ ". Try agian."), Cmd.none )
+
+                        Http.Timeout ->
+                            ( ErrorScreen currentRoster "The request timed out. Try again", Cmd.none )
+
+                        Http.NetworkError ->
+                            ( ErrorScreen currentRoster "There was a network error. Check your internet connection and try again.", Cmd.none )
+
+                        Http.BadStatus status ->
+                            case String.fromInt status |> String.left 1 of
+                                -- 4xx error
+                                4 ->
+                                    ( ErrorScreen currentRoster "The server could not fulfill your request. Modify it to the best of your intuition and try again.", Cmd.none )
+
+                                -- 5xx error
+                                5 ->
+                                    ( ErrorScreen currentRoster "The server is dealing with some issues. Please try again at a later time.", Cmd.none )
+
+                                -- xxx error
+                                _ ->
+                                    ( ErrorScreen currentRoster "Something weird is going on... Refresh this browser window and try again.", Cmd.none )
+
+                        Http.BadBody _ ->
+                            ( ErrorScreen currentRoster "You only need to specify the jersey number of the player you are trying to remove. Do this and try again.", Cmd.none )
+
+                ( Err _, _ ) ->
                     ( model, Cmd.none )
 
         -- TODO: There should be a separate state, say `EditingTeammateInfo` that renders a form to edit player info; similar to the `AddingNewTeammate` state.

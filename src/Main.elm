@@ -6,6 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
 import Roster exposing (Player, Role(..), deletePlayerDecoder, jerseyToString, maybeRoleToRole, maybeRoleToString, playerDecoder, playerEncoder, roleToString, rosterDecoder, stringToMaybeRole)
+import Swiper
 
 
 type alias ErrorMessage =
@@ -13,7 +14,7 @@ type alias ErrorMessage =
 
 
 type Model
-    = ViewingRoster (List Player)
+    = ViewingRoster Swiper.SwipingState (List Player)
     | AddingNewTeammate (List Player) (Maybe Player)
     | ErrorScreen (List Player) ErrorMessage
 
@@ -33,7 +34,7 @@ type PlayerField
 type Msg
     = ViewRoster (Result Http.Error (List Player))
     | ViewNewTeammateForm
-    | AttemptToRemovePlayerFromRoster Player
+    | AttemptToRemovePlayerFromRoster Player Swiper.SwipeEvent
     | RemovedPlayerFromRoster (Result Http.Error String)
     | EditPlayerInfo Player
     | AttemptToAddPlayerToRoster Player
@@ -47,23 +48,23 @@ update msg model =
         ViewRoster response ->
             case response of
                 Ok fullRoster ->
-                    ( ViewingRoster fullRoster, Cmd.none )
+                    ( ViewingRoster Swiper.initialSwipingState fullRoster, Cmd.none )
 
                 Err _ ->
                     ( model, Cmd.none )
 
         ViewNewTeammateForm ->
             case model of
-                ViewingRoster currentRoster ->
+                ViewingRoster _ currentRoster ->
                     ( AddingNewTeammate currentRoster Nothing, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
 
         -- TODO: Make the player's jersey be their UUID
-        AttemptToRemovePlayerFromRoster player ->
+        AttemptToRemovePlayerFromRoster player swipeEvent ->
             case model of
-                ViewingRoster currentRoster ->
+                ViewingRoster swipingState currentRoster ->
                     let
                         url =
                             case player.jerseyNumber of
@@ -73,10 +74,20 @@ update msg model =
                                 Nothing ->
                                     baseUrlDev ++ "/" ++ "000"
 
+                        ( newSwipeState, swipedLeft ) =
+                            Swiper.hasSwipedLeft swipeEvent swipingState
+
+                        removePlayerIfSwiped didSwipeLeft roster =
+                            if didSwipeLeft then
+                                List.filter (\p -> not (p == player)) currentRoster
+
+                            else
+                                roster
+
                         -- This query param will fail the operation; no player record will contain this jersey number
                     in
                     -- TODO: Swap out the dev url with prod
-                    ( ViewingRoster <| List.filter (\p -> not (p == player)) currentRoster
+                    ( ViewingRoster newSwipeState (removePlayerIfSwiped swipedLeft currentRoster)
                     , Http.request
                         { method = "DELETE"
                         , headers = []
@@ -93,7 +104,7 @@ update msg model =
 
         RemovedPlayerFromRoster response ->
             case ( response, model ) of
-                ( Ok xRowsDeleted, ViewingRoster currentRoster ) ->
+                ( Ok xRowsDeleted, ViewingRoster currentSwipeState currentRoster ) ->
                     let
                         failureMessage =
                             "There was an issue removing this player from the roster. Refresh the page and ry again."
@@ -102,7 +113,7 @@ update msg model =
                         Just rowsDeletedAsInt ->
                             if rowsDeletedAsInt > 0 then
                                 -- The player should already be removed from the roster in this view. See the return value of the AttemptToRemovePlayerFromRoster case.
-                                ( ViewingRoster currentRoster, Cmd.none )
+                                ( ViewingRoster currentSwipeState currentRoster, Cmd.none )
 
                             else
                                 ( ErrorScreen currentRoster failureMessage, Cmd.none )
@@ -114,7 +125,7 @@ update msg model =
                 ( Ok _, _ ) ->
                     ( model, Cmd.none )
 
-                ( Err error, ViewingRoster currentRoster ) ->
+                ( Err error, ViewingRoster _ currentRoster ) ->
                     case error of
                         Http.BadUrl errMsg ->
                             ( ErrorScreen currentRoster ("Bad URL: " ++ errMsg ++ ". Try agian."), Cmd.none )
@@ -148,8 +159,8 @@ update msg model =
         -- TODO: There should be a separate state, say `EditingTeammateInfo` that renders a form to edit player info; similar to the `AddingNewTeammate` state.
         EditPlayerInfo player ->
             case model of
-                ViewingRoster currentRoster ->
-                    ( ViewingRoster <|
+                ViewingRoster currentSwipeState currentRoster ->
+                    ( ViewingRoster currentSwipeState <|
                         List.map
                             (\p ->
                                 if p == player then
@@ -167,12 +178,12 @@ update msg model =
 
         AttemptToAddPlayerToRoster player ->
             case model of
-                ViewingRoster _ ->
+                ViewingRoster _ _ ->
                     -- The roster should only be updated when in the `AddingNewTeammate` state
                     ( model, Cmd.none )
 
                 AddingNewTeammate existingRoster (Just newTeammate) ->
-                    ( ViewingRoster (newTeammate :: existingRoster)
+                    ( ViewingRoster Swiper.initialSwipingState (newTeammate :: existingRoster)
                     , Http.post
                         { url = baseUrlProd
                         , body = Http.jsonBody (playerEncoder (Just newTeammate))
@@ -248,10 +259,10 @@ update msg model =
         AddedPlayerToRoster response ->
             case ( model, response ) of
                 ( AddingNewTeammate existingRoster _, Ok newTeammate ) ->
-                    ( ViewingRoster (newTeammate :: existingRoster), Cmd.none )
+                    ( ViewingRoster Swiper.initialSwipingState (newTeammate :: existingRoster), Cmd.none )
 
                 ( AddingNewTeammate existingRoster _, Err _ ) ->
-                    ( ViewingRoster existingRoster, Cmd.none )
+                    ( ViewingRoster Swiper.initialSwipingState existingRoster, Cmd.none )
 
                 ( _, _ ) ->
                     ( model, Cmd.none )
@@ -269,7 +280,7 @@ baseUrlProd =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( ViewingRoster [], Http.get { url = baseUrlProd, expect = Http.expectJson ViewRoster rosterDecoder } )
+    ( ViewingRoster Swiper.initialSwipingState [], Http.get { url = baseUrlProd, expect = Http.expectJson ViewRoster rosterDecoder } )
 
 
 view : Model -> Browser.Document Msg
@@ -277,10 +288,10 @@ view model =
     { title = "Shooting Starts Roster | Spring Basketball 2023"
     , body =
         case model of
-            ViewingRoster roster ->
+            ViewingRoster _ roster ->
                 [ main_ [ id "app-container" ]
                     [ appTitle
-                    , div [ class "crud-controls" ] [ addPlayerBtn, deletePlayerBtn ]
+                    , div [ class "crud-controls" ] [ addPlayerBtn ]
                     , table [] (renderTableRows roster)
                     ]
                 ]
@@ -328,7 +339,7 @@ renderTableRows roster =
 
 viewPlayer : Player -> Html Msg
 viewPlayer player =
-    tr []
+    tr ([] ++ Swiper.onSwipeEvents (AttemptToRemovePlayerFromRoster player))
         [ td [] [ text player.name ]
         , td [] [ text (jerseyToString player.jerseyNumber) ]
         , td [] [ text (player.primaryRole |> Roster.roleToString) ]

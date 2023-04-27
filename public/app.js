@@ -6424,14 +6424,14 @@ var $author$project$Main$update = F2(
 				}
 			case 'AttemptToRemovePlayerFromRoster':
 				var player = msg.a;
-				var swipeEvent = msg.b;
+				var maybeSwipeEvent = msg.b;
 				if (model.$ === 'ViewingRoster') {
 					var swipingState = model.a;
 					var currentRoster = model.b;
 					var url = function () {
-						var _v5 = player.jerseyNumber;
-						if (_v5.$ === 'Just') {
-							var num = _v5.a;
+						var _v6 = player.jerseyNumber;
+						if (_v6.$ === 'Just') {
+							var num = _v6.a;
 							return $author$project$Main$baseUrlDev + ('/' + num);
 						} else {
 							return $author$project$Main$baseUrlDev + ('/' + '000');
@@ -6446,7 +6446,14 @@ var $author$project$Main$update = F2(
 								},
 								currentRoster) : roster;
 						});
-					var _v4 = A2($marshallformula$elm_swiper$Swiper$hasSwipedLeft, swipeEvent, swipingState);
+					var _v4 = function () {
+						if (maybeSwipeEvent.$ === 'Just') {
+							var swipeEvent = maybeSwipeEvent.a;
+							return A2($marshallformula$elm_swiper$Swiper$hasSwipedLeft, swipeEvent, swipingState);
+						} else {
+							return _Utils_Tuple2(swipingState, false);
+						}
+					}();
 					var newSwipeState = _v4.a;
 					var swipedLeft = _v4.b;
 					return _Utils_Tuple2(
@@ -6469,17 +6476,17 @@ var $author$project$Main$update = F2(
 				}
 			case 'RemovedPlayerFromRoster':
 				var response = msg.a;
-				var _v6 = _Utils_Tuple2(response, model);
-				if (_v6.a.$ === 'Ok') {
-					if (_v6.b.$ === 'ViewingRoster') {
-						var xRowsDeleted = _v6.a.a;
-						var _v7 = _v6.b;
-						var currentSwipeState = _v7.a;
-						var currentRoster = _v7.b;
+				var _v7 = _Utils_Tuple2(response, model);
+				if (_v7.a.$ === 'Ok') {
+					if (_v7.b.$ === 'ViewingRoster') {
+						var xRowsDeleted = _v7.a.a;
+						var _v8 = _v7.b;
+						var currentSwipeState = _v8.a;
+						var currentRoster = _v8.b;
 						var failureMessage = 'There was an issue removing this player from the roster. Refresh the page and ry again.';
-						var _v8 = $elm$core$String$toInt(xRowsDeleted);
-						if (_v8.$ === 'Just') {
-							var rowsDeletedAsInt = _v8.a;
+						var _v9 = $elm$core$String$toInt(xRowsDeleted);
+						if (_v9.$ === 'Just') {
+							var rowsDeletedAsInt = _v9.a;
 							return (rowsDeletedAsInt > 0) ? _Utils_Tuple2(
 								A2($author$project$Main$ViewingRoster, currentSwipeState, currentRoster),
 								$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
@@ -6494,10 +6501,10 @@ var $author$project$Main$update = F2(
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
 				} else {
-					if (_v6.b.$ === 'ViewingRoster') {
-						var error = _v6.a.a;
-						var _v9 = _v6.b;
-						var currentRoster = _v9.b;
+					if (_v7.b.$ === 'ViewingRoster') {
+						var error = _v7.a.a;
+						var _v10 = _v7.b;
+						var currentRoster = _v10.b;
 						switch (error.$) {
 							case 'BadUrl':
 								var errMsg = error.a;
@@ -6514,11 +6521,11 @@ var $author$project$Main$update = F2(
 									$elm$core$Platform$Cmd$none);
 							case 'BadStatus':
 								var status = error.a;
-								var _v11 = A2(
+								var _v12 = A2(
 									$elm$core$String$left,
 									1,
 									$elm$core$String$fromInt(status));
-								switch (_v11) {
+								switch (_v12) {
 									case '4':
 										return _Utils_Tuple2(
 											A2($author$project$Main$ErrorScreen, currentRoster, 'The server could not fulfill your request. Modify it to the best of your intuition and try again.'),
@@ -6583,7 +6590,7 @@ var $author$project$Main$update = F2(
 										url: $author$project$Main$baseUrlProd
 									}));
 						} else {
-							var _v14 = model.b;
+							var _v15 = model.b;
 							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 						}
 					default:
@@ -6598,15 +6605,15 @@ var $author$project$Main$update = F2(
 					phoneNumber: '',
 					primaryRole: $author$project$Roster$PG
 				};
-				var _v15 = _Utils_Tuple2(model, maybeNewPlayerInfo);
-				if (_v15.a.$ === 'AddingNewTeammate') {
-					if (_v15.a.b.$ === 'Just') {
-						switch (_v15.b.$) {
+				var _v16 = _Utils_Tuple2(model, maybeNewPlayerInfo);
+				if (_v16.a.$ === 'AddingNewTeammate') {
+					if (_v16.a.b.$ === 'Just') {
+						switch (_v16.b.$) {
 							case 'Name':
-								var _v16 = _v15.a;
-								var existingRoster = _v16.a;
-								var restOfNewPlayerInfo = _v16.b.a;
-								var n = _v15.b.a;
+								var _v17 = _v16.a;
+								var existingRoster = _v17.a;
+								var restOfNewPlayerInfo = _v17.b.a;
+								var n = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6617,10 +6624,10 @@ var $author$project$Main$update = F2(
 												{name: n}))),
 									$elm$core$Platform$Cmd$none);
 							case 'JerseyNumber':
-								var _v19 = _v15.a;
-								var existingRoster = _v19.a;
-								var restOfNewPlayerInfo = _v19.b.a;
-								var jn = _v15.b.a;
+								var _v20 = _v16.a;
+								var existingRoster = _v20.a;
+								var restOfNewPlayerInfo = _v20.b.a;
+								var jn = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6633,10 +6640,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							case 'PrimaryRole':
-								var _v22 = _v15.a;
-								var existingRoster = _v22.a;
-								var restOfNewPlayerInfo = _v22.b.a;
-								var pr = _v15.b.a;
+								var _v23 = _v16.a;
+								var existingRoster = _v23.a;
+								var restOfNewPlayerInfo = _v23.b.a;
+								var pr = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6649,10 +6656,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							case 'BackupRole':
-								var _v25 = _v15.a;
-								var existingRoster = _v25.a;
-								var restOfNewPlayerInfo = _v25.b.a;
-								var br = _v15.b.a;
+								var _v26 = _v16.a;
+								var existingRoster = _v26.a;
+								var restOfNewPlayerInfo = _v26.b.a;
+								var br = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6665,10 +6672,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							default:
-								var _v28 = _v15.a;
-								var existingRoster = _v28.a;
-								var restOfNewPlayerInfo = _v28.b.a;
-								var pn = _v15.b.a;
+								var _v29 = _v16.a;
+								var existingRoster = _v29.a;
+								var restOfNewPlayerInfo = _v29.b.a;
+								var pn = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6680,12 +6687,12 @@ var $author$project$Main$update = F2(
 									$elm$core$Platform$Cmd$none);
 						}
 					} else {
-						switch (_v15.b.$) {
+						switch (_v16.b.$) {
 							case 'Name':
-								var _v17 = _v15.a;
-								var existingRoster = _v17.a;
-								var _v18 = _v17.b;
-								var n = _v15.b.a;
+								var _v18 = _v16.a;
+								var existingRoster = _v18.a;
+								var _v19 = _v18.b;
+								var n = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6696,10 +6703,10 @@ var $author$project$Main$update = F2(
 												{name: n}))),
 									$elm$core$Platform$Cmd$none);
 							case 'JerseyNumber':
-								var _v20 = _v15.a;
-								var existingRoster = _v20.a;
-								var _v21 = _v20.b;
-								var jn = _v15.b.a;
+								var _v21 = _v16.a;
+								var existingRoster = _v21.a;
+								var _v22 = _v21.b;
+								var jn = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6712,10 +6719,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							case 'PrimaryRole':
-								var _v23 = _v15.a;
-								var existingRoster = _v23.a;
-								var _v24 = _v23.b;
-								var pr = _v15.b.a;
+								var _v24 = _v16.a;
+								var existingRoster = _v24.a;
+								var _v25 = _v24.b;
+								var pr = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6728,10 +6735,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							case 'BackupRole':
-								var _v26 = _v15.a;
-								var existingRoster = _v26.a;
-								var _v27 = _v26.b;
-								var br = _v15.b.a;
+								var _v27 = _v16.a;
+								var existingRoster = _v27.a;
+								var _v28 = _v27.b;
+								var br = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6744,10 +6751,10 @@ var $author$project$Main$update = F2(
 												}))),
 									$elm$core$Platform$Cmd$none);
 							default:
-								var _v29 = _v15.a;
-								var existingRoster = _v29.a;
-								var _v30 = _v29.b;
-								var pn = _v15.b.a;
+								var _v30 = _v16.a;
+								var existingRoster = _v30.a;
+								var _v31 = _v30.b;
+								var pn = _v16.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6764,12 +6771,12 @@ var $author$project$Main$update = F2(
 				}
 			default:
 				var response = msg.a;
-				var _v31 = _Utils_Tuple2(model, response);
-				if (_v31.a.$ === 'AddingNewTeammate') {
-					if (_v31.b.$ === 'Ok') {
-						var _v32 = _v31.a;
-						var existingRoster = _v32.a;
-						var newTeammate = _v31.b.a;
+				var _v32 = _Utils_Tuple2(model, response);
+				if (_v32.a.$ === 'AddingNewTeammate') {
+					if (_v32.b.$ === 'Ok') {
+						var _v33 = _v32.a;
+						var existingRoster = _v33.a;
+						var newTeammate = _v32.b.a;
 						return _Utils_Tuple2(
 							A2(
 								$author$project$Main$ViewingRoster,
@@ -6777,8 +6784,8 @@ var $author$project$Main$update = F2(
 								A2($elm$core$List$cons, newTeammate, existingRoster)),
 							$elm$core$Platform$Cmd$none);
 					} else {
-						var _v33 = _v31.a;
-						var existingRoster = _v33.a;
+						var _v34 = _v32.a;
+						var existingRoster = _v34.a;
 						return _Utils_Tuple2(
 							A2($author$project$Main$ViewingRoster, $marshallformula$elm_swiper$Swiper$initialSwipingState, existingRoster),
 							$elm$core$Platform$Cmd$none);
@@ -7144,69 +7151,22 @@ var $author$project$Main$formatPhoneNumber = function (pnumber) {
 	var firstThree = $elm$core$String$left(3);
 	return '(' + (firstThree(pnumber) + (') ' + (middleThree(pnumber) + ('-' + lastFour(pnumber)))));
 };
-var $marshallformula$elm_swiper$Swiper$TouchEnd = function (a) {
-	return {$: 'TouchEnd', a: a};
-};
-var $marshallformula$elm_swiper$Swiper$Coords = F2(
-	function (clientX, clientY) {
-		return {clientX: clientX, clientY: clientY};
-	});
-var $elm$json$Json$Decode$float = _Json_decodeFloat;
-var $marshallformula$elm_swiper$Swiper$coordDecoder = A3(
-	$elm$json$Json$Decode$map2,
-	$marshallformula$elm_swiper$Swiper$Coords,
-	A2($elm$json$Json$Decode$field, 'clientX', $elm$json$Json$Decode$float),
-	A2($elm$json$Json$Decode$field, 'clientY', $elm$json$Json$Decode$float));
-var $marshallformula$elm_swiper$Swiper$touchDecoder = function (eventType) {
-	return A2(
-		$elm$json$Json$Decode$at,
-		_List_fromArray(
-			[eventType, '0']),
-		$marshallformula$elm_swiper$Swiper$coordDecoder);
-};
-var $marshallformula$elm_swiper$Swiper$onTouchEnd = function (msg) {
+var $elm$html$Html$Events$onDoubleClick = function (msg) {
 	return A2(
 		$elm$html$Html$Events$on,
-		'touchend',
-		A2(
-			$elm$json$Json$Decode$map,
-			msg,
-			A2(
-				$elm$json$Json$Decode$map,
-				$marshallformula$elm_swiper$Swiper$TouchEnd,
-				$marshallformula$elm_swiper$Swiper$touchDecoder('changedTouches'))));
-};
-var $marshallformula$elm_swiper$Swiper$TouchStart = function (a) {
-	return {$: 'TouchStart', a: a};
-};
-var $marshallformula$elm_swiper$Swiper$onTouchStart = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'touchstart',
-		A2(
-			$elm$json$Json$Decode$map,
-			msg,
-			A2(
-				$elm$json$Json$Decode$map,
-				$marshallformula$elm_swiper$Swiper$TouchStart,
-				$marshallformula$elm_swiper$Swiper$touchDecoder('targetTouches'))));
-};
-var $marshallformula$elm_swiper$Swiper$onSwipeEvents = function (msg) {
-	return _List_fromArray(
-		[
-			$marshallformula$elm_swiper$Swiper$onTouchStart(msg),
-			$marshallformula$elm_swiper$Swiper$onTouchEnd(msg)
-		]);
+		'dblclick',
+		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$tr = _VirtualDom_node('tr');
 var $author$project$Main$viewPlayer = function (player) {
 	return A2(
 		$elm$html$Html$tr,
-		_Utils_ap(
-			_List_Nil,
-			$marshallformula$elm_swiper$Swiper$onSwipeEvents(
-				$author$project$Main$AttemptToRemovePlayerFromRoster(player))),
+		_List_fromArray(
+			[
+				$elm$html$Html$Events$onDoubleClick(
+				A2($author$project$Main$AttemptToRemovePlayerFromRoster, player, $elm$core$Maybe$Nothing))
+			]),
 		_List_fromArray(
 			[
 				A2(

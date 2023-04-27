@@ -3,7 +3,7 @@ module Main exposing (main)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput, onSubmit)
+import Html.Events exposing (onClick, onDoubleClick, onInput, onSubmit)
 import Http
 import Roster exposing (Player, Role(..), deletePlayerDecoder, jerseyToString, maybeRoleToRole, maybeRoleToString, playerDecoder, playerEncoder, roleToString, rosterDecoder, stringToMaybeRole)
 import Swiper
@@ -34,7 +34,7 @@ type PlayerField
 type Msg
     = ViewRoster (Result Http.Error (List Player))
     | ViewNewTeammateForm
-    | AttemptToRemovePlayerFromRoster Player Swiper.SwipeEvent
+    | AttemptToRemovePlayerFromRoster Player (Maybe Swiper.SwipeEvent)
     | RemovedPlayerFromRoster (Result Http.Error String)
     | EditPlayerInfo Player
     | AttemptToAddPlayerToRoster Player
@@ -62,7 +62,7 @@ update msg model =
                     ( model, Cmd.none )
 
         -- TODO: Make the player's jersey be their UUID
-        AttemptToRemovePlayerFromRoster player swipeEvent ->
+        AttemptToRemovePlayerFromRoster player maybeSwipeEvent ->
             case model of
                 ViewingRoster swipingState currentRoster ->
                     let
@@ -75,7 +75,12 @@ update msg model =
                                     baseUrlDev ++ "/" ++ "000"
 
                         ( newSwipeState, swipedLeft ) =
-                            Swiper.hasSwipedLeft swipeEvent swipingState
+                            case maybeSwipeEvent of
+                                Just swipeEvent ->
+                                    Swiper.hasSwipedLeft swipeEvent swipingState
+
+                                Nothing ->
+                                    ( swipingState, False )
 
                         removePlayerIfSwiped didSwipeLeft roster =
                             if didSwipeLeft then
@@ -339,7 +344,11 @@ renderTableRows roster =
 
 viewPlayer : Player -> Html Msg
 viewPlayer player =
-    tr ([] ++ Swiper.onSwipeEvents (AttemptToRemovePlayerFromRoster player))
+    tr
+        ([ onDoubleClick (AttemptToRemovePlayerFromRoster player Nothing) ]
+         -- TODO: Fix the error associated with the line of code below
+         -- ++ Swiper.onSwipeEvents (AttemptToRemovePlayerFromRoster player (\swipeEvent -> Just swipeEvent))
+        )
         [ td [] [ text player.name ]
         , td [] [ text (jerseyToString player.jerseyNumber) ]
         , td [] [ text (player.primaryRole |> Roster.roleToString) ]

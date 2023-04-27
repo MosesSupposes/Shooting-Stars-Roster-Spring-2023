@@ -41,9 +41,9 @@ th:last-of-type, td:last-of-type {
   background-color: #e51313;
 }
 
-.error {
+.error-container {
   color: red;
-  border: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
 .add-new-player-form {

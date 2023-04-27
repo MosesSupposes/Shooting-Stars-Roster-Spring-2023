@@ -77,7 +77,7 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
   return fun.a === 9 ? fun.f(a, b, c, d, e, f, g, h, i) : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
 
-
+console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
 
 
 // EQUALITY
@@ -113,7 +113,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 		return true;
 	}
 
-	/**_UNUSED/
+	/**/
 	if (x.$ === 'Set_elm_builtin')
 	{
 		x = $elm$core$Set$toList(x);
@@ -126,7 +126,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 	}
 	//*/
 
-	/**/
+	/**_UNUSED/
 	if (x.$ < 0)
 	{
 		x = $elm$core$Dict$toList(x);
@@ -161,7 +161,7 @@ function _Utils_cmp(x, y, ord)
 		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
 	}
 
-	/**_UNUSED/
+	/**/
 	if (x instanceof String)
 	{
 		var a = x.valueOf();
@@ -170,10 +170,10 @@ function _Utils_cmp(x, y, ord)
 	}
 	//*/
 
-	/**/
+	/**_UNUSED/
 	if (typeof x.$ === 'undefined')
 	//*/
-	/**_UNUSED/
+	/**/
 	if (x.$[0] === '#')
 	//*/
 	{
@@ -203,17 +203,17 @@ var _Utils_compare = F2(function(x, y)
 
 // COMMON VALUES
 
-var _Utils_Tuple0 = 0;
-var _Utils_Tuple0_UNUSED = { $: '#0' };
+var _Utils_Tuple0_UNUSED = 0;
+var _Utils_Tuple0 = { $: '#0' };
 
-function _Utils_Tuple2(a, b) { return { a: a, b: b }; }
-function _Utils_Tuple2_UNUSED(a, b) { return { $: '#2', a: a, b: b }; }
+function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
+function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
 
-function _Utils_Tuple3(a, b, c) { return { a: a, b: b, c: c }; }
-function _Utils_Tuple3_UNUSED(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
+function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
+function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
 
-function _Utils_chr(c) { return c; }
-function _Utils_chr_UNUSED(c) { return new String(c); }
+function _Utils_chr_UNUSED(c) { return c; }
+function _Utils_chr(c) { return new String(c); }
 
 
 // RECORDS
@@ -264,11 +264,11 @@ function _Utils_ap(xs, ys)
 
 
 
-var _List_Nil = { $: 0 };
-var _List_Nil_UNUSED = { $: '[]' };
+var _List_Nil_UNUSED = { $: 0 };
+var _List_Nil = { $: '[]' };
 
-function _List_Cons(hd, tl) { return { $: 1, a: hd, b: tl }; }
-function _List_Cons_UNUSED(hd, tl) { return { $: '::', a: hd, b: tl }; }
+function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
+function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
 
 
 var _List_cons = F2(_List_Cons);
@@ -499,12 +499,12 @@ var _JsArray_appendN = F3(function(n, dest, source)
 
 // LOG
 
-var _Debug_log = F2(function(tag, value)
+var _Debug_log_UNUSED = F2(function(tag, value)
 {
 	return value;
 });
 
-var _Debug_log_UNUSED = F2(function(tag, value)
+var _Debug_log = F2(function(tag, value)
 {
 	console.log(tag + ': ' + _Debug_toString(value));
 	return value;
@@ -530,12 +530,12 @@ function _Debug_todoCase(moduleName, region, value)
 
 // TO STRING
 
-function _Debug_toString(value)
+function _Debug_toString_UNUSED(value)
 {
 	return '<internals>';
 }
 
-function _Debug_toString_UNUSED(value)
+function _Debug_toString(value)
 {
 	return _Debug_toAnsiString(false, value);
 }
@@ -720,13 +720,13 @@ function _Debug_toHexDigit(n)
 // CRASH
 
 
-function _Debug_crash(identifier)
+function _Debug_crash_UNUSED(identifier)
 {
 	throw new Error('https://github.com/elm/core/blob/1.0.0/hints/' + identifier + '.md');
 }
 
 
-function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
+function _Debug_crash(identifier, fact1, fact2, fact3, fact4)
 {
 	switch(identifier)
 	{
@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.a9.aA === region.bs.aA)
+	if (region.start.line === region.end.line)
 	{
-		return 'on line ' + region.a9.aA;
+		return 'on line ' + region.start.line;
 	}
-	return 'on lines ' + region.a9.aA + ' through ' + region.bs.aA;
+	return 'on lines ' + region.start.line + ' through ' + region.end.line;
 }
 
 
@@ -1212,7 +1212,7 @@ function _Char_toLocaleLower(char)
 
 
 
-/**_UNUSED/
+/**/
 function _Json_errorToString(error)
 {
 	return $elm$json$Json$Decode$errorToString(error);
@@ -1616,11 +1616,11 @@ var _Json_encode = F2(function(indentLevel, value)
 	return JSON.stringify(_Json_unwrap(value), null, indentLevel) + '';
 });
 
-function _Json_wrap_UNUSED(value) { return { $: 0, a: value }; }
-function _Json_unwrap_UNUSED(value) { return value.a; }
+function _Json_wrap(value) { return { $: 0, a: value }; }
+function _Json_unwrap(value) { return value.a; }
 
-function _Json_wrap(value) { return value; }
-function _Json_unwrap(value) { return value; }
+function _Json_wrap_UNUSED(value) { return value; }
+function _Json_unwrap_UNUSED(value) { return value; }
 
 function _Json_emptyArray() { return []; }
 function _Json_emptyObject() { return {}; }
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cm,
-		impl.cE,
-		impl.cB,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function() { return function() {} }
 	);
 });
@@ -1872,7 +1872,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 function _Platform_initialize(flagDecoder, args, init, update, subscriptions, stepperBuilder)
 {
 	var result = A2(_Json_run, flagDecoder, _Json_wrap(args ? args['flags'] : undefined));
-	$elm$core$Result$isOk(result) || _Debug_crash(2 /**_UNUSED/, _Json_errorToString(result.a) /**/);
+	$elm$core$Result$isOk(result) || _Debug_crash(2 /**/, _Json_errorToString(result.a) /**/);
 	var managers = {};
 	var initPair = init(result.a);
 	var model = initPair.a;
@@ -2316,7 +2316,7 @@ function _Platform_setupIncomingPort(name, sendToApp)
 //
 
 
-function _Platform_export(exports)
+function _Platform_export_UNUSED(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsProd(scope['Elm'], exports)
@@ -2337,7 +2337,7 @@ function _Platform_mergeExportsProd(obj, exports)
 }
 
 
-function _Platform_export_UNUSED(exports)
+function _Platform_export(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsDebug('Elm', scope['Elm'], exports)
@@ -2377,10 +2377,10 @@ var _VirtualDom_init = F4(function(virtualNode, flagDecoder, debugMetadata, args
 {
 	// NOTE: this function needs _Platform_export available to work
 
-	/**/
+	/**_UNUSED/
 	var node = args['node'];
 	//*/
-	/**_UNUSED/
+	/**/
 	var node = args && args['node'] ? args['node'] : _Debug_crash(0);
 	//*/
 
@@ -2655,14 +2655,14 @@ function _VirtualDom_noInnerHtmlOrFormAction(key)
 function _VirtualDom_noJavaScriptUri(value)
 {
 	return _VirtualDom_RE_js.test(value)
-		? /**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+		? /**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		: value;
 }
 
 function _VirtualDom_noJavaScriptOrHtmlUri(value)
 {
 	return _VirtualDom_RE_js_html.test(value)
-		? /**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+		? /**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		: value;
 }
 
@@ -2670,7 +2670,7 @@ function _VirtualDom_noJavaScriptOrHtmlJson(value)
 {
 	return (typeof _Json_unwrap(value) === 'string' && _VirtualDom_RE_js_html.test(_Json_unwrap(value)))
 		? _Json_wrap(
-			/**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+			/**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		) : value;
 }
 
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		F: func(record.F),
-		ba: record.ba,
-		a7: record.a7
+		message: func(record.message),
+		stopPropagation: record.stopPropagation,
+		preventDefault: record.preventDefault
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.F;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ba;
+		var message = !tag ? value : tag < 3 ? value.a : value.message;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.stopPropagation;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.a7) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.preventDefault) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,15 +3943,15 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cm,
-		impl.cE,
-		impl.cB,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function(sendToApp, initialModel) {
-			var view = impl.cG;
-			/**/
+			var view = impl.view;
+			/**_UNUSED/
 			var domNode = args['node'];
 			//*/
-			/**_UNUSED/
+			/**/
 			var domNode = args && args['node'] ? args['node'] : _Debug_crash(0);
 			//*/
 			var currNode = _VirtualDom_virtualize(domNode);
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cm,
-		impl.cE,
-		impl.cB,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.a8 && impl.a8(sendToApp)
-			var view = impl.cG;
+			var divertHrefToApp = impl.setup && impl.setup(sendToApp)
+			var view = impl.view;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.bl);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.body);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.cD) && (_VirtualDom_doc.title = title = doc.cD);
+				(title !== doc.title) && (_VirtualDom_doc.title = title = doc.title);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.cq;
-	var onUrlRequest = impl.cr;
+	var onUrlChange = impl.onUrlChange;
+	var onUrlRequest = impl.onUrlRequest;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		a8: function(sendToApp)
+		setup: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.bO === next.bO
-							&& curr.bA === next.bA
-							&& curr.bL.a === next.bL.a
+							&& curr.protocol === next.protocol
+							&& curr.host === next.host
+							&& curr.port_.a === next.port_.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		cm: function(flags)
+		init: function(flags)
 		{
-			return A3(impl.cm, flags, _Browser_getUrl(), key);
+			return A3(impl.init, flags, _Browser_getUrl(), key);
 		},
-		cG: impl.cG,
-		cE: impl.cE,
-		cB: impl.cB
+		view: impl.view,
+		update: impl.update,
+		subscriptions: impl.subscriptions
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { cj: 'hidden', cd: 'visibilitychange' }
+		? { hidden: 'hidden', change: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { cj: 'mozHidden', cd: 'mozvisibilitychange' }
+		? { hidden: 'mozHidden', change: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { cj: 'msHidden', cd: 'msvisibilitychange' }
+		? { hidden: 'msHidden', change: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { cj: 'webkitHidden', cd: 'webkitvisibilitychange' }
-		: { cj: 'hidden', cd: 'visibilitychange' };
+		? { hidden: 'webkitHidden', change: 'webkitvisibilitychange' }
+		: { hidden: 'hidden', change: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		bV: _Browser_getScene(),
-		b3: {
-			b5: _Browser_window.pageXOffset,
-			b6: _Browser_window.pageYOffset,
-			b4: _Browser_doc.documentElement.clientWidth,
-			bz: _Browser_doc.documentElement.clientHeight
+		scene: _Browser_getScene(),
+		viewport: {
+			x: _Browser_window.pageXOffset,
+			y: _Browser_window.pageYOffset,
+			width: _Browser_doc.documentElement.clientWidth,
+			height: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		b4: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		bz: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		width: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		height: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bV: {
-				b4: node.scrollWidth,
-				bz: node.scrollHeight
+			scene: {
+				width: node.scrollWidth,
+				height: node.scrollHeight
 			},
-			b3: {
-				b5: node.scrollLeft,
-				b6: node.scrollTop,
-				b4: node.clientWidth,
-				bz: node.clientHeight
+			viewport: {
+				x: node.scrollLeft,
+				y: node.scrollTop,
+				width: node.clientWidth,
+				height: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bV: _Browser_getScene(),
-			b3: {
-				b5: x,
-				b6: y,
-				b4: _Browser_doc.documentElement.clientWidth,
-				bz: _Browser_doc.documentElement.clientHeight
+			scene: _Browser_getScene(),
+			viewport: {
+				x: x,
+				y: y,
+				width: _Browser_doc.documentElement.clientWidth,
+				height: _Browser_doc.documentElement.clientHeight
 			},
-			ch: {
-				b5: x + rect.left,
-				b6: y + rect.top,
-				b4: rect.width,
-				bz: rect.height
+			element: {
+				x: x + rect.left,
+				y: y + rect.top,
+				width: rect.width,
+				height: rect.height
 			}
 		};
 	});
@@ -4380,25 +4380,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.bu.a(response)));
+			callback(toTask(request.expect.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.bu.b, xhr)); });
-		$elm$core$Maybe$isJust(request.b$) && _Http_track(router, xhr, request.b$.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.expect.b, xhr)); });
+		$elm$core$Maybe$isJust(request.tracker) && _Http_track(router, xhr, request.tracker.a);
 
 		try {
-			xhr.open(request.co, request.b2, true);
+			xhr.open(request.method, request.url, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.b2));
+			return done($elm$http$Http$BadUrl_(request.url));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.bl.a && xhr.setRequestHeader('Content-Type', request.bl.a);
-		xhr.send(request.bl.b);
+		request.body.a && xhr.setRequestHeader('Content-Type', request.body.a);
+		xhr.send(request.body.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4409,13 +4409,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.by; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.headers; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.cC.a || 0;
-	xhr.responseType = request.bu.d;
-	xhr.withCredentials = request.b9;
+	xhr.timeout = request.timeout.a || 0;
+	xhr.responseType = request.expect.d;
+	xhr.withCredentials = request.allowCookiesFromOtherDomains;
 }
 
 
@@ -4436,10 +4436,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		b2: xhr.responseURL,
-		cz: xhr.status,
-		cA: xhr.statusText,
-		by: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		url: xhr.responseURL,
+		statusCode: xhr.status,
+		statusText: xhr.statusText,
+		headers: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -4534,26 +4534,26 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			cy: event.loaded,
-			bW: event.total
+			sent: event.loaded,
+			size: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			cu: event.loaded,
-			bW: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			received: event.loaded,
+			size: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
-}var $elm$core$Basics$EQ = 1;
-var $elm$core$Basics$GT = 2;
-var $elm$core$Basics$LT = 0;
+}var $elm$core$Basics$EQ = {$: 'EQ'};
+var $elm$core$Basics$GT = {$: 'GT'};
+var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$List$cons = _List_cons;
 var $elm$core$Dict$foldr = F3(
 	function (func, acc, t) {
 		foldr:
 		while (true) {
-			if (t.$ === -2) {
+			if (t.$ === 'RBEmpty_elm_builtin') {
 				return acc;
 			} else {
 				var key = t.b;
@@ -4598,7 +4598,7 @@ var $elm$core$Dict$keys = function (dict) {
 		dict);
 };
 var $elm$core$Set$toList = function (_v0) {
-	var dict = _v0;
+	var dict = _v0.a;
 	return $elm$core$Dict$keys(dict);
 };
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
@@ -4608,7 +4608,7 @@ var $elm$core$Array$foldr = F3(
 		var tail = _v0.d;
 		var helper = F2(
 			function (node, acc) {
-				if (!node.$) {
+				if (node.$ === 'SubTree') {
 					var subTree = node.a;
 					return A3($elm$core$Elm$JsArray$foldr, helper, acc, subTree);
 				} else {
@@ -4626,32 +4626,32 @@ var $elm$core$Array$toList = function (array) {
 	return A3($elm$core$Array$foldr, $elm$core$List$cons, _List_Nil, array);
 };
 var $elm$core$Result$Err = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Err', a: a};
 };
 var $elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
-		return {$: 3, a: a, b: b};
+		return {$: 'Failure', a: a, b: b};
 	});
 var $elm$json$Json$Decode$Field = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'Field', a: a, b: b};
 	});
 var $elm$json$Json$Decode$Index = F2(
 	function (a, b) {
-		return {$: 1, a: a, b: b};
+		return {$: 'Index', a: a, b: b};
 	});
 var $elm$core$Result$Ok = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Ok', a: a};
 };
 var $elm$json$Json$Decode$OneOf = function (a) {
-	return {$: 2, a: a};
+	return {$: 'OneOf', a: a};
 };
-var $elm$core$Basics$False = 1;
+var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$Maybe$Just = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Just', a: a};
 };
-var $elm$core$Maybe$Nothing = {$: 1};
+var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
 var $elm$core$Basics$append = _Utils_append;
@@ -4776,12 +4776,12 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 		errorToStringHelp:
 		while (true) {
 			switch (error.$) {
-				case 0:
+				case 'Field':
 					var f = error.a;
 					var err = error.b;
 					var isSimple = function () {
 						var _v1 = $elm$core$String$uncons(f);
-						if (_v1.$ === 1) {
+						if (_v1.$ === 'Nothing') {
 							return false;
 						} else {
 							var _v2 = _v1.a;
@@ -4796,7 +4796,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 1:
+				case 'Index':
 					var i = error.a;
 					var err = error.b;
 					var indexName = '[' + ($elm$core$String$fromInt(i) + ']');
@@ -4805,7 +4805,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 2:
+				case 'OneOf':
 					var errors = error.a;
 					if (!errors.b) {
 						return 'Ran into a Json.Decode.oneOf with no possibilities' + function () {
@@ -4869,7 +4869,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 var $elm$core$Array$branchFactor = 32;
 var $elm$core$Array$Array_elm_builtin = F4(
 	function (a, b, c, d) {
-		return {$: 0, a: a, b: b, c: c, d: d};
+		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
 	});
 var $elm$core$Elm$JsArray$empty = _JsArray_empty;
 var $elm$core$Basics$ceiling = _Basics_ceiling;
@@ -4884,7 +4884,7 @@ var $elm$core$Array$shiftStep = $elm$core$Basics$ceiling(
 var $elm$core$Array$empty = A4($elm$core$Array$Array_elm_builtin, 0, $elm$core$Array$shiftStep, $elm$core$Elm$JsArray$empty, $elm$core$Elm$JsArray$empty);
 var $elm$core$Elm$JsArray$initialize = _JsArray_initialize;
 var $elm$core$Array$Leaf = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Leaf', a: a};
 };
 var $elm$core$Basics$apL = F2(
 	function (f, x) {
@@ -4904,7 +4904,7 @@ var $elm$core$Basics$max = F2(
 	});
 var $elm$core$Basics$mul = _Basics_mul;
 var $elm$core$Array$SubTree = function (a) {
-	return {$: 0, a: a};
+	return {$: 'SubTree', a: a};
 };
 var $elm$core$Elm$JsArray$initializeFromList = _JsArray_initializeFromList;
 var $elm$core$Array$compressNodes = F2(
@@ -4951,25 +4951,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.g) {
+		if (!builder.nodeListSize) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.i),
+				$elm$core$Elm$JsArray$length(builder.tail),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.i);
+				builder.tail);
 		} else {
-			var treeLen = builder.g * $elm$core$Array$branchFactor;
+			var treeLen = builder.nodeListSize * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.j) : builder.j;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.g);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.nodeList) : builder.nodeList;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.nodeListSize);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.i) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.tail) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.i);
+				builder.tail);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4982,7 +4982,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{j: nodeList, g: (len / $elm$core$Array$branchFactor) | 0, i: tail});
+					{nodeList: nodeList, nodeListSize: (len / $elm$core$Array$branchFactor) | 0, tail: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -5012,9 +5012,9 @@ var $elm$core$Array$initialize = F2(
 			return A5($elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
-var $elm$core$Basics$True = 0;
+var $elm$core$Basics$True = {$: 'True'};
 var $elm$core$Result$isOk = function (result) {
-	if (!result.$) {
+	if (result.$ === 'Ok') {
 		return true;
 	} else {
 		return false;
@@ -5025,31 +5025,33 @@ var $elm$json$Json$Decode$map2 = _Json_map2;
 var $elm$json$Json$Decode$succeed = _Json_succeed;
 var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	switch (handler.$) {
-		case 0:
+		case 'Normal':
 			return 0;
-		case 1:
+		case 'MayStopPropagation':
 			return 1;
-		case 2:
+		case 'MayPreventDefault':
 			return 2;
 		default:
 			return 3;
 	}
 };
 var $elm$browser$Browser$External = function (a) {
-	return {$: 1, a: a};
+	return {$: 'External', a: a};
 };
 var $elm$browser$Browser$Internal = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Internal', a: a};
 };
 var $elm$core$Basics$identity = function (x) {
 	return x;
 };
-var $elm$browser$Browser$Dom$NotFound = $elm$core$Basics$identity;
-var $elm$url$Url$Http = 0;
-var $elm$url$Url$Https = 1;
+var $elm$browser$Browser$Dom$NotFound = function (a) {
+	return {$: 'NotFound', a: a};
+};
+var $elm$url$Url$Http = {$: 'Http'};
+var $elm$url$Url$Https = {$: 'Https'};
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {bx: fragment, bA: host, bJ: path, bL: port_, bO: protocol, bP: query};
+		return {fragment: fragment, host: host, path: path, port_: port_, protocol: protocol, query: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5085,7 +5087,7 @@ var $elm$url$Url$chompBeforePath = F5(
 					var i = _v0.a;
 					var _v1 = $elm$core$String$toInt(
 						A2($elm$core$String$dropLeft, i + 1, str));
-					if (_v1.$ === 1) {
+					if (_v1.$ === 'Nothing') {
 						return $elm$core$Maybe$Nothing;
 					} else {
 						var port_ = _v1;
@@ -5168,24 +5170,26 @@ var $elm$core$String$startsWith = _String_startsWith;
 var $elm$url$Url$fromString = function (str) {
 	return A2($elm$core$String$startsWith, 'http://', str) ? A2(
 		$elm$url$Url$chompAfterProtocol,
-		0,
+		$elm$url$Url$Http,
 		A2($elm$core$String$dropLeft, 7, str)) : (A2($elm$core$String$startsWith, 'https://', str) ? A2(
 		$elm$url$Url$chompAfterProtocol,
-		1,
+		$elm$url$Url$Https,
 		A2($elm$core$String$dropLeft, 8, str)) : $elm$core$Maybe$Nothing);
 };
 var $elm$core$Basics$never = function (_v0) {
 	never:
 	while (true) {
-		var nvr = _v0;
+		var nvr = _v0.a;
 		var $temp$_v0 = nvr;
 		_v0 = $temp$_v0;
 		continue never;
 	}
 };
-var $elm$core$Task$Perform = $elm$core$Basics$identity;
+var $elm$core$Task$Perform = function (a) {
+	return {$: 'Perform', a: a};
+};
 var $elm$core$Task$succeed = _Scheduler_succeed;
-var $elm$core$Task$init = $elm$core$Task$succeed(0);
+var $elm$core$Task$init = $elm$core$Task$succeed(_Utils_Tuple0);
 var $elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -5291,7 +5295,7 @@ var $elm$core$Task$sequence = function (tasks) {
 var $elm$core$Platform$sendToApp = _Platform_sendToApp;
 var $elm$core$Task$spawnCmd = F2(
 	function (router, _v0) {
-		var task = _v0;
+		var task = _v0.a;
 		return _Scheduler_spawn(
 			A2(
 				$elm$core$Task$andThen,
@@ -5303,7 +5307,7 @@ var $elm$core$Task$onEffects = F3(
 		return A2(
 			$elm$core$Task$map,
 			function (_v0) {
-				return 0;
+				return _Utils_Tuple0;
 			},
 			$elm$core$Task$sequence(
 				A2(
@@ -5313,52 +5317,54 @@ var $elm$core$Task$onEffects = F3(
 	});
 var $elm$core$Task$onSelfMsg = F3(
 	function (_v0, _v1, _v2) {
-		return $elm$core$Task$succeed(0);
+		return $elm$core$Task$succeed(_Utils_Tuple0);
 	});
 var $elm$core$Task$cmdMap = F2(
 	function (tagger, _v0) {
-		var task = _v0;
-		return A2($elm$core$Task$map, tagger, task);
+		var task = _v0.a;
+		return $elm$core$Task$Perform(
+			A2($elm$core$Task$map, tagger, task));
 	});
 _Platform_effectManagers['Task'] = _Platform_createManager($elm$core$Task$init, $elm$core$Task$onEffects, $elm$core$Task$onSelfMsg, $elm$core$Task$cmdMap);
 var $elm$core$Task$command = _Platform_leaf('Task');
 var $elm$core$Task$perform = F2(
 	function (toMessage, task) {
 		return $elm$core$Task$command(
-			A2($elm$core$Task$map, toMessage, task));
+			$elm$core$Task$Perform(
+				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$document = _Browser_document;
 var $author$project$Main$ViewRoster = function (a) {
-	return {$: 0, a: a};
+	return {$: 'ViewRoster', a: a};
 };
 var $author$project$Main$ViewingRoster = function (a) {
-	return {$: 0, a: a};
+	return {$: 'ViewingRoster', a: a};
 };
 var $author$project$Main$baseUrlProd = 'https://shooting-stars-spring-2023-be.herokuapp.com/api/roster';
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
-		return {$: 3, a: a, b: b};
+		return {$: 'BadStatus_', a: a, b: b};
 	});
 var $elm$http$Http$BadUrl_ = function (a) {
-	return {$: 0, a: a};
+	return {$: 'BadUrl_', a: a};
 };
 var $elm$http$Http$GoodStatus_ = F2(
 	function (a, b) {
-		return {$: 4, a: a, b: b};
+		return {$: 'GoodStatus_', a: a, b: b};
 	});
-var $elm$http$Http$NetworkError_ = {$: 2};
+var $elm$http$Http$NetworkError_ = {$: 'NetworkError_'};
 var $elm$http$Http$Receiving = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Receiving', a: a};
 };
 var $elm$http$Http$Sending = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Sending', a: a};
 };
-var $elm$http$Http$Timeout_ = {$: 1};
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
+var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$Maybe$isJust = function (maybe) {
-	if (!maybe.$) {
+	if (maybe.$ === 'Just') {
 		return true;
 	} else {
 		return false;
@@ -5370,7 +5376,7 @@ var $elm$core$Dict$get = F2(
 	function (targetKey, dict) {
 		get:
 		while (true) {
-			if (dict.$ === -2) {
+			if (dict.$ === 'RBEmpty_elm_builtin') {
 				return $elm$core$Maybe$Nothing;
 			} else {
 				var key = dict.b;
@@ -5378,14 +5384,14 @@ var $elm$core$Dict$get = F2(
 				var left = dict.d;
 				var right = dict.e;
 				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
-				switch (_v1) {
-					case 0:
+				switch (_v1.$) {
+					case 'LT':
 						var $temp$targetKey = targetKey,
 							$temp$dict = left;
 						targetKey = $temp$targetKey;
 						dict = $temp$dict;
 						continue get;
-					case 1:
+					case 'EQ':
 						return $elm$core$Maybe$Just(value);
 					default:
 						var $temp$targetKey = targetKey,
@@ -5397,21 +5403,21 @@ var $elm$core$Dict$get = F2(
 			}
 		}
 	});
-var $elm$core$Dict$Black = 1;
+var $elm$core$Dict$Black = {$: 'Black'};
 var $elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
-		return {$: -1, a: a, b: b, c: c, d: d, e: e};
+		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
 	});
-var $elm$core$Dict$Red = 0;
+var $elm$core$Dict$Red = {$: 'Red'};
 var $elm$core$Dict$balance = F5(
 	function (color, key, value, left, right) {
-		if ((right.$ === -1) && (!right.a)) {
+		if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Red')) {
 			var _v1 = right.a;
 			var rK = right.b;
 			var rV = right.c;
 			var rLeft = right.d;
 			var rRight = right.e;
-			if ((left.$ === -1) && (!left.a)) {
+			if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
 				var _v3 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -5419,22 +5425,22 @@ var $elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					0,
+					$elm$core$Dict$Red,
 					key,
 					value,
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
 					color,
 					rK,
 					rV,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, left, rLeft),
 					rRight);
 			}
 		} else {
-			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
+			if ((((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) && (left.d.$ === 'RBNode_elm_builtin')) && (left.d.a.$ === 'Red')) {
 				var _v5 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -5447,11 +5453,11 @@ var $elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					0,
+					$elm$core$Dict$Red,
 					lK,
 					lV,
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, key, value, lRight, right));
 			} else {
 				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
 			}
@@ -5459,8 +5465,8 @@ var $elm$core$Dict$balance = F5(
 	});
 var $elm$core$Dict$insertHelp = F3(
 	function (key, value, dict) {
-		if (dict.$ === -2) {
-			return A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		if (dict.$ === 'RBEmpty_elm_builtin') {
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
 		} else {
 			var nColor = dict.a;
 			var nKey = dict.b;
@@ -5468,8 +5474,8 @@ var $elm$core$Dict$insertHelp = F3(
 			var nLeft = dict.d;
 			var nRight = dict.e;
 			var _v1 = A2($elm$core$Basics$compare, key, nKey);
-			switch (_v1) {
-				case 0:
+			switch (_v1.$) {
+				case 'LT':
 					return A5(
 						$elm$core$Dict$balance,
 						nColor,
@@ -5477,7 +5483,7 @@ var $elm$core$Dict$insertHelp = F3(
 						nValue,
 						A3($elm$core$Dict$insertHelp, key, value, nLeft),
 						nRight);
-				case 1:
+				case 'EQ':
 					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
 				default:
 					return A5(
@@ -5493,13 +5499,13 @@ var $elm$core$Dict$insertHelp = F3(
 var $elm$core$Dict$insert = F3(
 	function (key, value, dict) {
 		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
-		if ((_v0.$ === -1) && (!_v0.a)) {
+		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
 			var _v1 = _v0.a;
 			var k = _v0.b;
 			var v = _v0.c;
 			var l = _v0.d;
 			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
 		} else {
 			var x = _v0;
 			return x;
@@ -5508,7 +5514,7 @@ var $elm$core$Dict$insert = F3(
 var $elm$core$Dict$getMin = function (dict) {
 	getMin:
 	while (true) {
-		if ((dict.$ === -1) && (dict.d.$ === -1)) {
+		if ((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) {
 			var left = dict.d;
 			var $temp$dict = left;
 			dict = $temp$dict;
@@ -5519,8 +5525,8 @@ var $elm$core$Dict$getMin = function (dict) {
 	}
 };
 var $elm$core$Dict$moveRedLeft = function (dict) {
-	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
-		if ((dict.e.d.$ === -1) && (!dict.e.d.a)) {
+	if (((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) && (dict.e.$ === 'RBNode_elm_builtin')) {
+		if ((dict.e.d.$ === 'RBNode_elm_builtin') && (dict.e.d.a.$ === 'Red')) {
 			var clr = dict.a;
 			var k = dict.b;
 			var v = dict.c;
@@ -5543,17 +5549,17 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 			var rRight = _v2.e;
 			return A5(
 				$elm$core$Dict$RBNode_elm_builtin,
-				0,
+				$elm$core$Dict$Red,
 				rlK,
 				rlV,
 				A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
 					rlL),
-				A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rlR, rRight));
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rlR, rRight));
 		} else {
 			var clr = dict.a;
 			var k = dict.b;
@@ -5570,22 +5576,22 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 			var rV = _v5.c;
 			var rLeft = _v5.d;
 			var rRight = _v5.e;
-			if (clr === 1) {
+			if (clr.$ === 'Black') {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			}
 		}
 	} else {
@@ -5593,8 +5599,8 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 	}
 };
 var $elm$core$Dict$moveRedRight = function (dict) {
-	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
-		if ((dict.d.d.$ === -1) && (!dict.d.d.a)) {
+	if (((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) && (dict.e.$ === 'RBNode_elm_builtin')) {
+		if ((dict.d.d.$ === 'RBNode_elm_builtin') && (dict.d.d.a.$ === 'Red')) {
 			var clr = dict.a;
 			var k = dict.b;
 			var v = dict.c;
@@ -5617,17 +5623,17 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 			var rRight = _v4.e;
 			return A5(
 				$elm$core$Dict$RBNode_elm_builtin,
-				0,
+				$elm$core$Dict$Red,
 				lK,
 				lV,
-				A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
 				A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
 					lRight,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight)));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight)));
 		} else {
 			var clr = dict.a;
 			var k = dict.b;
@@ -5644,22 +5650,22 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 			var rV = _v6.c;
 			var rLeft = _v6.d;
 			var rRight = _v6.e;
-			if (clr === 1) {
+			if (clr.$ === 'Black') {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			}
 		}
 	} else {
@@ -5668,7 +5674,7 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 };
 var $elm$core$Dict$removeHelpPrepEQGT = F7(
 	function (targetKey, dict, color, key, value, left, right) {
-		if ((left.$ === -1) && (!left.a)) {
+		if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
 			var _v1 = left.a;
 			var lK = left.b;
 			var lV = left.c;
@@ -5680,13 +5686,13 @@ var $elm$core$Dict$removeHelpPrepEQGT = F7(
 				lK,
 				lV,
 				lLeft,
-				A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, lRight, right));
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, lRight, right));
 		} else {
 			_v2$2:
 			while (true) {
-				if ((right.$ === -1) && (right.a === 1)) {
-					if (right.d.$ === -1) {
-						if (right.d.a === 1) {
+				if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Black')) {
+					if (right.d.$ === 'RBNode_elm_builtin') {
+						if (right.d.a.$ === 'Black') {
 							var _v3 = right.a;
 							var _v4 = right.d;
 							var _v5 = _v4.a;
@@ -5707,7 +5713,7 @@ var $elm$core$Dict$removeHelpPrepEQGT = F7(
 		}
 	});
 var $elm$core$Dict$removeMin = function (dict) {
-	if ((dict.$ === -1) && (dict.d.$ === -1)) {
+	if ((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) {
 		var color = dict.a;
 		var key = dict.b;
 		var value = dict.c;
@@ -5715,8 +5721,8 @@ var $elm$core$Dict$removeMin = function (dict) {
 		var lColor = left.a;
 		var lLeft = left.d;
 		var right = dict.e;
-		if (lColor === 1) {
-			if ((lLeft.$ === -1) && (!lLeft.a)) {
+		if (lColor.$ === 'Black') {
+			if ((lLeft.$ === 'RBNode_elm_builtin') && (lLeft.a.$ === 'Red')) {
 				var _v3 = lLeft.a;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
@@ -5727,7 +5733,7 @@ var $elm$core$Dict$removeMin = function (dict) {
 					right);
 			} else {
 				var _v4 = $elm$core$Dict$moveRedLeft(dict);
-				if (_v4.$ === -1) {
+				if (_v4.$ === 'RBNode_elm_builtin') {
 					var nColor = _v4.a;
 					var nKey = _v4.b;
 					var nValue = _v4.c;
@@ -5759,7 +5765,7 @@ var $elm$core$Dict$removeMin = function (dict) {
 };
 var $elm$core$Dict$removeHelp = F2(
 	function (targetKey, dict) {
-		if (dict.$ === -2) {
+		if (dict.$ === 'RBEmpty_elm_builtin') {
 			return $elm$core$Dict$RBEmpty_elm_builtin;
 		} else {
 			var color = dict.a;
@@ -5768,10 +5774,10 @@ var $elm$core$Dict$removeHelp = F2(
 			var left = dict.d;
 			var right = dict.e;
 			if (_Utils_cmp(targetKey, key) < 0) {
-				if ((left.$ === -1) && (left.a === 1)) {
+				if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Black')) {
 					var _v4 = left.a;
 					var lLeft = left.d;
-					if ((lLeft.$ === -1) && (!lLeft.a)) {
+					if ((lLeft.$ === 'RBNode_elm_builtin') && (lLeft.a.$ === 'Red')) {
 						var _v6 = lLeft.a;
 						return A5(
 							$elm$core$Dict$RBNode_elm_builtin,
@@ -5782,7 +5788,7 @@ var $elm$core$Dict$removeHelp = F2(
 							right);
 					} else {
 						var _v7 = $elm$core$Dict$moveRedLeft(dict);
-						if (_v7.$ === -1) {
+						if (_v7.$ === 'RBNode_elm_builtin') {
 							var nColor = _v7.a;
 							var nKey = _v7.b;
 							var nValue = _v7.c;
@@ -5818,7 +5824,7 @@ var $elm$core$Dict$removeHelp = F2(
 	});
 var $elm$core$Dict$removeHelpEQGT = F2(
 	function (targetKey, dict) {
-		if (dict.$ === -1) {
+		if (dict.$ === 'RBNode_elm_builtin') {
 			var color = dict.a;
 			var key = dict.b;
 			var value = dict.c;
@@ -5826,7 +5832,7 @@ var $elm$core$Dict$removeHelpEQGT = F2(
 			var right = dict.e;
 			if (_Utils_eq(targetKey, key)) {
 				var _v1 = $elm$core$Dict$getMin(right);
-				if (_v1.$ === -1) {
+				if (_v1.$ === 'RBNode_elm_builtin') {
 					var minKey = _v1.b;
 					var minValue = _v1.c;
 					return A5(
@@ -5855,13 +5861,13 @@ var $elm$core$Dict$removeHelpEQGT = F2(
 var $elm$core$Dict$remove = F2(
 	function (key, dict) {
 		var _v0 = A2($elm$core$Dict$removeHelp, key, dict);
-		if ((_v0.$ === -1) && (!_v0.a)) {
+		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
 			var _v1 = _v0.a;
 			var k = _v0.b;
 			var v = _v0.c;
 			var l = _v0.d;
 			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
 		} else {
 			var x = _v0;
 			return x;
@@ -5871,7 +5877,7 @@ var $elm$core$Dict$update = F3(
 	function (targetKey, alter, dictionary) {
 		var _v0 = alter(
 			A2($elm$core$Dict$get, targetKey, dictionary));
-		if (!_v0.$) {
+		if (_v0.$ === 'Just') {
 			var value = _v0.a;
 			return A3($elm$core$Dict$insert, targetKey, value, dictionary);
 		} else {
@@ -5893,7 +5899,7 @@ var $elm$http$Http$expectStringResponse = F2(
 	});
 var $elm$core$Result$mapError = F2(
 	function (f, result) {
-		if (!result.$) {
+		if (result.$ === 'Ok') {
 			var v = result.a;
 			return $elm$core$Result$Ok(v);
 		} else {
@@ -5903,31 +5909,31 @@ var $elm$core$Result$mapError = F2(
 		}
 	});
 var $elm$http$Http$BadBody = function (a) {
-	return {$: 4, a: a};
+	return {$: 'BadBody', a: a};
 };
 var $elm$http$Http$BadStatus = function (a) {
-	return {$: 3, a: a};
+	return {$: 'BadStatus', a: a};
 };
 var $elm$http$Http$BadUrl = function (a) {
-	return {$: 0, a: a};
+	return {$: 'BadUrl', a: a};
 };
-var $elm$http$Http$NetworkError = {$: 2};
-var $elm$http$Http$Timeout = {$: 1};
+var $elm$http$Http$NetworkError = {$: 'NetworkError'};
+var $elm$http$Http$Timeout = {$: 'Timeout'};
 var $elm$http$Http$resolve = F2(
 	function (toResult, response) {
 		switch (response.$) {
-			case 0:
+			case 'BadUrl_':
 				var url = response.a;
 				return $elm$core$Result$Err(
 					$elm$http$Http$BadUrl(url));
-			case 1:
+			case 'Timeout_':
 				return $elm$core$Result$Err($elm$http$Http$Timeout);
-			case 2:
+			case 'NetworkError_':
 				return $elm$core$Result$Err($elm$http$Http$NetworkError);
-			case 3:
+			case 'BadStatus_':
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.cz));
+					$elm$http$Http$BadStatus(metadata.statusCode));
 			default:
 				var body = response.b;
 				return A2(
@@ -5951,11 +5957,11 @@ var $elm$http$Http$expectJson = F2(
 	});
 var $elm$http$Http$emptyBody = _Http_emptyBody;
 var $elm$http$Http$Request = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Request', a: a};
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {bS: reqs, bY: subs};
+		return {reqs: reqs, subs: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -5970,10 +5976,10 @@ var $elm$http$Http$updateReqs = F3(
 			} else {
 				var cmd = cmds.a;
 				var otherCmds = cmds.b;
-				if (!cmd.$) {
+				if (cmd.$ === 'Cancel') {
 					var tracker = cmd.a;
 					var _v2 = A2($elm$core$Dict$get, tracker, reqs);
-					if (_v2.$ === 1) {
+					if (_v2.$ === 'Nothing') {
 						var $temp$router = router,
 							$temp$cmds = otherCmds,
 							$temp$reqs = reqs;
@@ -5999,8 +6005,8 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.b$;
-							if (_v4.$ === 1) {
+							var _v4 = req.tracker;
+							if (_v4.$ === 'Nothing') {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
 								var tracker = _v4.a;
@@ -6029,12 +6035,12 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.bS));
+			A3($elm$http$Http$updateReqs, router, cmds, state.reqs));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
 		var _v0 = f(mx);
-		if (!_v0.$) {
+		if (_v0.$ === 'Just') {
 			var x = _v0.a;
 			return A2($elm$core$List$cons, x, xs);
 		} else {
@@ -6072,34 +6078,34 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.bY)));
+					state.subs)));
 	});
 var $elm$http$Http$Cancel = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Cancel', a: a};
 };
 var $elm$http$Http$cmdMap = F2(
 	function (func, cmd) {
-		if (!cmd.$) {
+		if (cmd.$ === 'Cancel') {
 			var tracker = cmd.a;
 			return $elm$http$Http$Cancel(tracker);
 		} else {
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					b9: r.b9,
-					bl: r.bl,
-					bu: A2(_Http_mapExpect, func, r.bu),
-					by: r.by,
-					co: r.co,
-					cC: r.cC,
-					b$: r.b$,
-					b2: r.b2
+					allowCookiesFromOtherDomains: r.allowCookiesFromOtherDomains,
+					body: r.body,
+					expect: A2(_Http_mapExpect, func, r.expect),
+					headers: r.headers,
+					method: r.method,
+					timeout: r.timeout,
+					tracker: r.tracker,
+					url: r.url
 				});
 		}
 	});
 var $elm$http$Http$MySub = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'MySub', a: a, b: b};
 	});
 var $elm$http$Http$subMap = F2(
 	function (func, _v0) {
@@ -6116,16 +6122,16 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{b9: false, bl: r.bl, bu: r.bu, by: r.by, co: r.co, cC: r.cC, b$: r.b$, b2: r.b2}));
+			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{bl: $elm$http$Http$emptyBody, bu: r.bu, by: _List_Nil, co: 'GET', cC: $elm$core$Maybe$Nothing, b$: $elm$core$Maybe$Nothing, b2: r.b2});
+		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $author$project$Roster$Player = F5(
 	function (name, jerseyNumber, phoneNumber, primaryRole, backupRole) {
-		return {au: backupRole, ac: jerseyNumber, ah: name, aj: phoneNumber, aD: primaryRole};
+		return {backupRole: backupRole, jerseyNumber: jerseyNumber, name: name, phoneNumber: phoneNumber, primaryRole: primaryRole};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$map5 = _Json_map5;
@@ -6138,31 +6144,31 @@ var $elm$json$Json$Decode$maybe = function (decoder) {
 				$elm$json$Json$Decode$succeed($elm$core$Maybe$Nothing)
 			]));
 };
-var $author$project$Roster$C = 4;
-var $author$project$Roster$Coach = 5;
-var $author$project$Roster$PF = 3;
-var $author$project$Roster$PG = 0;
-var $author$project$Roster$SF = 2;
-var $author$project$Roster$SG = 1;
+var $author$project$Roster$C = {$: 'C'};
+var $author$project$Roster$Coach = {$: 'Coach'};
+var $author$project$Roster$PF = {$: 'PF'};
+var $author$project$Roster$PG = {$: 'PG'};
+var $author$project$Roster$SF = {$: 'SF'};
+var $author$project$Roster$SG = {$: 'SG'};
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Roster$roleDecoder = A2(
 	$elm$json$Json$Decode$map,
 	function (str) {
 		switch (str) {
 			case 'PG':
-				return 0;
+				return $author$project$Roster$PG;
 			case 'SG':
-				return 1;
+				return $author$project$Roster$SG;
 			case 'SF':
-				return 2;
+				return $author$project$Roster$SF;
 			case 'PF':
-				return 3;
+				return $author$project$Roster$PF;
 			case 'C':
-				return 4;
+				return $author$project$Roster$C;
 			case 'Coach':
-				return 5;
+				return $author$project$Roster$Coach;
 			default:
-				return 5;
+				return $author$project$Roster$Coach;
 		}
 	},
 	$elm$json$Json$Decode$string);
@@ -6186,8 +6192,8 @@ var $author$project$Main$init = function (_v0) {
 		$author$project$Main$ViewingRoster(_List_Nil),
 		$elm$http$Http$get(
 			{
-				bu: A2($elm$http$Http$expectJson, $author$project$Main$ViewRoster, $author$project$Roster$rosterDecoder),
-				b2: $author$project$Main$baseUrlProd
+				expect: A2($elm$http$Http$expectJson, $author$project$Main$ViewRoster, $author$project$Roster$rosterDecoder),
+				url: $author$project$Main$baseUrlProd
 			}));
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6196,12 +6202,26 @@ var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
 var $author$project$Main$AddedPlayerToRoster = function (a) {
-	return {$: 5, a: a};
+	return {$: 'AddedPlayerToRoster', a: a};
 };
 var $author$project$Main$AddingNewTeammate = F2(
 	function (a, b) {
-		return {$: 1, a: a, b: b};
+		return {$: 'AddingNewTeammate', a: a, b: b};
 	});
+var $author$project$Main$ErrorScreen = F2(
+	function (a, b) {
+		return {$: 'ErrorScreen', a: a, b: b};
+	});
+var $author$project$Main$RemovedPlayerFromRoster = function (a) {
+	return {$: 'RemovedPlayerFromRoster', a: a};
+};
+var $author$project$Main$baseUrlDev = 'http://localhost:4000/api/roster';
+var $elm$http$Http$expectString = function (toMsg) {
+	return A2(
+		$elm$http$Http$expectStringResponse,
+		toMsg,
+		$elm$http$Http$resolve($elm$core$Result$Ok));
+};
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -6220,18 +6240,18 @@ var $elm$http$Http$jsonBody = function (value) {
 		A2($elm$json$Json$Encode$encode, 0, value));
 };
 var $author$project$Roster$maybeRoleToRole = function (role) {
-	if (!role.$) {
+	if (role.$ === 'Just') {
 		var r = role.a;
 		return r;
 	} else {
-		return 5;
+		return $author$project$Roster$Coach;
 	}
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Basics$not = _Basics_not;
 var $author$project$Roster$jerseyToString = function (jersey) {
-	if (!jersey.$) {
+	if (jersey.$ === 'Just') {
 		var jrsy = jersey.a;
 		return jrsy;
 	} else {
@@ -6239,23 +6259,23 @@ var $author$project$Roster$jerseyToString = function (jersey) {
 	}
 };
 var $author$project$Roster$roleToString = function (role) {
-	switch (role) {
-		case 0:
+	switch (role.$) {
+		case 'PG':
 			return 'PG';
-		case 1:
+		case 'SG':
 			return 'SG';
-		case 2:
+		case 'SF':
 			return 'SF';
-		case 3:
+		case 'PF':
 			return 'PF';
-		case 4:
+		case 'C':
 			return 'C';
 		default:
 			return 'Coach';
 	}
 };
 var $author$project$Roster$maybeRoleToString = function (mrole) {
-	if (!mrole.$) {
+	if (mrole.$ === 'Just') {
 		var role = mrole.a;
 		return $author$project$Roster$roleToString(role);
 	} else {
@@ -6273,34 +6293,34 @@ var $elm$json$Json$Encode$object = function (pairs) {
 					var v = _v0.b;
 					return A3(_Json_addField, k, v, obj);
 				}),
-			_Json_emptyObject(0),
+			_Json_emptyObject(_Utils_Tuple0),
 			pairs));
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$Roster$playerEncoder = function (player) {
-	if (!player.$) {
+	if (player.$ === 'Just') {
 		var p = player.a;
 		return $elm$json$Json$Encode$object(
 			_List_fromArray(
 				[
 					_Utils_Tuple2(
 					'name',
-					$elm$json$Json$Encode$string(p.ah)),
+					$elm$json$Json$Encode$string(p.name)),
 					_Utils_Tuple2(
 					'jerseyNumber',
 					$elm$json$Json$Encode$string(
-						$author$project$Roster$jerseyToString(p.ac))),
+						$author$project$Roster$jerseyToString(p.jerseyNumber))),
 					_Utils_Tuple2(
 					'primaryRole',
 					$elm$json$Json$Encode$string(
-						$author$project$Roster$roleToString(p.aD))),
+						$author$project$Roster$roleToString(p.primaryRole))),
 					_Utils_Tuple2(
 					'backupRole',
 					$elm$json$Json$Encode$string(
-						$author$project$Roster$maybeRoleToString(p.au))),
+						$author$project$Roster$maybeRoleToString(p.backupRole))),
 					_Utils_Tuple2(
 					'phoneNumber',
-					$elm$json$Json$Encode$string(p.aj))
+					$elm$json$Json$Encode$string(p.phoneNumber))
 				]));
 	} else {
 		return $elm$json$Json$Encode$null;
@@ -6308,24 +6328,24 @@ var $author$project$Roster$playerEncoder = function (player) {
 };
 var $elm$http$Http$post = function (r) {
 	return $elm$http$Http$request(
-		{bl: r.bl, bu: r.bu, by: _List_Nil, co: 'POST', cC: $elm$core$Maybe$Nothing, b$: $elm$core$Maybe$Nothing, b2: r.b2});
+		{body: r.body, expect: r.expect, headers: _List_Nil, method: 'POST', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
 var $elm$core$String$toUpper = _String_toUpper;
 var $author$project$Roster$stringToMaybeRole = function (role) {
 	var _v0 = $elm$core$String$toUpper(role);
 	switch (_v0) {
 		case 'PG':
-			return $elm$core$Maybe$Just(0);
+			return $elm$core$Maybe$Just($author$project$Roster$PG);
 		case 'SG':
-			return $elm$core$Maybe$Just(1);
+			return $elm$core$Maybe$Just($author$project$Roster$SG);
 		case 'SF':
-			return $elm$core$Maybe$Just(2);
+			return $elm$core$Maybe$Just($author$project$Roster$SF);
 		case 'PF':
-			return $elm$core$Maybe$Just(3);
+			return $elm$core$Maybe$Just($author$project$Roster$PF);
 		case 'C':
-			return $elm$core$Maybe$Just(4);
+			return $elm$core$Maybe$Just($author$project$Roster$C);
 		case 'COACH':
-			return $elm$core$Maybe$Just(5);
+			return $elm$core$Maybe$Just($author$project$Roster$Coach);
 		default:
 			return $elm$core$Maybe$Nothing;
 	}
@@ -6333,9 +6353,9 @@ var $author$project$Roster$stringToMaybeRole = function (role) {
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'ViewRoster':
 				var response = msg.a;
-				if (!response.$) {
+				if (response.$ === 'Ok') {
 					var fullRoster = response.a;
 					return _Utils_Tuple2(
 						$author$project$Main$ViewingRoster(fullRoster),
@@ -6343,8 +6363,8 @@ var $author$project$Main$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 1:
-				if (!model.$) {
+			case 'ViewNewTeammateForm':
+				if (model.$ === 'ViewingRoster') {
 					var currentRoster = model.a;
 					return _Utils_Tuple2(
 						A2($author$project$Main$AddingNewTeammate, currentRoster, $elm$core$Maybe$Nothing),
@@ -6352,10 +6372,19 @@ var $author$project$Main$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 2:
+			case 'AttemptToRemovePlayerFromRoster':
 				var player = msg.a;
-				if (!model.$) {
+				if (model.$ === 'ViewingRoster') {
 					var currentRoster = model.a;
+					var url = function () {
+						var _v4 = player.jerseyNumber;
+						if (_v4.$ === 'Just') {
+							var num = _v4.a;
+							return $author$project$Main$baseUrlDev + ('/' + num);
+						} else {
+							return $author$project$Main$baseUrlDev + ('/' + '000');
+						}
+					}();
 					return _Utils_Tuple2(
 						$author$project$Main$ViewingRoster(
 							A2(
@@ -6364,13 +6393,93 @@ var $author$project$Main$update = F2(
 									return !_Utils_eq(p, player);
 								},
 								currentRoster)),
-						$elm$core$Platform$Cmd$none);
+						$elm$http$Http$request(
+							{
+								body: $elm$http$Http$emptyBody,
+								expect: $elm$http$Http$expectString($author$project$Main$RemovedPlayerFromRoster),
+								headers: _List_Nil,
+								method: 'DELETE',
+								timeout: $elm$core$Maybe$Nothing,
+								tracker: $elm$core$Maybe$Nothing,
+								url: url
+							}));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 3:
+			case 'RemovedPlayerFromRoster':
+				var response = msg.a;
+				var _v5 = _Utils_Tuple2(response, model);
+				if (_v5.a.$ === 'Ok') {
+					if (_v5.b.$ === 'ViewingRoster') {
+						var xRowsDeleted = _v5.a.a;
+						var currentRoster = _v5.b.a;
+						var failureMessage = 'There was an issue removing this player from the roster. Refresh the page and ry again.';
+						var _v6 = $elm$core$String$toInt(xRowsDeleted);
+						if (_v6.$ === 'Just') {
+							var rowsDeletedAsInt = _v6.a;
+							return (rowsDeletedAsInt > 0) ? _Utils_Tuple2(
+								$author$project$Main$ViewingRoster(currentRoster),
+								$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+								A2($author$project$Main$ErrorScreen, currentRoster, failureMessage),
+								$elm$core$Platform$Cmd$none);
+						} else {
+							return _Utils_Tuple2(
+								A2($author$project$Main$ErrorScreen, currentRoster, failureMessage),
+								$elm$core$Platform$Cmd$none);
+						}
+					} else {
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+					}
+				} else {
+					if (_v5.b.$ === 'ViewingRoster') {
+						var error = _v5.a.a;
+						var currentRoster = _v5.b.a;
+						switch (error.$) {
+							case 'BadUrl':
+								var errMsg = error.a;
+								return _Utils_Tuple2(
+									A2($author$project$Main$ErrorScreen, currentRoster, 'Bad URL: ' + (errMsg + '. Try agian.')),
+									$elm$core$Platform$Cmd$none);
+							case 'Timeout':
+								return _Utils_Tuple2(
+									A2($author$project$Main$ErrorScreen, currentRoster, 'The request timed out. Try again'),
+									$elm$core$Platform$Cmd$none);
+							case 'NetworkError':
+								return _Utils_Tuple2(
+									A2($author$project$Main$ErrorScreen, currentRoster, 'There was a network error. Check your internet connection and try again.'),
+									$elm$core$Platform$Cmd$none);
+							case 'BadStatus':
+								var status = error.a;
+								var _v8 = A2(
+									$elm$core$String$left,
+									1,
+									$elm$core$String$fromInt(status));
+								switch (_v8) {
+									case '4':
+										return _Utils_Tuple2(
+											A2($author$project$Main$ErrorScreen, currentRoster, 'The server could not fulfill your request. Modify it to the best of your intuition and try again.'),
+											$elm$core$Platform$Cmd$none);
+									case '5':
+										return _Utils_Tuple2(
+											A2($author$project$Main$ErrorScreen, currentRoster, 'The server is dealing with some issues. Please try again at a later time.'),
+											$elm$core$Platform$Cmd$none);
+									default:
+										return _Utils_Tuple2(
+											A2($author$project$Main$ErrorScreen, currentRoster, 'Something weird is going on... Refresh this browser window and try again.'),
+											$elm$core$Platform$Cmd$none);
+								}
+							default:
+								return _Utils_Tuple2(
+									A2($author$project$Main$ErrorScreen, currentRoster, 'You only need to specify the jersey number of the player you are trying to remove. Do this and try again.'),
+									$elm$core$Platform$Cmd$none);
+						}
+					} else {
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+					}
+				}
+			case 'EditPlayerInfo':
 				var player = msg.a;
-				if (!model.$) {
+				if (model.$ === 'ViewingRoster') {
 					var currentRoster = model.a;
 					return _Utils_Tuple2(
 						$author$project$Main$ViewingRoster(
@@ -6384,48 +6493,51 @@ var $author$project$Main$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 4:
+			case 'AttemptToAddPlayerToRoster':
 				var player = msg.a;
-				if (!model.$) {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-				} else {
-					if (!model.b.$) {
-						var existingRoster = model.a;
-						var newTeammate = model.b.a;
-						return _Utils_Tuple2(
-							$author$project$Main$ViewingRoster(
-								A2($elm$core$List$cons, newTeammate, existingRoster)),
-							$elm$http$Http$post(
-								{
-									bl: $elm$http$Http$jsonBody(
-										$author$project$Roster$playerEncoder(
-											$elm$core$Maybe$Just(newTeammate))),
-									bu: A2($elm$http$Http$expectJson, $author$project$Main$AddedPlayerToRoster, $author$project$Roster$playerDecoder),
-									b2: $author$project$Main$baseUrlProd
-								}));
-					} else {
-						var _v6 = model.b;
+				switch (model.$) {
+					case 'ViewingRoster':
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-					}
+					case 'AddingNewTeammate':
+						if (model.b.$ === 'Just') {
+							var existingRoster = model.a;
+							var newTeammate = model.b.a;
+							return _Utils_Tuple2(
+								$author$project$Main$ViewingRoster(
+									A2($elm$core$List$cons, newTeammate, existingRoster)),
+								$elm$http$Http$post(
+									{
+										body: $elm$http$Http$jsonBody(
+											$author$project$Roster$playerEncoder(
+												$elm$core$Maybe$Just(newTeammate))),
+										expect: A2($elm$http$Http$expectJson, $author$project$Main$AddedPlayerToRoster, $author$project$Roster$playerDecoder),
+										url: $author$project$Main$baseUrlProd
+									}));
+						} else {
+							var _v11 = model.b;
+							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+						}
+					default:
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 6:
+			case 'AddNewPlayerInfo':
 				var maybeNewPlayerInfo = msg.a;
 				var defaultPlayer = {
-					au: $elm$core$Maybe$Nothing,
-					ac: $elm$core$Maybe$Just(''),
-					ah: '',
-					aj: '',
-					aD: 0
+					backupRole: $elm$core$Maybe$Nothing,
+					jerseyNumber: $elm$core$Maybe$Just(''),
+					name: '',
+					phoneNumber: '',
+					primaryRole: $author$project$Roster$PG
 				};
-				var _v7 = _Utils_Tuple2(model, maybeNewPlayerInfo);
-				if (_v7.a.$ === 1) {
-					if (!_v7.a.b.$) {
-						switch (_v7.b.$) {
-							case 0:
-								var _v8 = _v7.a;
-								var existingRoster = _v8.a;
-								var restOfNewPlayerInfo = _v8.b.a;
-								var n = _v7.b.a;
+				var _v12 = _Utils_Tuple2(model, maybeNewPlayerInfo);
+				if (_v12.a.$ === 'AddingNewTeammate') {
+					if (_v12.a.b.$ === 'Just') {
+						switch (_v12.b.$) {
+							case 'Name':
+								var _v13 = _v12.a;
+								var existingRoster = _v13.a;
+								var restOfNewPlayerInfo = _v13.b.a;
+								var n = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6433,13 +6545,13 @@ var $author$project$Main$update = F2(
 										$elm$core$Maybe$Just(
 											_Utils_update(
 												restOfNewPlayerInfo,
-												{ah: n}))),
+												{name: n}))),
 									$elm$core$Platform$Cmd$none);
-							case 1:
-								var _v11 = _v7.a;
-								var existingRoster = _v11.a;
-								var restOfNewPlayerInfo = _v11.b.a;
-								var jn = _v7.b.a;
+							case 'JerseyNumber':
+								var _v16 = _v12.a;
+								var existingRoster = _v16.a;
+								var restOfNewPlayerInfo = _v16.b.a;
+								var jn = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6448,14 +6560,14 @@ var $author$project$Main$update = F2(
 											_Utils_update(
 												restOfNewPlayerInfo,
 												{
-													ac: $elm$core$Maybe$Just(jn)
+													jerseyNumber: $elm$core$Maybe$Just(jn)
 												}))),
 									$elm$core$Platform$Cmd$none);
-							case 2:
-								var _v14 = _v7.a;
-								var existingRoster = _v14.a;
-								var restOfNewPlayerInfo = _v14.b.a;
-								var pr = _v7.b.a;
+							case 'PrimaryRole':
+								var _v19 = _v12.a;
+								var existingRoster = _v19.a;
+								var restOfNewPlayerInfo = _v19.b.a;
+								var pr = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6464,14 +6576,14 @@ var $author$project$Main$update = F2(
 											_Utils_update(
 												restOfNewPlayerInfo,
 												{
-													aD: A3($elm$core$Basics$composeR, $author$project$Roster$stringToMaybeRole, $author$project$Roster$maybeRoleToRole, pr)
+													primaryRole: A3($elm$core$Basics$composeR, $author$project$Roster$stringToMaybeRole, $author$project$Roster$maybeRoleToRole, pr)
 												}))),
 									$elm$core$Platform$Cmd$none);
-							case 3:
-								var _v17 = _v7.a;
-								var existingRoster = _v17.a;
-								var restOfNewPlayerInfo = _v17.b.a;
-								var br = _v7.b.a;
+							case 'BackupRole':
+								var _v22 = _v12.a;
+								var existingRoster = _v22.a;
+								var restOfNewPlayerInfo = _v22.b.a;
+								var br = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6480,14 +6592,14 @@ var $author$project$Main$update = F2(
 											_Utils_update(
 												restOfNewPlayerInfo,
 												{
-													au: $author$project$Roster$stringToMaybeRole(br)
+													backupRole: $author$project$Roster$stringToMaybeRole(br)
 												}))),
 									$elm$core$Platform$Cmd$none);
 							default:
-								var _v20 = _v7.a;
-								var existingRoster = _v20.a;
-								var restOfNewPlayerInfo = _v20.b.a;
-								var pn = _v7.b.a;
+								var _v25 = _v12.a;
+								var existingRoster = _v25.a;
+								var restOfNewPlayerInfo = _v25.b.a;
+								var pn = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6495,16 +6607,16 @@ var $author$project$Main$update = F2(
 										$elm$core$Maybe$Just(
 											_Utils_update(
 												restOfNewPlayerInfo,
-												{aj: pn}))),
+												{phoneNumber: pn}))),
 									$elm$core$Platform$Cmd$none);
 						}
 					} else {
-						switch (_v7.b.$) {
-							case 0:
-								var _v9 = _v7.a;
-								var existingRoster = _v9.a;
-								var _v10 = _v9.b;
-								var n = _v7.b.a;
+						switch (_v12.b.$) {
+							case 'Name':
+								var _v14 = _v12.a;
+								var existingRoster = _v14.a;
+								var _v15 = _v14.b;
+								var n = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6512,13 +6624,13 @@ var $author$project$Main$update = F2(
 										$elm$core$Maybe$Just(
 											_Utils_update(
 												defaultPlayer,
-												{ah: n}))),
+												{name: n}))),
 									$elm$core$Platform$Cmd$none);
-							case 1:
-								var _v12 = _v7.a;
-								var existingRoster = _v12.a;
-								var _v13 = _v12.b;
-								var jn = _v7.b.a;
+							case 'JerseyNumber':
+								var _v17 = _v12.a;
+								var existingRoster = _v17.a;
+								var _v18 = _v17.b;
+								var jn = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6527,14 +6639,14 @@ var $author$project$Main$update = F2(
 											_Utils_update(
 												defaultPlayer,
 												{
-													ac: $elm$core$Maybe$Just(jn)
+													jerseyNumber: $elm$core$Maybe$Just(jn)
 												}))),
 									$elm$core$Platform$Cmd$none);
-							case 2:
-								var _v15 = _v7.a;
-								var existingRoster = _v15.a;
-								var _v16 = _v15.b;
-								var pr = _v7.b.a;
+							case 'PrimaryRole':
+								var _v20 = _v12.a;
+								var existingRoster = _v20.a;
+								var _v21 = _v20.b;
+								var pr = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6543,14 +6655,14 @@ var $author$project$Main$update = F2(
 											_Utils_update(
 												defaultPlayer,
 												{
-													aD: A3($elm$core$Basics$composeR, $author$project$Roster$stringToMaybeRole, $author$project$Roster$maybeRoleToRole, pr)
+													primaryRole: A3($elm$core$Basics$composeR, $author$project$Roster$stringToMaybeRole, $author$project$Roster$maybeRoleToRole, pr)
 												}))),
 									$elm$core$Platform$Cmd$none);
-							case 3:
-								var _v18 = _v7.a;
-								var existingRoster = _v18.a;
-								var _v19 = _v18.b;
-								var br = _v7.b.a;
+							case 'BackupRole':
+								var _v23 = _v12.a;
+								var existingRoster = _v23.a;
+								var _v24 = _v23.b;
+								var br = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6559,14 +6671,14 @@ var $author$project$Main$update = F2(
 											_Utils_update(
 												defaultPlayer,
 												{
-													au: $author$project$Roster$stringToMaybeRole(br)
+													backupRole: $author$project$Roster$stringToMaybeRole(br)
 												}))),
 									$elm$core$Platform$Cmd$none);
 							default:
-								var _v21 = _v7.a;
-								var existingRoster = _v21.a;
-								var _v22 = _v21.b;
-								var pn = _v7.b.a;
+								var _v26 = _v12.a;
+								var existingRoster = _v26.a;
+								var _v27 = _v26.b;
+								var pn = _v12.b.a;
 								return _Utils_Tuple2(
 									A2(
 										$author$project$Main$AddingNewTeammate,
@@ -6574,7 +6686,7 @@ var $author$project$Main$update = F2(
 										$elm$core$Maybe$Just(
 											_Utils_update(
 												defaultPlayer,
-												{aj: pn}))),
+												{phoneNumber: pn}))),
 									$elm$core$Platform$Cmd$none);
 						}
 					}
@@ -6583,19 +6695,19 @@ var $author$project$Main$update = F2(
 				}
 			default:
 				var response = msg.a;
-				var _v23 = _Utils_Tuple2(model, response);
-				if (_v23.a.$ === 1) {
-					if (!_v23.b.$) {
-						var _v24 = _v23.a;
-						var existingRoster = _v24.a;
-						var newTeammate = _v23.b.a;
+				var _v28 = _Utils_Tuple2(model, response);
+				if (_v28.a.$ === 'AddingNewTeammate') {
+					if (_v28.b.$ === 'Ok') {
+						var _v29 = _v28.a;
+						var existingRoster = _v29.a;
+						var newTeammate = _v28.b.a;
 						return _Utils_Tuple2(
 							$author$project$Main$ViewingRoster(
 								A2($elm$core$List$cons, newTeammate, existingRoster)),
 							$elm$core$Platform$Cmd$none);
 					} else {
-						var _v25 = _v23.a;
-						var existingRoster = _v25.a;
+						var _v30 = _v28.a;
+						var existingRoster = _v30.a;
 						return _Utils_Tuple2(
 							$author$project$Main$ViewingRoster(existingRoster),
 							$elm$core$Platform$Cmd$none);
@@ -6605,7 +6717,7 @@ var $author$project$Main$update = F2(
 				}
 		}
 	});
-var $author$project$Main$ViewNewTeammateForm = {$: 1};
+var $author$project$Main$ViewNewTeammateForm = {$: 'ViewNewTeammateForm'};
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6616,7 +6728,7 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Normal', a: a};
 };
 var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var $elm$html$Html$Events$on = F2(
@@ -6646,25 +6758,25 @@ var $author$project$Main$addPlayerBtn = A2(
 			$elm$html$Html$text('+')
 		]));
 var $author$project$Main$AddNewPlayerInfo = function (a) {
-	return {$: 6, a: a};
+	return {$: 'AddNewPlayerInfo', a: a};
 };
 var $author$project$Main$AttemptToAddPlayerToRoster = function (a) {
-	return {$: 4, a: a};
+	return {$: 'AttemptToAddPlayerToRoster', a: a};
 };
 var $author$project$Main$BackupRole = function (a) {
-	return {$: 3, a: a};
+	return {$: 'BackupRole', a: a};
 };
 var $author$project$Main$JerseyNumber = function (a) {
-	return {$: 1, a: a};
+	return {$: 'JerseyNumber', a: a};
 };
 var $author$project$Main$Name = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Name', a: a};
 };
 var $author$project$Main$PhoneNumber = function (a) {
-	return {$: 4, a: a};
+	return {$: 'PhoneNumber', a: a};
 };
 var $author$project$Main$PrimaryRole = function (a) {
-	return {$: 2, a: a};
+	return {$: 'PrimaryRole', a: a};
 };
 var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$input = _VirtualDom_node('input');
@@ -6673,7 +6785,7 @@ var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
 var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 1, a: a};
+	return {$: 'MayStopPropagation', a: a};
 };
 var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
@@ -6704,7 +6816,7 @@ var $elm$html$Html$Events$alwaysPreventDefault = function (msg) {
 	return _Utils_Tuple2(msg, true);
 };
 var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
-	return {$: 2, a: a};
+	return {$: 'MayPreventDefault', a: a};
 };
 var $elm$html$Html$Events$preventDefaultOn = F2(
 	function (event, decoder) {
@@ -6751,7 +6863,7 @@ var $author$project$Main$addTeammateForm = function (newTeammate) {
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$placeholder('Name'),
-									$elm$html$Html$Attributes$value(teammateInfo.ah),
+									$elm$html$Html$Attributes$value(teammateInfo.name),
 									$elm$html$Html$Events$onInput(
 									function (name) {
 										return $author$project$Main$AddNewPlayerInfo(
@@ -6772,7 +6884,7 @@ var $author$project$Main$addTeammateForm = function (newTeammate) {
 								[
 									$elm$html$Html$Attributes$placeholder('Jersey Number'),
 									$elm$html$Html$Attributes$value(
-									$author$project$Roster$jerseyToString(teammateInfo.ac)),
+									$author$project$Roster$jerseyToString(teammateInfo.jerseyNumber)),
 									$elm$html$Html$Events$onInput(
 									function (jn) {
 										return $author$project$Main$AddNewPlayerInfo(
@@ -6856,7 +6968,7 @@ var $author$project$Main$addTeammateForm = function (newTeammate) {
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$placeholder('Phone Number'),
-									$elm$html$Html$Attributes$value(teammateInfo.aj),
+									$elm$html$Html$Attributes$value(teammateInfo.phoneNumber),
 									$elm$html$Html$Events$onInput(
 									function (pn) {
 										return $author$project$Main$AddNewPlayerInfo(
@@ -6877,16 +6989,16 @@ var $author$project$Main$addTeammateForm = function (newTeammate) {
 						]))
 				]));
 	};
-	if (!newTeammate.$) {
+	if (newTeammate.$ === 'Just') {
 		var teammateInfo = newTeammate.a;
 		return viewForm(teammateInfo);
 	} else {
 		var defaultPlayer = {
-			au: $elm$core$Maybe$Nothing,
-			ac: $elm$core$Maybe$Just('N/A'),
-			ah: '',
-			aj: '',
-			aD: 0
+			backupRole: $elm$core$Maybe$Nothing,
+			jerseyNumber: $elm$core$Maybe$Just('N/A'),
+			name: '',
+			phoneNumber: '',
+			primaryRole: $author$project$Roster$PG
 		};
 		return viewForm(defaultPlayer);
 	}
@@ -6904,7 +7016,7 @@ var $author$project$Main$appTitle = A2(
 		]));
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$backToHome = function (model) {
-	if (model.$ === 1) {
+	if (model.$ === 'AddingNewTeammate') {
 		var existingRoster = model.a;
 		return A2(
 			$elm$html$Html$button,
@@ -6970,7 +7082,7 @@ var $author$project$Main$viewPlayer = function (player) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(player.ah)
+						$elm$html$Html$text(player.name)
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -6978,7 +7090,7 @@ var $author$project$Main$viewPlayer = function (player) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Roster$jerseyToString(player.ac))
+						$author$project$Roster$jerseyToString(player.jerseyNumber))
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -6986,7 +7098,7 @@ var $author$project$Main$viewPlayer = function (player) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Roster$roleToString(player.aD))
+						$author$project$Roster$roleToString(player.primaryRole))
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -6994,7 +7106,7 @@ var $author$project$Main$viewPlayer = function (player) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Roster$maybeRoleToString(player.au))
+						$author$project$Roster$maybeRoleToString(player.backupRole))
 					])),
 				A2(
 				$elm$html$Html$td,
@@ -7002,7 +7114,7 @@ var $author$project$Main$viewPlayer = function (player) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$formatPhoneNumber(player.aj))
+						$author$project$Main$formatPhoneNumber(player.phoneNumber))
 					]))
 			]));
 };
@@ -7050,57 +7162,96 @@ var $author$project$Main$renderTableRows = function (roster) {
 var $elm$html$Html$table = _VirtualDom_node('table');
 var $author$project$Main$view = function (model) {
 	return {
-		bl: function () {
-			if (!model.$) {
-				var fullRoster = model.a;
-				return _List_fromArray(
-					[
-						A2(
-						$elm$html$Html$main_,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$id('app-container')
-							]),
-						_List_fromArray(
-							[
-								$author$project$Main$appTitle,
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('crud-controls')
-									]),
-								_List_fromArray(
-									[$author$project$Main$addPlayerBtn])),
-								A2(
-								$elm$html$Html$table,
-								_List_Nil,
-								$author$project$Main$renderTableRows(fullRoster))
-							]))
-					]);
-			} else {
-				var newTeammateInfo = model.b;
-				return _List_fromArray(
-					[
-						A2(
-						$elm$html$Html$main_,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$id('app-container')
-							]),
-						_List_fromArray(
-							[
-								$author$project$Main$appTitle,
-								$author$project$Main$backToHome(model),
-								$author$project$Main$addTeammateForm(newTeammateInfo)
-							]))
-					]);
+		body: function () {
+			switch (model.$) {
+				case 'ViewingRoster':
+					var roster = model.a;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$main_,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$id('app-container')
+								]),
+							_List_fromArray(
+								[
+									$author$project$Main$appTitle,
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('crud-controls')
+										]),
+									_List_fromArray(
+										[$author$project$Main$addPlayerBtn])),
+									A2(
+									$elm$html$Html$table,
+									_List_Nil,
+									$author$project$Main$renderTableRows(roster))
+								]))
+						]);
+				case 'AddingNewTeammate':
+					var newTeammateInfo = model.b;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$main_,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$id('app-container')
+								]),
+							_List_fromArray(
+								[
+									$author$project$Main$appTitle,
+									$author$project$Main$backToHome(model),
+									$author$project$Main$addTeammateForm(newTeammateInfo)
+								]))
+						]);
+				default:
+					var roster = model.a;
+					var errorMessage = model.b;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$main_,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$id('app-container')
+								]),
+							_List_fromArray(
+								[
+									$author$project$Main$appTitle,
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('error-container')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(errorMessage)
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('crud-controls')
+										]),
+									_List_fromArray(
+										[$author$project$Main$addPlayerBtn])),
+									A2(
+									$elm$html$Html$table,
+									_List_Nil,
+									$author$project$Main$renderTableRows(roster))
+								]))
+						]);
 			}
 		}(),
-		cD: 'Shooting Starts Roster | Spring Basketball 2023'
+		title: 'Shooting Starts Roster | Spring Basketball 2023'
 	};
 };
 var $author$project$Main$main = $elm$browser$Browser$document(
-	{cm: $author$project$Main$init, cB: $author$project$Main$subscriptions, cE: $author$project$Main$update, cG: $author$project$Main$view});
+	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));

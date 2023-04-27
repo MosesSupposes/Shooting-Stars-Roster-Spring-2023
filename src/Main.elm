@@ -110,9 +110,6 @@ update msg model =
                         Nothing ->
                             ( ErrorScreen currentRoster failureMessage, Cmd.none )
 
-                ( Ok Nothing, ViewingRoster currentRoster ) ->
-                    ( ErrorScreen currentRoster "The server is hallucinating. If the operation did not resolve as expected, refresh the page and try again.", Cmd.none )
-
                 -- This handles the case where we are on a different view from `ViewingRoster`, but the delete request was successful (this shouldn't happen, but we handle it anyways.)
                 ( Ok _, _ ) ->
                     ( model, Cmd.none )
@@ -131,11 +128,11 @@ update msg model =
                         Http.BadStatus status ->
                             case String.fromInt status |> String.left 1 of
                                 -- 4xx error
-                                4 ->
+                                "4" ->
                                     ( ErrorScreen currentRoster "The server could not fulfill your request. Modify it to the best of your intuition and try again.", Cmd.none )
 
                                 -- 5xx error
-                                5 ->
+                                "5" ->
                                     ( ErrorScreen currentRoster "The server is dealing with some issues. Please try again at a later time.", Cmd.none )
 
                                 -- xxx error
@@ -184,6 +181,9 @@ update msg model =
                     )
 
                 AddingNewTeammate _ Nothing ->
+                    ( model, Cmd.none )
+
+                ErrorScreen _ _ ->
                     ( model, Cmd.none )
 
         AddNewPlayerInfo maybeNewPlayerInfo ->
@@ -277,11 +277,11 @@ view model =
     { title = "Shooting Starts Roster | Spring Basketball 2023"
     , body =
         case model of
-            ViewingRoster fullRoster ->
+            ViewingRoster roster ->
                 [ main_ [ id "app-container" ]
                     [ appTitle
-                    , div [ class "crud-controls" ] [ addPlayerBtn ]
-                    , table [] (renderTableRows fullRoster)
+                    , div [ class "crud-controls" ] [ addPlayerBtn, deletePlayerBtn ]
+                    , table [] (renderTableRows roster)
                     ]
                 ]
 
@@ -290,6 +290,15 @@ view model =
                     [ appTitle
                     , backToHome model
                     , addTeammateForm newTeammateInfo
+                    ]
+                ]
+
+            ErrorScreen roster errorMessage ->
+                [ main_ [ id "app-container" ]
+                    [ appTitle
+                    , div [ class "error-container" ] [ text errorMessage ]
+                    , div [ class "crud-controls" ] [ addPlayerBtn ]
+                    , table [] (renderTableRows roster)
                     ]
                 ]
     }

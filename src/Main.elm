@@ -5,6 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onDoubleClick, onInput, onSubmit)
 import Http
+import Login exposing (Model(..), update, view)
 import Roster exposing (Player, Role(..), deletePlayerDecoder, jerseyToString, maybeRoleToRole, maybeRoleToString, playerDecoder, playerEncoder, roleToString, rosterDecoder, stringToMaybeRole)
 import Swiper
 
@@ -14,7 +15,8 @@ type alias ErrorMessage =
 
 
 type Model
-    = ViewingRoster Swiper.SwipingState (List Player)
+    = ViewingLoginScreen Login.Model
+    | ViewingRoster Swiper.SwipingState (List Player)
     | AddingNewTeammate (List Player) (Maybe Player)
     | ErrorScreen (List Player) ErrorMessage
 
@@ -40,6 +42,7 @@ type Msg
     | AttemptToAddPlayerToRoster Player
     | AddedPlayerToRoster (Result Http.Error Player)
     | AddNewPlayerInfo PlayerField
+    | Authenticate Login.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -202,6 +205,9 @@ update msg model =
                 ErrorScreen _ _ ->
                     ( model, Cmd.none )
 
+                ViewingLoginScreen _ ->
+                    ( model, Cmd.none )
+
         AddNewPlayerInfo maybeNewPlayerInfo ->
             let
                 defaultPlayer =
@@ -272,6 +278,17 @@ update msg model =
                 ( _, _ ) ->
                     ( model, Cmd.none )
 
+        Authenticate loginMsg ->
+            case model of
+                ViewingLoginScreen loginModel ->
+                    Login.update loginMsg loginModel
+                        |> (\( nestedModel, nestedMsg ) ->
+                                ( ViewingLoginScreen nestedModel, Cmd.map Authenticate nestedMsg )
+                           )
+
+                _ ->
+                    ( model, Cmd.none )
+
 
 baseUrlDev : String
 baseUrlDev =
@@ -281,6 +298,10 @@ baseUrlDev =
 baseUrlProd : String
 baseUrlProd =
     "https://shooting-stars-spring-2023-be.herokuapp.com/api/roster"
+
+
+
+-- TODO: Render Login screen. After successful login, trigger Cmd to view roster, as is currently being done.
 
 
 init : () -> ( Model, Cmd Msg )
@@ -317,6 +338,9 @@ view model =
                     , table [] (renderTableRows roster)
                     ]
                 ]
+
+            ViewingLoginScreen loginModel ->
+                [ Login.view loginModel |> Html.map Authenticate ]
     }
 
 

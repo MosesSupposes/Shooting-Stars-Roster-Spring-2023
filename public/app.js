@@ -6217,12 +6217,18 @@ var $author$project$Main$AddingNewTeammate = F2(
 	function (a, b) {
 		return {$: 'AddingNewTeammate', a: a, b: b};
 	});
+var $author$project$Main$Authenticate = function (a) {
+	return {$: 'Authenticate', a: a};
+};
 var $author$project$Main$ErrorScreen = F2(
 	function (a, b) {
 		return {$: 'ErrorScreen', a: a, b: b};
 	});
 var $author$project$Main$RemovedPlayerFromRoster = function (a) {
 	return {$: 'RemovedPlayerFromRoster', a: a};
+};
+var $author$project$Main$ViewingLoginScreen = function (a) {
+	return {$: 'ViewingLoginScreen', a: a};
 };
 var $author$project$Main$baseUrlDev = 'http://localhost:4000/api/roster';
 var $elm$http$Http$expectString = function (toMsg) {
@@ -6289,6 +6295,7 @@ var $elm$http$Http$jsonBody = function (value) {
 		'application/json',
 		A2($elm$json$Json$Encode$encode, 0, value));
 };
+var $elm$core$Platform$Cmd$map = _Platform_map;
 var $author$project$Roster$maybeRoleToRole = function (role) {
 	if (role.$ === 'Just') {
 		var r = role.a;
@@ -6400,6 +6407,119 @@ var $author$project$Roster$stringToMaybeRole = function (role) {
 			return $elm$core$Maybe$Nothing;
 	}
 };
+var $author$project$Login$AttemptingToLogin = F3(
+	function (a, b, c) {
+		return {$: 'AttemptingToLogin', a: a, b: b, c: c};
+	});
+var $author$project$Login$ExistingPlayerCredentials = F2(
+	function (name, jersey) {
+		return {jersey: jersey, name: name};
+	});
+var $author$project$Login$HasLoggedIn = {$: 'HasLoggedIn'};
+var $elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
+			}
+		}
+	});
+var $elm$core$List$member = F2(
+	function (x, xs) {
+		return A2(
+			$elm$core$List$any,
+			function (a) {
+				return _Utils_eq(a, x);
+			},
+			xs);
+	});
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Login$update = F2(
+	function (msg, model) {
+		if (msg.$ === 'LoginAttempt') {
+			var attempts = msg.a;
+			var existingPlayerCreds = msg.b;
+			if (model.$ === 'AttemptingToLogin') {
+				var existingRoster = model.c;
+				var getCreds = function (roster) {
+					return A2(
+						$elm$core$List$map,
+						function (player) {
+							return A2(
+								$author$project$Login$ExistingPlayerCredentials,
+								player.name,
+								A2($elm$core$Maybe$withDefault, '0', player.jerseyNumber));
+						},
+						roster);
+				};
+				return A2(
+					$elm$core$List$member,
+					existingPlayerCreds,
+					getCreds(existingRoster)) ? _Utils_Tuple2($author$project$Login$HasLoggedIn, $elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+					A3(
+						$author$project$Login$AttemptingToLogin,
+						attempts + 1,
+						{jersey: '', name: ''},
+						existingRoster),
+					$elm$core$Platform$Cmd$none);
+			} else {
+				return _Utils_Tuple2($author$project$Login$HasLoggedIn, $elm$core$Platform$Cmd$none);
+			}
+		} else {
+			var updateValue = msg.a;
+			if (model.$ === 'AttemptingToLogin') {
+				var attempts = model.a;
+				var existingPlayerCreds = model.b;
+				var existingRoster = model.c;
+				if (updateValue.$ === 'InputExistingPlayerName') {
+					var name = updateValue.a;
+					return _Utils_Tuple2(
+						A3(
+							$author$project$Login$AttemptingToLogin,
+							attempts,
+							_Utils_update(
+								existingPlayerCreds,
+								{name: name}),
+							existingRoster),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					var jersey = updateValue.a;
+					return _Utils_Tuple2(
+						A3(
+							$author$project$Login$AttemptingToLogin,
+							attempts,
+							_Utils_update(
+								existingPlayerCreds,
+								{jersey: jersey}),
+							existingRoster),
+						$elm$core$Platform$Cmd$none);
+				}
+			} else {
+				return _Utils_Tuple2($author$project$Login$HasLoggedIn, $elm$core$Platform$Cmd$none);
+			}
+		}
+	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -6593,6 +6713,8 @@ var $author$project$Main$update = F2(
 							var _v15 = model.b;
 							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 						}
+					case 'ErrorScreen':
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					default:
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
@@ -6769,7 +6891,7 @@ var $author$project$Main$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			default:
+			case 'AddedPlayerToRoster':
 				var response = msg.a;
 				var _v32 = _Utils_Tuple2(model, response);
 				if (_v32.a.$ === 'AddingNewTeammate') {
@@ -6790,6 +6912,21 @@ var $author$project$Main$update = F2(
 							A2($author$project$Main$ViewingRoster, $marshallformula$elm_swiper$Swiper$initialSwipingState, existingRoster),
 							$elm$core$Platform$Cmd$none);
 					}
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			default:
+				var loginMsg = msg.a;
+				if (model.$ === 'ViewingLoginScreen') {
+					var loginModel = model.a;
+					return function (_v36) {
+						var nestedModel = _v36.a;
+						var nestedMsg = _v36.b;
+						return _Utils_Tuple2(
+							$author$project$Main$ViewingLoginScreen(nestedModel),
+							A2($elm$core$Platform$Cmd$map, $author$project$Main$Authenticate, nestedMsg));
+					}(
+						A2($author$project$Login$update, loginMsg, loginModel));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
@@ -7115,6 +7252,8 @@ var $author$project$Main$backToHome = function (model) {
 };
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
+var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
+var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -7252,6 +7391,101 @@ var $author$project$Main$renderTableRows = function (roster) {
 	return A2(helper, roster, _List_Nil);
 };
 var $elm$html$Html$table = _VirtualDom_node('table');
+var $author$project$Login$InputExistingPlayerJersey = function (a) {
+	return {$: 'InputExistingPlayerJersey', a: a};
+};
+var $author$project$Login$InputExistingPlayerName = function (a) {
+	return {$: 'InputExistingPlayerName', a: a};
+};
+var $author$project$Login$LoginAttempt = F2(
+	function (a, b) {
+		return {$: 'LoginAttempt', a: a, b: b};
+	});
+var $author$project$Login$UpdateExistingPlayerCredentials = function (a) {
+	return {$: 'UpdateExistingPlayerCredentials', a: a};
+};
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$Login$timeoutBasedOnAttempts = function (numOfAttempts) {
+	return A3(
+		$elm$core$Basics$composeR,
+		function (x) {
+			return x * 1000;
+		},
+		A2(
+			$elm$core$Basics$composeR,
+			function (x) {
+				return (x / 60) | 0;
+			},
+			$elm$core$String$fromInt),
+		numOfAttempts);
+};
+var $author$project$Login$view = function (model) {
+	if (model.$ === 'AttemptingToLogin') {
+		var numOfAttempts = model.a;
+		var existingPlayer = model.b;
+		return (numOfAttempts <= 3) ? A2(
+			$elm$html$Html$form,
+			_List_fromArray(
+				[
+					$elm$html$Html$Events$onClick(
+					A2($author$project$Login$LoginAttempt, numOfAttempts + 1, existingPlayer))
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$input,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onInput(
+							function (name) {
+								return $author$project$Login$UpdateExistingPlayerCredentials(
+									$author$project$Login$InputExistingPlayerName(name));
+							}),
+							$elm$html$Html$Attributes$value(existingPlayer.name)
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(existingPlayer.name)
+						])),
+					A2(
+					$elm$html$Html$input,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onInput(
+							function (jersey) {
+								return $author$project$Login$UpdateExistingPlayerCredentials(
+									$author$project$Login$InputExistingPlayerJersey(jersey));
+							}),
+							$elm$html$Html$Attributes$value(existingPlayer.jersey)
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(existingPlayer.jersey)
+						]))
+				])) : A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					'Sorry, you can\'t view our roster for security purposes. Try again in ' + ($author$project$Login$timeoutBasedOnAttempts(numOfAttempts) + ' seconds.'))
+				]));
+	} else {
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Welcome back, Star.\nLoading Roster...')
+						]))
+				]));
+	}
+};
 var $author$project$Main$view = function (model) {
 	return {
 		body: function () {
@@ -7300,7 +7534,7 @@ var $author$project$Main$view = function (model) {
 									$author$project$Main$addTeammateForm(newTeammateInfo)
 								]))
 						]);
-				default:
+				case 'ErrorScreen':
 					var roster = model.a;
 					var errorMessage = model.b;
 					return _List_fromArray(
@@ -7337,6 +7571,15 @@ var $author$project$Main$view = function (model) {
 									_List_Nil,
 									$author$project$Main$renderTableRows(roster))
 								]))
+						]);
+				default:
+					var loginModel = model.a;
+					return _List_fromArray(
+						[
+							A2(
+							$elm$html$Html$map,
+							$author$project$Main$Authenticate,
+							$author$project$Login$view(loginModel))
 						]);
 			}
 		}(),

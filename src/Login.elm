@@ -41,7 +41,7 @@ type Msg
     | UpdateExistingPlayerCredentials PlayerCredentialsUpdateValue
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         LoginAttempt attempts existingPlayerCreds ->
@@ -53,26 +53,26 @@ update msg model =
                             List.map (\player -> ExistingPlayerCredentials player.name (Maybe.withDefault "0" player.jerseyNumber)) roster
                     in
                     if List.member existingPlayerCreds (getCreds existingRoster) then
-                        HasLoggedIn
+                        ( HasLoggedIn, Cmd.none )
 
                     else
-                        AttemptingToLogin (attempts + 1) { name = "", jersey = "" } existingRoster
+                        ( AttemptingToLogin (attempts + 1) { name = "", jersey = "" } existingRoster, Cmd.none )
 
                 HasLoggedIn ->
-                    HasLoggedIn
+                    ( HasLoggedIn, Cmd.none )
 
         UpdateExistingPlayerCredentials updateValue ->
             case model of
                 AttemptingToLogin attempts existingPlayerCreds existingRoster ->
                     case updateValue of
                         InputExistingPlayerName name ->
-                            AttemptingToLogin attempts { existingPlayerCreds | name = name } existingRoster
+                            ( AttemptingToLogin attempts { existingPlayerCreds | name = name } existingRoster, Cmd.none )
 
                         InputExistingPlayerJersey jersey ->
-                            AttemptingToLogin attempts { existingPlayerCreds | jersey = jersey } existingRoster
+                            ( AttemptingToLogin attempts { existingPlayerCreds | jersey = jersey } existingRoster, Cmd.none )
 
                 HasLoggedIn ->
-                    HasLoggedIn
+                    ( HasLoggedIn, Cmd.none )
 
 
 

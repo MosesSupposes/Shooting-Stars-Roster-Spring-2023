@@ -1,4 +1,4 @@
-module Login exposing (Model(..), update, view)
+module Login exposing (Model(..), Msg(..), update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (value)
@@ -27,7 +27,7 @@ type Model
     | HasLoggedIn
 
 
-type UpdateExistingPlayerCredentials
+type PlayerCredentialsUpdateValue
     = InputExistingPlayerName String
     | InputExistingPlayerJersey String
 
@@ -38,7 +38,7 @@ type UpdateExistingPlayerCredentials
 
 type Msg
     = LoginAttempt Attempts ExistingPlayerCredentials
-    | UpdateExistingPlayerCredentials
+    | UpdateExistingPlayerCredentials PlayerCredentialsUpdateValue
 
 
 update : Msg -> Model -> Model
@@ -58,6 +58,22 @@ update msg model =
                     else
                         AttemptingToLogin (attempts + 1) { name = "", jersey = "" } existingRoster
 
+                HasLoggedIn ->
+                    HasLoggedIn
+
+        UpdateExistingPlayerCredentials updateValue ->
+            case model of
+                AttemptingToLogin attempts existingPlayerCreds existingRoster ->
+                    case updateValue of
+                        InputExistingPlayerName name ->
+                            AttemptingToLogin attempts { existingPlayerCreds | name = name } existingRoster
+
+                        InputExistingPlayerJersey jersey ->
+                            AttemptingToLogin attempts { existingPlayerCreds | jersey = jersey } existingRoster
+
+                HasLoggedIn ->
+                    HasLoggedIn
+
 
 
 -- VIEW
@@ -69,12 +85,15 @@ view model =
         AttemptingToLogin numOfAttempts existingPlayer _ ->
             if numOfAttempts <= 3 then
                 form [ onClick (LoginAttempt (numOfAttempts + 1) existingPlayer) ]
-                    [ input [ onInput InputExistingPlayerName ] [ value existingPlayer.name ]
-                    , input [ onInput InputExistingPlayerJersey ] [ value existingPlayer.jersey ]
+                    [ input [ onInput (\name -> UpdateExistingPlayerCredentials (InputExistingPlayerName name)), value existingPlayer.name ] [ text existingPlayer.name ]
+                    , input [ onInput (\jersey -> UpdateExistingPlayerCredentials (InputExistingPlayerJersey jersey)), value existingPlayer.jersey ] [ text existingPlayer.jersey ]
                     ]
 
             else
-                div [] [ text ("Sorry, you can't view our roster for security purposes. Try again in " ++ timeoutBasedOnAttempts numOfAttempts ++ "seconds.") ]
+                div [] [ text ("Sorry, you can't view our roster for security purposes. Try again in " ++ timeoutBasedOnAttempts numOfAttempts ++ " seconds.") ]
+
+        HasLoggedIn ->
+            div [] [ p [] [ text "Welcome back, Star.\nLoading Roster..." ] ]
 
 
 

@@ -1,7 +1,7 @@
-module Login exposing (Model(..), Msg(..), update, view)
+module Login exposing (Model, Msg(..), init, update, view)
 
 import Html exposing (..)
-import Html.Attributes exposing (value)
+import Html.Attributes exposing (type_, value)
 import Html.Events exposing (onClick, onInput)
 import Roster exposing (Player)
 
@@ -30,6 +30,11 @@ type Model
 type PlayerCredentialsUpdateValue
     = InputExistingPlayerName String
     | InputExistingPlayerJersey String
+
+
+init : ExistingRoster -> Model
+init roster =
+    AttemptingToLogin 0 { name = "", jersey = "" } roster
 
 
 
@@ -85,8 +90,15 @@ view model =
         AttemptingToLogin numOfAttempts existingPlayer _ ->
             if numOfAttempts <= 3 then
                 form [ onClick (LoginAttempt (numOfAttempts + 1) existingPlayer) ]
-                    [ input [ onInput (\name -> UpdateExistingPlayerCredentials (InputExistingPlayerName name)), value existingPlayer.name ] [ text existingPlayer.name ]
-                    , input [ onInput (\jersey -> UpdateExistingPlayerCredentials (InputExistingPlayerJersey jersey)), value existingPlayer.jersey ] [ text existingPlayer.jersey ]
+                    [ label []
+                        [ text "Name"
+                        , input [ onInput (\name -> UpdateExistingPlayerCredentials (InputExistingPlayerName name)), value existingPlayer.name ] [ text existingPlayer.name ]
+                        ]
+                    , label []
+                        [ text "Jersey"
+                        , input [ onInput (\jersey -> UpdateExistingPlayerCredentials (InputExistingPlayerJersey jersey)), value existingPlayer.jersey ] [ text existingPlayer.jersey ]
+                        ]
+                    , button [ type_ "submit" ] [ text "View Roster" ]
                     ]
 
             else

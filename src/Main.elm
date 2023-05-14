@@ -301,12 +301,16 @@ baseUrlProd =
 
 
 
--- TODO: Render Login screen. After successful login, trigger Cmd to view roster, as is currently being done.
+-- TODO: Render loading screen upon initial load while fetching the roster data from the server.
+-- Once the data is fetched, render the Login screen instead of the Roster screen.
+-- As it currently stands, the login screen will never authenticate the user because we
+-- are trying to check the existence of existing players from an empty roster.
+-- Fetch, THEN authenticate.
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( ViewingRoster Swiper.initialSwipingState [], Http.get { url = baseUrlProd, expect = Http.expectJson ViewRoster rosterDecoder } )
+    ( ViewingLoginScreen <| Login.init [], Http.get { url = baseUrlProd, expect = Http.expectJson ViewRoster rosterDecoder } )
 
 
 view : Model -> Browser.Document Msg

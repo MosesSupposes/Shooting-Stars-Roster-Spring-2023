@@ -5337,10 +5337,9 @@ var $elm$browser$Browser$document = _Browser_document;
 var $author$project$Main$ViewRoster = function (a) {
 	return {$: 'ViewRoster', a: a};
 };
-var $author$project$Main$ViewingRoster = F2(
-	function (a, b) {
-		return {$: 'ViewingRoster', a: a, b: b};
-	});
+var $author$project$Main$ViewingLoginScreen = function (a) {
+	return {$: 'ViewingLoginScreen', a: a};
+};
 var $author$project$Main$baseUrlProd = 'https://shooting-stars-spring-2023-be.herokuapp.com/api/roster';
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
@@ -6129,14 +6128,17 @@ var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
 		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
-var $marshallformula$elm_swiper$Swiper$InternalState = function (touchStarted) {
-	return {touchStarted: touchStarted};
+var $author$project$Login$AttemptingToLogin = F3(
+	function (a, b, c) {
+		return {$: 'AttemptingToLogin', a: a, b: b, c: c};
+	});
+var $author$project$Login$init = function (roster) {
+	return A3(
+		$author$project$Login$AttemptingToLogin,
+		0,
+		{jersey: '', name: ''},
+		roster);
 };
-var $marshallformula$elm_swiper$Swiper$SwipingState = function (a) {
-	return {$: 'SwipingState', a: a};
-};
-var $marshallformula$elm_swiper$Swiper$initialSwipingState = $marshallformula$elm_swiper$Swiper$SwipingState(
-	$marshallformula$elm_swiper$Swiper$InternalState($elm$core$Maybe$Nothing));
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $author$project$Roster$Player = F5(
 	function (name, jerseyNumber, phoneNumber, primaryRole, backupRole) {
@@ -6198,7 +6200,8 @@ var $author$project$Roster$playerDecoder = A6(
 var $author$project$Roster$rosterDecoder = $elm$json$Json$Decode$list($author$project$Roster$playerDecoder);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		A2($author$project$Main$ViewingRoster, $marshallformula$elm_swiper$Swiper$initialSwipingState, _List_Nil),
+		$author$project$Main$ViewingLoginScreen(
+			$author$project$Login$init(_List_Nil)),
 		$elm$http$Http$get(
 			{
 				expect: A2($elm$http$Http$expectJson, $author$project$Main$ViewRoster, $author$project$Roster$rosterDecoder),
@@ -6227,9 +6230,10 @@ var $author$project$Main$ErrorScreen = F2(
 var $author$project$Main$RemovedPlayerFromRoster = function (a) {
 	return {$: 'RemovedPlayerFromRoster', a: a};
 };
-var $author$project$Main$ViewingLoginScreen = function (a) {
-	return {$: 'ViewingLoginScreen', a: a};
-};
+var $author$project$Main$ViewingRoster = F2(
+	function (a, b) {
+		return {$: 'ViewingRoster', a: a, b: b};
+	});
 var $author$project$Main$baseUrlDev = 'http://localhost:4000/api/roster';
 var $elm$http$Http$expectString = function (toMsg) {
 	return A2(
@@ -6262,6 +6266,14 @@ var $marshallformula$elm_swiper$Swiper$checkSwiped = F3(
 				return _Utils_cmp(start.clientY, end.clientY) < 0;
 		}
 	});
+var $marshallformula$elm_swiper$Swiper$InternalState = function (touchStarted) {
+	return {touchStarted: touchStarted};
+};
+var $marshallformula$elm_swiper$Swiper$SwipingState = function (a) {
+	return {$: 'SwipingState', a: a};
+};
+var $marshallformula$elm_swiper$Swiper$initialSwipingState = $marshallformula$elm_swiper$Swiper$SwipingState(
+	$marshallformula$elm_swiper$Swiper$InternalState($elm$core$Maybe$Nothing));
 var $marshallformula$elm_swiper$Swiper$startTouchSequence = function (coords) {
 	return $marshallformula$elm_swiper$Swiper$SwipingState(
 		{
@@ -6407,10 +6419,6 @@ var $author$project$Roster$stringToMaybeRole = function (role) {
 			return $elm$core$Maybe$Nothing;
 	}
 };
-var $author$project$Login$AttemptingToLogin = F3(
-	function (a, b, c) {
-		return {$: 'AttemptingToLogin', a: a, b: b, c: c};
-	});
 var $author$project$Login$ExistingPlayerCredentials = F2(
 	function (name, jersey) {
 		return {jersey: jersey, name: name};
@@ -7419,6 +7427,7 @@ var $author$project$Login$timeoutBasedOnAttempts = function (numOfAttempts) {
 			$elm$core$String$fromInt),
 		numOfAttempts);
 };
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $author$project$Login$view = function (model) {
 	if (model.$ === 'AttemptingToLogin') {
 		var numOfAttempts = model.a;
@@ -7433,34 +7442,58 @@ var $author$project$Login$view = function (model) {
 			_List_fromArray(
 				[
 					A2(
-					$elm$html$Html$input,
+					$elm$html$Html$label,
+					_List_Nil,
 					_List_fromArray(
 						[
-							$elm$html$Html$Events$onInput(
-							function (name) {
-								return $author$project$Login$UpdateExistingPlayerCredentials(
-									$author$project$Login$InputExistingPlayerName(name));
-							}),
-							$elm$html$Html$Attributes$value(existingPlayer.name)
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(existingPlayer.name)
+							$elm$html$Html$text('Name'),
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onInput(
+									function (name) {
+										return $author$project$Login$UpdateExistingPlayerCredentials(
+											$author$project$Login$InputExistingPlayerName(name));
+									}),
+									$elm$html$Html$Attributes$value(existingPlayer.name)
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(existingPlayer.name)
+								]))
 						])),
 					A2(
-					$elm$html$Html$input,
+					$elm$html$Html$label,
+					_List_Nil,
 					_List_fromArray(
 						[
-							$elm$html$Html$Events$onInput(
-							function (jersey) {
-								return $author$project$Login$UpdateExistingPlayerCredentials(
-									$author$project$Login$InputExistingPlayerJersey(jersey));
-							}),
-							$elm$html$Html$Attributes$value(existingPlayer.jersey)
+							$elm$html$Html$text('Jersey'),
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onInput(
+									function (jersey) {
+										return $author$project$Login$UpdateExistingPlayerCredentials(
+											$author$project$Login$InputExistingPlayerJersey(jersey));
+									}),
+									$elm$html$Html$Attributes$value(existingPlayer.jersey)
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(existingPlayer.jersey)
+								]))
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$type_('submit')
 						]),
 					_List_fromArray(
 						[
-							$elm$html$Html$text(existingPlayer.jersey)
+							$elm$html$Html$text('View Roster')
 						]))
 				])) : A2(
 			$elm$html$Html$div,
